@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ShadowDrop – Early Access Beta</title>
+  <meta name="description" content="Only 10 early access keys per model. Top performers win lifetime access."/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  
+  <style>
+    :root {
+      --bg: #0a0a14;
+      --card: #12121e;
+      --text: #e2e8f0;
+      --accent: #a78bfa;
+      --gradient: linear-gradient(135deg, #a78bfa, #ec4899);
+      --red: #f87171;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      background-image: radial-gradient(circle at 10% 20%, rgba(167,139,250,0.12) 0%, transparent 20%),
+                        radial-gradient(circle at 90% 80%, rgba(236,72,153,0.12) 0%, transparent 20%);
+    }
+    .container {
+      max-width: 580px;
+      width: 100%;
+      background: var(--card);
+      border-radius: 28px;
+      padding: 48px 32px;
+      text-align: center;
+      border: 1px solid rgba(167,139,250,0.25);
+      box-shadow: 0 30px 70px rgba(0,0,0,0.7);
+    }
+    h1 {
+      font-size: 2.8rem;
+      margin-bottom: 8px;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 700;
+      line-height: 1.1;
+    }
+    .subtitle {
+      font-size: 1.25rem;
+      font-weight: 600;
+      line-height: 1.5;
+      margin-bottom: 36px;
+    }
+    .early-access { color: var(--red); }
+    .limited {
+      display: inline-block;
+      background: rgba(248,113,113,0.15);
+      color: var(--red);
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      border: 1px solid rgba(248,113,113,0.3);
+    }
+    .mobile-badge {
+      display: inline-block;
+      background: rgba(34,197,94,0.15);
+      color: #34d399;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      border: 1px solid rgba(34,197,94,0.4);
+      margin-top: 12px;
+    }
+    .projects { display: grid; gap: 28px; margin: 40px 0; }
+    .project {
+      background: rgba(167,139,250,0.07);
+      padding: 24px;
+      border-radius: 16px;
+      border-left: 5px solid var(--accent);
+      text-align: left;
+    }
+    .project h3 { font-size: 1.3rem; margin-bottom: 10px; color: #ddd6fe; }
+    .project p { font-size: 1rem; opacity: 0.9; line-height: 1.55; }
+    .prize {
+      background: rgba(248,113,113,0.15);
+      border: 1px solid rgba(248,113,113,0.3);
+      padding: 20px;
+      border-radius: 16px;
+      margin: 36px 0;
+      font-weight: 500;
+      font-size: 1.05rem;
+      color: var(--red);
+    }
+    .prize strong { color: var(--red); font-weight: 700; }
+    form { display: flex; flex-direction: column; gap: 16px; margin-top: 20px; }
+    select, input {
+      padding: 16px;
+      border-radius: 12px;
+      border: none;
+      background: rgba(255,255,255,0.07);
+      color: white;
+      font-size: 1rem;
+    }
+    select { cursor: pointer; }
+    input::placeholder { color: rgba(255,255,255,0.5); }
+    button {
+      padding: 18px;
+      border-radius: 12px;
+      background: var(--gradient);
+      color: white;
+      font-weight: 600;
+      font-size: 1.15rem;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 8px;
+    }
+    button:hover { transform: translateY(-3px); box-shadow: 0 20px 40px rgba(167,139,250,0.3); }
+    .success { display:none; color:#34d399; font-weight:600; font-size:1.35rem; margin-top:24px; }
+    .footer { margin-top: 48px; font-size: 0.9rem; opacity: 0.78; line-height: 1.5; }
+
+    /* Mobile-first responsive adjustments */
+    @media (max-width: 480px) {
+      .container { padding: 40px 24px; border-radius: 20px; }
+      h1 { font-size: 2.4rem; }
+      .subtitle { font-size: 1.15rem; }
+      .project { padding: 20px; }
+      .project h3 { font-size: 1.25rem; }
+      .project p { font-size: 0.95rem; }
+      .prize { padding: 18px; font-size: 1rem; }
+      button { font-size: 1.1rem; padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>ShadowDrop</h1>
+    
+    <p class="subtitle">
+      <span class="early-access">Early Access Beta</span><br>
+      We are giving away <span class="limited">10 keys per model</span>
+    </p>
+
+    <div class="projects">
+      <div class="project">
+        <h3>HyperReal</h3>
+        <p>One prompt → 60-second hyper-realistic video with lifelike AI humans and studio-quality voiceover.<br>
+        <strong>Auto-posts to TikTok, YouTube Shorts & Instagram Reels — everything from your phone.</strong></p>
+        <div class="mobile-badge">100% mobile workflow</div>
+      </div>
+      <div class="project">
+        <h3>RemixBeast</h3>
+        <p>Paste any link → AI instantly extracts the best moments, writes viral captions, adds pro edits + gameplay overlays.<br>
+        <strong>Auto-posts to TikTok, YouTube Shorts & Instagram Reels — everything from your phone.</strong></p>
+        <div class="mobile-badge">100% mobile workflow</div>
+      </div>
+    </div>
+
+    <div class="prize">
+      The <strong>top-performing creator on each model</strong> during early access will receive a <strong>lifetime license key</strong>
+    </div>
+
+    <form id="whitelistForm">
+      <select name="model" required>
+        <option value="" disabled selected>Select your preferred model (10 spots each)</option>
+        <option value="HyperReal">HyperReal – Realistic 60-second videos</option>
+        <option value="Remix Beast">Remix Beast – Link to instant viral short</option>
+      </select>
+      <input type="email" name="email" placeholder="Email address" required />
+      <input type="text" name="username" placeholder="TikTok / YouTube username (optional)" />
+      <button type="submit">Apply for Early Access</button>
+    </form>
+
+    <div class="success" id="successMsg">
+      Application received. We’ll contact selected testers soon.
+    </div>
+
+    <div class="footer">
+      Multiple entries will be disqualified.<br>
+      Early access begins December 2025.
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('whitelistForm');
+    const success = document.getElementById('successMsg');
+    
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      await fetch('https://usebasin.com/f/3d9a1f7c8e2b', {
+        method: 'POST',
+        body: new FormData(form)
+      });
+      form.style.display = 'none';
+      success.style.display = 'block';
+    });
+  </script>
+</body>
+</html>
