@@ -162,3 +162,98 @@ input::placeholder { color: rgba(255,255,255,0.5); }
   .prize { padding: 18px; font-size: 1rem; }
   .btn-primary { font-size: 1.1rem; padding: 16px; }
 }
+
+
+/* ==================== DASHBOARD SPECIFIC ==================== */
+.dashboard-body { background: #0a0a14; padding-bottom: 60px; }
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  color: white;
+  border-bottom: 1px solid rgba(167,139,250,0.15);
+}
+.dashboard-title { font-size: 1.3rem; font-weight: 600; }
+.menu-btn {
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  color: #a78bfa;
+  cursor: pointer;
+}
+.dashboard-container { padding: 32px 24px 48px; max-width: 620px; margin: 0 auto; }
+
+.page-title {
+  font-size: 2.4rem;
+  text-align: center;
+  margin-bottom: 40px;
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 700;
+}
+
+/* Form Components
+.input-group { margin-bottom: 28px; }
+.input-label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+.textarea-input,
+.text-input,
+.select-input {
+  width: 100%;
+  padding: 16px;
+  border-radius: 12px;
+  border: none;
+  background: rgba(255,255,255,0.07);
+  color: white;
+  font-family: inherit;
+  font-size: 1rem;
+}
+.textarea-input::placeholder,
+.text-input::placeholder { color: rgba(255,255,255,0.5); }
+
+.voice-row { display: flex; gap: 12px; align-items: center; }
+
+/* Buttons */
+.btn-test-voice {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #3b82f6, #60a5fa);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.btn-create-full {
+  width: 100%;
+  padding: 20px;
+  margin-top: 16px;
+  background: linear-gradient(135deg, #3b82f6, #60a5fa);
+  color: white;
+  border: none;
+  border-radius: 14px;
+  font-size: 1.3rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(59,130,246,0.4);
+  transition: all 0.3s;
+}
+.btn-create-full:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(59,130,246,0.5);
+}
+
+.generate-status {
+  margin-top: 28px;
+  text-align: center;
+  color: #34d399;
+  font-weight: 600;
+  font-size: 1.1rem;
+  opacity: 0;
+  transition: opacity 0.4s;
+}
