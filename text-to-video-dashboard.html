@@ -4,25 +4,24 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Text to Video – ShadowDrop</title>
-  <meta name="description" content="Create hyper-realistic 60-second videos from text."/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-
-  <!-- Live from your repo -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highstakes-ai/Odysseus@main/styles.css" />
 </head>
-<body class="dashboard-body">
+<body class="dashboard-v2-body">
 
-  <header class="dashboard-header">
-    <h1 class="dashboard-title">Dashboard</h1>
-    <button class="menu-btn" aria-label="Menu">Menu</button>
-  </header>
+  <!-- Left Side – Glowing Dashboard Title -->
+  <aside class="dashboard-sidebar">
+    <h1 class="dashboard-glow-title">Dashboard</h1>
+    <button class="menu-btn">Menu</button>
+  </aside>
 
-  <main class="container dashboard-container">
-    <h2 class="page-title">Text to Video</h2>
+  <!-- Right Side – Floating Glass Card -->
+  <main class="glass-card">
+    <h2 class="card-title">Text to Video</h2>
 
     <div class="input-group">
       <label class="input-label">Story</label>
-      <textarea class="textarea-input" placeholder="Write your story here..." rows="8"></textarea>
+      <textarea class="story-box" placeholder="Write your story here..." rows="9"></textarea>
     </div>
 
     <div class="input-group">
@@ -32,7 +31,6 @@
           <option>Adam</option>
           <option>Emma</option>
           <option>Josh</option>
-          <option>Deep</option>
         </select>
         <button class="btn-test-voice">Test</button>
       </div>
@@ -43,7 +41,7 @@
       <input type="text" class="text-input" placeholder="Eg. Realistic, Cartoon, Cinematic, Anime..." />
     </div>
 
-    <button class="btn-create-full">Create</button>
+    <button class="btn-create-glass">Create</button>
 
     <div class="generate-status" id="status"></div>
   </main>
@@ -51,15 +49,10 @@
   <script type="module">
     import { components } from 'https://cdn.jsdelivr.net/gh/highstakes-ai/Odysseus@main/components.js';
 
-    document.querySelector('.btn-test-voice').addEventListener('click', () => {
-      alert('Playing preview – Adam voice');
-    });
-
-    document.querySelector('.btn-create-full').addEventListener('click', () => {
-      const status = document.getElementById('status');
-      status.textContent = 'Generating your 60-second video... (30–90 sec)';
-      status.style.opacity = '1';
-    });
+    document.querySelector('.btn-test-voice').onclick = () => alert('Voice preview: Adam');
+    document.querySelector('.btn-create-glass').onclick = () => {
+      document.getElementById('status').textContent = 'Generating your video… (30–90 sec)';
+    };
   </script>
 </body>
 </html>
