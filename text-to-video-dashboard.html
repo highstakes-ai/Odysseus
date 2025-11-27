@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Text to Video – ShadowDrop</title>
+  <meta name="description" content="Create hyper-realistic 60-second videos from text."/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+
+  <!-- Live from your repo -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highstakes-ai/Odysseus@main/styles.css" />
+</head>
+<body class="dashboard-body">
+
+  <header class="dashboard-header">
+    <h1 class="dashboard-title">Dashboard</h1>
+    <button class="menu-btn" aria-label="Menu">Menu</button>
+  </header>
+
+  <main class="container dashboard-container">
+    <h2 class="page-title">Text to Video</h2>
+
+    <div class="input-group">
+      <label class="input-label">Story</label>
+      <textarea class="textarea-input" placeholder="Write your story here..." rows="8"></textarea>
+    </div>
+
+    <div class="input-group">
+      <label class="input-label">Voice over</label>
+      <div class="voice-row">
+        <select class="select-input">
+          <option>Adam</option>
+          <option>Emma</option>
+          <option>Josh</option>
+          <option>Deep</option>
+        </select>
+        <button class="btn-test-voice">Test</button>
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label class="input-label">Video Style</label>
+      <input type="text" class="text-input" placeholder="Eg. Realistic, Cartoon, Cinematic, Anime..." />
+    </div>
+
+    <button class="btn-create-full">Create</button>
+
+    <div class="generate-status" id="status"></div>
+  </main>
+
+  <script type="module">
+    import { components } from 'https://cdn.jsdelivr.net/gh/highstakes-ai/Odysseus@main/components.js';
+
+    document.querySelector('.btn-test-voice').addEventListener('click', () => {
+      alert('Playing preview – Adam voice');
+    });
+
+    document.querySelector('.btn-create-full').addEventListener('click', () => {
+      const status = document.getElementById('status');
+      status.textContent = 'Generating your 60-second video... (30–90 sec)';
+      status.style.opacity = '1';
+    });
+  </script>
+</body>
+</html>
