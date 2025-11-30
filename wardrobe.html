@@ -285,54 +285,22 @@
 
     <script>
         // Upload area click handler
-        document.getElementById('file-input').addEventListener('change', async function(e) {
-            const files = Array.from(e.target.files);
-            if (files.length === 0) return;
-        
-            const modal = document.getElementById('upload-modal');
-            modal.classList.add('active');
-            document.body.style.pointerEvents = 'none';
-        
-            // Get current master profile (could be empty on first upload)
-            const previousProfiles = localStorage.getItem('masterStyleProfile') || "";
-        
-            for (const file of files) {
-                const form = new FormData();
-                form.append('image', file);
-                form.append('previousProfiles', previousProfiles);
-        
-                try {
-                    const res = await fetch('https://fitted.aihighstakes.workers.dev/upload', {
-                        method: 'POST',
-                        body: form
-                    });
-        
-                    const data = await res.json();
-        
-                    if (data.success) {
-                        // 1. Show image in first grid box
-                        const firstBox = document.querySelector('.grid-item');
-                        firstBox.innerHTML = `<img src="${data.imageUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:12px;">`;
-        
-                        // 2. THIS IS THE FIX — save the actual GPT response, not the prompt
-                        localStorage.setItem('masterStyleProfile', data.newMasterProfile);
-        
-                        // 3. Optional: keep history of image URLs
-                        const history = JSON.parse(localStorage.getItem('wardrobeImages') || '[]');
-                        history.unshift(data.imageUrl);
-                        localStorage.setItem('wardrobeImages', JSON.stringify(history));
-                    } else {
-                        alert('Upload failed: ' + (data.error || 'Unknown error'));
-                    }
-                } catch (err) {
-                    console.error(err);
-                    alert('Network error — check connection');
-                }
+        document.getElementById('upload-area').addEventListener('click', function() {
+            document.getElementById('file-input').click();
+        });
+
+        // File input change handler
+        document.getElementById('file-input').addEventListener('change', function(e) {
+            const files = e.target.files;
+            if (files.length > 0) {
+                console.log(`${files.length} file(s) selected`);
+                
+                // Show upload modal (for testing, remove this later)
+                // document.getElementById('upload-modal').classList.add('active');
+                
+                alert(`${files.length} photo(s) selected! Upload functionality coming soon.`);
+                // TODO: Implement actual upload functionality
             }
-        
-            modal.classList.remove('active');
-            document.body.style.pointerEvents = 'auto';
-            e.target.value = ''; // reset input
         });
 
         // Function to show upload modal (call this when actually uploading)
