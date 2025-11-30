@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FITTED.AI - Settings</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .header {
+            background-color: #f0f0f0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+            position: relative;
+        }
+        .logo { font-size: 28px; font-weight: 900; letter-spacing: -1px; color: #2c3e50; }
+        .menu-icon { font-size: 28px; cursor: pointer; position: absolute; right: 20px; }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            background-color: white;
+            min-height: 100vh;
+        }
+        .section { margin-bottom: 40px; }
+        .section-title { font-size: 20px; font-weight: 600; margin-bottom: 15px; color: #2c3e50; }
+        .input-wrapper {
+            position: relative;
+            width: 100%;
+        }
+        .input-field {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 15px;
+            margin-bottom: 10px;
+            background-color: #f8f8f8;
+            transition: border-color 0.2s;
+        }
+        .input-field:focus {
+            outline: none;
+            border-color: #3498db;
+            background-color: white;
+        }
+        .suggestions-list {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            max-height: 220px;
+            overflow-y: auto;
+            background: white;
+            border: 1px solid #ddd;
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+            z-index: 1000;
+            display: none;
+        }
+        .suggestion-item {
+            padding: 12px 15px;
+            font-size: 15px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+        }
+        .suggestion-item:hover {
+            background-color: #f0f8ff;
+        }
+        .suggestion-item:last-child { border-bottom: none; }
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        .tag {
+            background-color: #3498db;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .tag:hover { background-color: #2980b9; }
+        .tag .remove { font-weight: bold; font-size: 18px; }
+
+        .budget-input-container { 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            margin: 20px 0; 
+            cursor: text;
+        }
+        .budget-display { 
+            font-size: 48px; 
+            font-weight: 300; 
+            color: #2c3e50; 
+            min-width: 120px;
+            text-align: center;
+            border: none;
+            background: transparent;
+            outline: none;
+        }
+        .budget-display[contenteditable]:focus {
+            outline: 2px solid #3498db;
+            border-radius: 4px;
+        }
+        .currency-symbol { font-size: 24px; color: #999; margin-right: 5px; }
+        .budget-slider { width: 100%; height: 6px; border-radius: 3px; background: #e0e0e0; -webkit-appearance: none; margin: 20px 0; }
+        .budget-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 24px; height: 24px; border-radius: 50%; background: #3498db; cursor: pointer; }
+        .budget-slider::-moz-range-thumb { width: 24px; height: 24px; border-radius: 50%; background: #3498db; cursor: pointer; border: none; }
+
+        .category-buttons { display: flex; flex-wrap: wrap; gap: 10px; }
+        .category-btn { background: white; border: 2px solid #333; padding: 10px 16px; border-radius: 8px; font-size: 14px; cursor: pointer; transition: all 0.2s; }
+        .category-btn.active { background: #3498db; border-color: #3498db; color: white; }
+        .category-btn:hover { background: #f8f8f8; }
+        .category-btn.active:hover { background: #2980b9; }
+
+        .save-btn {
+            width: 100%; background: #2c3e50; color: white; border: none;
+            padding: 16px; border-radius: 8px; font-size: 16px; font-weight: 600;
+            cursor: pointer; margin-top: 30px;
+        }
+        .save-btn:hover { background: #1a252f; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">FITTED.AI</div>
+        <div class="menu-icon">Menu</div>
+    </div>
+    <div class="container">
+        <!-- Favourite Sites Section -->
+        <div class="section">
+            <h2 class="section-title">Add Your Favourite sites</h2>
+            <div class="input-wrapper">
+                <input type="text" class="input-field" id="site-input" placeholder="Enter website URL..." autocomplete="off">
+                <div class="suggestions-list" id="suggestions-list"></div>
+            </div>
+            <div class="tags-container" id="sites-tags"></div>
+        </div>
+
+        <!-- Budget Section - Now editable! -->
+        <div class="section">
+            <h2 class="section-title">Enter Your budget</h2>
+            <div class="budget-input-container">
+                <span class="currency-symbol">$</span>
+                <div class="budget-display" id="budget-display" contenteditable="true">140</div>
+            </div>
+            <input type="range" min="0" max="1000" value="140" class="budget-slider" id="budget-slider">
+        </div>
+
+        <!-- Categories Section -->
+        <div class="section">
+            <h2 class="section-title">What are You looking for?</h2>
+            <div class="category-buttons" id="categories">
+                <button class="category-btn active" data-category="pants">Pants</button>
+                <button class="category-btn active" data-category="shoes">Shoes</button>
+                <button class="category-btn active" data-category="hats">Hats</button>
+                <button class="category-btn" data-category="jeans">Jeans</button>
+                <button class="category-btn" data-category="shirts">Shirts</button>
+                <button class="category-btn" data-category="long-sleeves">Long Sleeves</button>
+                <button class="category-btn" data-category="hoodies">Hoodies</button>
+            </div>
+        </div>
+
+        <button class="save-btn" id="save-btn">Save Settings</button>
+    </div>
+
+    <script>
+        const SettingsManager = (function() {
+            const siteMap = {
+                "https://www.culturekings.co.nz": "culturekings",
+                "https://www.max.co.nz": "max",
+                "https://www.kookai.co.nz": "kookai",
+                "https://www.moochi.co.nz": "moochi",
+                "https://www.barkersonline.co.nz": "barkersonline",
+                "https://deadlyponies.com": "deadlyponies",
+                "https://www.empireskate.co.nz": "empireskate",
+                "https://www.federation.co.nz": "federation",
+                "https://www.isleofeden.co.nz": "isleofeden",
+                "https://www.karenwalker.com": "karenwalker",
+                "https://rembrandt.co.nz": "rembrandt"
+            };
+
+            let settings = {
+                sites: ['loadednz', 'culturekingsnz', 'hallensteins'],
+                fullUrls: [
+                    'https://loadednz.com',
+                    'https://www.culturekings.co.nz',
+                    'https://www.hallensteins.com'
+                ],
+                budget: 140,
+                categories: ['pants', 'shoes', 'hats']
+            };
+
+            const input = document.getElementById('site-input');
+            const suggestionsList = document.getElementById('suggestions-list');
+            const tagsContainer = document.getElementById('sites-tags');
+            const budgetDisplay = document.getElementById('budget-display');
+            const budgetSlider = document.getElementById('budget-slider');
+
+            // Sync everything when budget changes
+            function updateBudget(value) {
+                value = Math.max(0, Math.min(1000, parseInt(value) || 0));
+                settings.budget = value;
+                budgetDisplay.textContent = value;
+                budgetSlider.value = value;
+            }
+
+            function renderSites() {
+                tagsContainer.innerHTML = settings.sites.map(name => `
+                    <div class="tag" data-name="${name}">
+                        ${name} <span class="remove">×</span>
+                    </div>
+                `).join('');
+
+                tagsContainer.querySelectorAll('.tag').forEach(tag => {
+                    tag.addEventListener('click', () => {
+                        const name = tag.dataset.name;
+                        const index = settings.sites.indexOf(name);
+                        if (index > -1) {
+                            settings.sites.splice(index, 1);
+                            settings.fullUrls.splice(index, 1);
+                        }
+                        renderSites();
+                    });
+                });
+            }
+
+            function showSuggestions(query) {
+                suggestionsList.innerHTML = '';
+                if (!query.trim()) {
+                    suggestionsList.style.display = 'none';
+                    return;
+                }
+                const matches = Object.entries(siteMap)
+                    .filter(([url, name]) => name.toLowerCase().includes(query.toLowerCase()))
+                    .slice(0, 8);
+
+                if (matches.length === 0) {
+                    suggestionsList.style.display = 'none';
+                    return;
+                }
+                matches.forEach(([url, name]) => {
+                    const item = document.createElement('div');
+                    item.className = 'suggestion-item';
+                    item.textContent = name;
+                    item.addEventListener('click', () => {
+                        if (!settings.sites.includes(name)) {
+                            settings.sites.push(name);
+                            settings.fullUrls.push(url);
+                            renderSites();
+                        }
+                        input.value = '';
+                        suggestionsList.style.display = 'none';
+                    });
+                    suggestionsList.appendChild(item);
+                });
+                suggestionsList.style.display = 'block';
+            }
+
+            document.addEventListener('click', (e) => {
+                if (!input.contains(e.target) && !suggestionsList.contains(e.target)) {
+                    suggestionsList.style.display = 'none';
+                }
+            });
+
+            return {
+                init: function() {
+                    renderSites();
+                    input.addEventListener('input', (e) => showSuggestions(e.target.value));
+                    input.addEventListener('focus', () => input.value && showSuggestions(input.value));
+
+                    // Slider → display
+                    budgetSlider.addEventListener('input', (e) => updateBudget(e.target.value));
+
+                    // Typing in the number → slider + settings
+                    budgetDisplay.addEventListener('input', (e) => {
+                        const val = e.target.textContent.replace(/[^0-9]/g, '');
+                        e.target.textContent = val;
+                        updateBudget(val);
+                    });
+
+                    // Keep cursor at the end when typing
+                    budgetDisplay.addEventListener('focus', function() {
+                        const range = document.createRange();
+                        const sel = window.getSelection();
+                        range.selectNodeContents(this);
+                        range.collapse(false);
+                        sel.removeAllRanges();
+                        sel.addRange(range);
+                    });
+
+                    // Save on Enter when typing budget
+                    budgetDisplay.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter') {
+                            e.preventDefault();
+                            budgetDisplay.blur();
+                        }
+                    });
+                },
+                getSettings: function() {
+                    return {
+                        sites: settings.fullUrls,
+                        budget: settings.budget,
+                        categories: settings.categories
+                    };
+                }
+            };
+        })();
+
+        SettingsManager.init();
+
+        // Category toggles
+        document.querySelectorAll('.category-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                this.classList.toggle('active');
+                // You can add category tracking here later if needed
+            });
+        });
+
+        // Save button
+        document.getElementById('save-btn').addEventListener('click', function() {
+            const data = SettingsManager.getSettings();
+            alert('Settings saved!\n\nBudget: $' + data.budget + '\nSites: ' + JSON.stringify(data.sites, null, 2));
+        });
+    </script>
+</body>
+</html>
