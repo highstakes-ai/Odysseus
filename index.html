@@ -15,6 +15,7 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             background-color: #f5f5f5;
             color: #333;
+            padding-bottom: 80px;
         }
 
         .header {
@@ -41,20 +42,21 @@
             right: 20px;
         }
 
-        .container {
-            max-width: 400px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: white;
-            min-height: 100vh;
-        }
-
-        .title {
+        .page-title {
             text-align: center;
             font-size: 24px;
             font-weight: 600;
-            margin-bottom: 30px;
+            margin: 30px 0;
             color: #2c3e50;
+        }
+
+        .store-module {
+            max-width: 400px;
+            margin: 0 auto 40px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
         .user-budget {
@@ -66,7 +68,7 @@
             border-bottom: 2px solid #eee;
         }
 
-        .username {
+        .store-name {
             font-size: 18px;
             font-weight: 600;
         }
@@ -81,7 +83,7 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         .product-card {
@@ -105,8 +107,16 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 50px;
             flex-shrink: 0;
+            overflow: hidden;
+            border-radius: 8px;
+            background-color: #fff;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .product-info {
@@ -130,34 +140,6 @@
             color: #999;
             font-size: 14px;
             margin-bottom: 15px;
-        }
-
-        .browse-btn {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            max-width: 400px;
-            margin: 0 auto;
-            background-color: #3498db;
-            color: white;
-            border: none;
-            padding: 16px;
-            border-radius: 0;
-            font-size: 15px;
-            font-weight: normal;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-            z-index: 100;
-        }
-
-        .browse-btn:hover {
-            background-color: #2980b9;
-        }
-
-        .container {
-            padding-bottom: 80px;
         }
 
         .budget-buttons {
@@ -186,6 +168,12 @@
             background-color: #f8f8f8;
         }
 
+        .budget-btn.active {
+            background-color: #3498db;
+            border-color: #3498db;
+            color: white;
+        }
+
         .add-to-cart {
             width: 100%;
             background-color: #2c3e50;
@@ -203,7 +191,37 @@
             background-color: #1a252f;
         }
 
+        .browse-btn {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 0;
+            font-size: 15px;
+            font-weight: normal;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+
+        .browse-btn:hover {
+            background-color: #2980b9;
+        }
+
         .loading {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+
+        .no-data {
             text-align: center;
             padding: 40px;
             color: #999;
@@ -216,30 +234,10 @@
         <div class="menu-icon">☰</div>
     </div>
 
-    <div class="container">
-        <h1 class="title">Top Ai picks</h1>
+    <h1 class="page-title">Top Ai picks</h1>
 
-        <div class="user-budget">
-            <div class="username" id="username">Loading...</div>
-            <div class="total-price" id="total-price">$0</div>
-        </div>
-
-        <div class="products-grid" id="products-container">
-            <div class="loading">Loading products...</div>
-        </div>
-
-        <div class="more-options" id="more-options">More options from user</div>
-
-        <div class="budget-buttons">
-            <button class="budget-btn" id="under-budget-btn">
-                Under budget ⬇
-            </button>
-            <button class="budget-btn" id="over-budget-btn">
-                Over budget ⬆
-            </button>
-        </div>
-
-        <button class="add-to-cart" id="add-to-cart-btn">Add to cart</button>
+    <div id="modules-container">
+        <div class="loading">Loading your outfits...</div>
     </div>
 
     <button class="browse-btn" id="browse-all-btn">
@@ -248,137 +246,184 @@
     </button>
 
     <script>
-        // Product Picker Module
-        const ProductPicker = (function() {
-            // Private state
-            let state = {
-                username: '',
-                products: [],
-                totalPrice: 0
-            };
-
-            // Private methods
-            function calculateTotal(products) {
-                return products.reduce((sum, product) => sum + product.price, 0);
+        // Extract store name from URL
+        function getStoreName(url) {
+            try {
+                const domain = new URL(url).hostname;
+                // Remove www. and .co.nz or .com
+                return domain.replace('www.', '').replace(/\.(co\.nz|com|co)$/, '');
+            } catch {
+                return url;
             }
+        }
 
-            function renderProducts(products) {
-                const container = document.getElementById('products-container');
-                
-                if (products.length === 0) {
-                    container.innerHTML = '<div class="loading">No products available</div>';
-                    return;
-                }
+        // Calculate total price
+        function calculateTotal(items) {
+            return items.reduce((sum, item) => {
+                const price = parseFloat(item.price) || 0;
+                return sum + price;
+            }, 0).toFixed(2);
+        }
 
-                container.innerHTML = products.map(product => `
-                    <div class="product-card" data-id="${product.id}">
-                        <div class="product-image">${product.image}</div>
-                        <div class="product-info">
-                            <div class="product-name">${product.name}</div>
-                            <div class="product-price">$${product.price}</div>
-                        </div>
+        // Render products
+        function renderProducts(items) {
+            return items.map(item => `
+                <div class="product-card" onclick="window.open('${item.link}', '_blank')">
+                    <div class="product-image">
+                        ${item.image ? `<img src="${item.image}" alt="${item.title}">` : '👕'}
                     </div>
-                `).join('');
+                    <div class="product-info">
+                        <div class="product-name">${item.title}</div>
+                        <div class="product-price">$${item.price}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Create a store module
+        function createStoreModule(storeUrl, storeData) {
+            const storeName = getStoreName(storeUrl);
+            const recommended = storeData.recommended || [];
+            const underBudget = storeData.under_budget || [];
+            const overBudget = storeData.over_budget || [];
+            
+            const total = calculateTotal(recommended);
+            
+            const moduleId = `module-${storeName.replace(/[^a-z0-9]/g, '-')}`;
+            
+            return `
+                <div class="store-module" id="${moduleId}">
+                    <div class="user-budget">
+                        <div class="store-name">${storeName}</div>
+                        <div class="total-price">$${total}</div>
+                    </div>
+
+                    <div class="products-grid">
+                        ${renderProducts(recommended)}
+                    </div>
+
+                    <div class="more-options">More options from ${storeName}</div>
+
+                    <div class="budget-buttons">
+                        <button class="budget-btn" data-type="under" data-module="${moduleId}">
+                            Under budget ⬇
+                        </button>
+                        <button class="budget-btn" data-type="over" data-module="${moduleId}">
+                            Over budget ⬆
+                        </button>
+                    </div>
+
+                    <button class="add-to-cart" data-store="${storeName}">Add to cart</button>
+                </div>
+            `;
+        }
+
+        // Load and render data
+        function loadOutfits() {
+            const dataStr = sessionStorage.getItem('outfitData');
+            
+            if (!dataStr) {
+                document.getElementById('modules-container').innerHTML = 
+                    '<div class="no-data">No outfits found. Please go back to settings.</div>';
+                return;
             }
 
-            function renderUserInfo() {
-                document.getElementById('username').textContent = state.username;
-                document.getElementById('total-price').textContent = `$${state.totalPrice}`;
-                document.getElementById('more-options').textContent = `More options from ${state.username}`;
+            try {
+                const data = JSON.parse(dataStr);
+                const container = document.getElementById('modules-container');
+                
+                // Store data globally for button interactions
+                window.outfitData = data;
+                
+                // Create modules for each store
+                const modules = Object.entries(data)
+                    .map(([storeUrl, storeData]) => createStoreModule(storeUrl, storeData))
+                    .join('');
+                
+                container.innerHTML = modules;
+                
+                // Add event listeners for budget buttons
+                document.querySelectorAll('.budget-btn').forEach(btn => {
+                    btn.addEventListener('click', handleBudgetClick);
+                });
+
+                // Add event listeners for add to cart buttons
+                document.querySelectorAll('.add-to-cart').forEach(btn => {
+                    btn.addEventListener('click', handleAddToCart);
+                });
+                
+            } catch (err) {
+                console.error('Error loading outfits:', err);
+                document.getElementById('modules-container').innerHTML = 
+                    '<div class="no-data">Error loading outfits. Please try again.</div>';
             }
+        }
 
-            // Public API
-            return {
-                // Initialize the app with data
-                init: function(data) {
-                    state.username = data.username;
-                    state.products = data.products;
-                    state.totalPrice = calculateTotal(data.products);
-                    
-                    renderUserInfo();
-                    renderProducts(state.products);
-                },
-
-                // Load data from API
-                loadFromAPI: async function(apiUrl) {
-                    try {
-                        const response = await fetch(apiUrl);
-                        const data = await response.json();
-                        this.init(data);
-                    } catch (error) {
-                        console.error('Error loading data:', error);
-                        document.getElementById('products-container').innerHTML = 
-                            '<div class="loading">Error loading products</div>';
-                    }
-                },
-
-                // Get current state
-                getState: function() {
-                    return { ...state };
-                },
-
-                // Update products
-                setProducts: function(products) {
-                    state.products = products;
-                    state.totalPrice = calculateTotal(products);
-                    renderUserInfo();
-                    renderProducts(products);
-                },
-
-                // Add product
-                addProduct: function(product) {
-                    state.products.push(product);
-                    state.totalPrice = calculateTotal(state.products);
-                    renderUserInfo();
-                    renderProducts(state.products);
-                },
-
-                // Remove product
-                removeProduct: function(productId) {
-                    state.products = state.products.filter(p => p.id !== productId);
-                    state.totalPrice = calculateTotal(state.products);
-                    renderUserInfo();
-                    renderProducts(state.products);
+        // Handle budget button clicks
+        function handleBudgetClick(e) {
+            const btn = e.currentTarget;
+            const type = btn.dataset.type;
+            const moduleId = btn.dataset.module;
+            const module = document.getElementById(moduleId);
+            
+            // Get store data
+            const storeName = module.querySelector('.store-name').textContent;
+            const storeData = Object.values(window.outfitData).find(data => {
+                const url = Object.keys(window.outfitData).find(key => 
+                    getStoreName(key) === storeName
+                );
+                return url && window.outfitData[url] === data;
+            });
+            
+            if (!storeData) return;
+            
+            // Get the appropriate items
+            let items, otherType, otherLabel;
+            if (type === 'under') {
+                items = storeData.under_budget || [];
+                otherType = 'recommended';
+                otherLabel = 'Recommended ✨';
+            } else {
+                items = storeData.over_budget || [];
+                otherType = 'recommended';
+                otherLabel = 'Recommended ✨';
+            }
+            
+            // Update products
+            const productsGrid = module.querySelector('.products-grid');
+            productsGrid.innerHTML = renderProducts(items);
+            
+            // Update total
+            const total = calculateTotal(items);
+            module.querySelector('.total-price').textContent = `$${total}`;
+            
+            // Update button states
+            const buttons = module.querySelectorAll('.budget-btn');
+            buttons.forEach(b => {
+                if (b === btn) {
+                    b.classList.add('active');
+                    b.textContent = otherLabel;
+                    b.dataset.type = otherType;
+                } else {
+                    b.classList.remove('active');
                 }
-            };
-        })();
+            });
+        }
 
-        // Event Listeners
-        document.getElementById('add-to-cart-btn').addEventListener('click', function() {
-            const state = ProductPicker.getState();
-            console.log('Adding to cart:', state);
-            alert(`Adding ${state.products.length} items to cart. Total: $${state.totalPrice}`);
+        // Handle add to cart
+        function handleAddToCart(e) {
+            const storeName = e.currentTarget.dataset.store;
+            alert(`Adding items from ${storeName} to cart!`);
+            // TODO: Implement actual cart functionality
+        }
+
+        // Browse button
+        document.getElementById('browse-all-btn').addEventListener('click', () => {
+            alert('Browse all products coming soon!');
         });
 
-        document.getElementById('under-budget-btn').addEventListener('click', function() {
-            console.log('Show under budget options');
-            alert('Under budget options coming soon!');
-        });
-
-        document.getElementById('over-budget-btn').addEventListener('click', function() {
-            console.log('Show over budget options');
-            alert('Over budget options coming soon!');
-        });
-
-        document.getElementById('browse-all-btn').addEventListener('click', function() {
-            console.log('Browse all products');
-            alert('Opening product browser for manual selection!');
-            // Future: Open modal or navigate to browse page
-        });
-
-        // Initialize with sample data
-        // In production, replace this with: ProductPicker.loadFromAPI('your-api-url');
-        ProductPicker.init({
-            username: 'loadednz',
-            products: [
-                { id: 1, name: 'Casio Watch', price: 109, image: '⌚' },
-                { id: 2, name: 'Nike Runner', price: 90, image: '👟' },
-                { id: 3, name: 'Hoodie MOFO', price: 120, image: '🧥' }
-            ]
-        });
-
-        // Example of how to use the API in the future:
-        // ProductPicker.loadFromAPI('https://api.example.com/products');
+        // Initialize
+        loadOutfits();
     </script>
 </body>
 </html>
