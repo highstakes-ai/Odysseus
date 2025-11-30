@@ -285,53 +285,51 @@
 
     <script>
         // Upload area click handler
-        document.getElementById('upload-area').addEventListener('click', function() {
-                    document.getElementById('file-input').click();
-                });
-
-                // File input change handler
-                document.getElementById('file-input').addEventListener('change', async function(e) {
+        document.getElementById('file-input').addEventListener('change', async function(e) {
             const files = Array.from(e.target.files);
             if (files.length === 0) return;
-
+        
             const modal = document.getElementById('upload-modal');
             modal.classList.add('active');
-            document.body.style.pointerEvents = 'none'; // block all clicks
-
+            document.body.style.pointerEvents = 'none';
+        
+            // Get current master profile (could be empty on first upload)
             const previousProfiles = localStorage.getItem('masterStyleProfile') || "";
-
-            for (let i = 0; i < files.length; i++) {
-                const file = files[i];
+        
+            for (const file of files) {
                 const form = new FormData();
                 form.append('image', file);
                 form.append('previousProfiles', previousProfiles);
-
+        
                 try {
                     const res = await fetch('https://fitted.aihighstakes.workers.dev/upload', {
                         method: 'POST',
                         body: form
                     });
-
+        
                     const data = await res.json();
-
+        
                     if (data.success) {
-                        // Show image in first grey box
+                        // 1. Show image in first grid box
                         const firstBox = document.querySelector('.grid-item');
                         firstBox.innerHTML = `<img src="${data.imageUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:12px;">`;
-
-                        // Save new master profile
+        
+                        // 2. THIS IS THE FIX — save the actual GPT response, not the prompt
                         localStorage.setItem('masterStyleProfile', data.newMasterProfile);
-
-                        // Optional: save image URL to history
+        
+                        // 3. Optional: keep history of image URLs
                         const history = JSON.parse(localStorage.getItem('wardrobeImages') || '[]');
                         history.unshift(data.imageUrl);
                         localStorage.setItem('wardrobeImages', JSON.stringify(history));
+                    } else {
+                        alert('Upload failed: ' + (data.error || 'Unknown error'));
                     }
                 } catch (err) {
                     console.error(err);
+                    alert('Network error — check connection');
                 }
             }
-
+        
             modal.classList.remove('active');
             document.body.style.pointerEvents = 'auto';
             e.target.value = ''; // reset input
