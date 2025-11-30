@@ -73,6 +73,13 @@
             font-weight: 600;
         }
 
+        .store-status {
+            font-size: 14px;
+            font-weight: 300;
+            color: #999;
+            margin-left: 8px;
+        }
+
         .total-price {
             font-size: 20px;
             font-weight: 700;
@@ -292,10 +299,13 @@
             const moduleId = `module-${storeName.replace(/[^a-z0-9]/g, '-')}`;
             
             return `
-                <div class="store-module" id="${moduleId}">
+                <div class="store-module" id="${moduleId}" data-current-view="recommended">
                     <div class="user-budget">
-                        <div class="store-name">${storeName}</div>
-                        <div class="total-price">$${total}</div>
+                        <div>
+                            <span class="store-name">${storeName}</span>
+                            <span class="store-status">recommended</span>
+                        </div>
+                        <div class="total-price">${total}</div>
                     </div>
 
                     <div class="products-grid">
@@ -365,6 +375,7 @@
             const type = btn.dataset.type;
             const moduleId = btn.dataset.module;
             const module = document.getElementById(moduleId);
+            const currentView = module.dataset.currentView;
             
             // Get store data
             const storeName = module.querySelector('.store-name').textContent;
@@ -377,16 +388,43 @@
             
             if (!storeData) return;
             
-            // Get the appropriate items
-            let items, otherType, otherLabel;
-            if (type === 'under') {
-                items = storeData.under_budget || [];
-                otherType = 'recommended';
-                otherLabel = 'Recommended ✨';
-            } else {
-                items = storeData.over_budget || [];
-                otherType = 'recommended';
-                otherLabel = 'Recommended ✨';
+            // Determine what to show
+            let items, newView, buttonLabel;
+            
+            if (type === 'recommended') {
+                // Currently showing under/over, switching back to recommended
+                items = storeData.recommended || [];
+                newView = 'recommended';
+                buttonLabel = currentView === 'under' ? 'Under budget ⬇' : 'Over budget ⬆';
+                btn.dataset.type = currentView; // Reset to original type
+            } else if (type === 'under') {
+                if (currentView === 'under') {
+                    // Already showing under budget, switch back to recommended
+                    items = storeData.recommended || [];
+                    newView = 'recommended';
+                    buttonLabel = 'Under budget ⬇';
+                    btn.dataset.type = 'under';
+                } else {
+                    // Switch to under budget
+                    items = storeData.under_budget || [];
+                    newView = 'under';
+                    buttonLabel = 'Recommended ✨';
+                    btn.dataset.type = 'recommended';
+                }
+            } else if (type === 'over') {
+                if (currentView === 'over') {
+                    // Already showing over budget, switch back to recommended
+                    items = storeData.recommended || [];
+                    newView = 'recommended';
+                    buttonLabel = 'Over budget ⬆';
+                    btn.dataset.type = 'over';
+                } else {
+                    // Switch to over budget
+                    items = storeData.over_budget || [];
+                    newView = 'over';
+                    buttonLabel = 'Recommended ✨';
+                    btn.dataset.type = 'recommended';
+                }
             }
             
             // Update products
@@ -395,17 +433,30 @@
             
             // Update total
             const total = calculateTotal(items);
-            module.querySelector('.total-price').textContent = `$${total}`;
+            module.querySelector('.total-price').textContent = `${total}`;
+            
+            // Update store status text
+            module.querySelector('.store-status').textContent = newView === 'under' ? 'under budget' : (newView === 'over' ? 'over budget' : 'recommended');
+            
+            // Update module's current view
+            module.dataset.currentView = newView;
             
             // Update button states
             const buttons = module.querySelectorAll('.budget-btn');
             buttons.forEach(b => {
                 if (b === btn) {
                     b.classList.add('active');
-                    b.textContent = otherLabel;
-                    b.dataset.type = otherType;
+                    b.textContent = buttonLabel;
                 } else {
                     b.classList.remove('active');
+                    // Reset other button if we're going back to recommended
+                    if (newView === 'recommended') {
+                        const otherType = b.dataset.type;
+                        if (otherType === 'recommended') {
+                            b.dataset.type = b === buttons[0] ? 'under' : 'over';
+                            b.textContent = b === buttons[0] ? 'Under budget ⬇' : 'Over budget ⬆';
+                        }
+                    }
                 }
             });
         }
