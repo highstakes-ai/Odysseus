@@ -139,10 +139,12 @@
     </div>
 
     <script>
-        // === CHANGE THIS TO YOUR WORKER URL ===
-        const WORKER_URL = "https://fitted.aihighstakes.workers.dev";  //
+        // ←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←
+        // CHANGE THIS TO YOUR ACTUAL WORKER URL
+        const WORKER_URL = "https://fitted.aihighstakes.workers.dev"; // ← UPDATE THIS!
+        // ←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←
 
-        const SettingsManager = (function() {
+        const SettingsManager = (function () {
             const siteMap = {
                 "https://www.culturekings.co.nz": "culturekings",
                 "https://www.max.co.nz": "max",
@@ -154,53 +156,125 @@
                 "https://www.federation.co.nz": "federation",
                 "https://www.isleofeden.co.nz": "isleofeden",
                 "https://www.karenwalker.com": "karenwalker",
-                "https://rembrandt.co.nz": "rembrandt"
+                "https://rembrandt.co.nz": "rembrandt",
+                "https://loadednz.com": "loadednz",
+                "https://www.hallensteins.com": "hallensteins"
             };
 
             let settings = {
-                sites: ['loadednz', 'culturekingsnz', 'hallensteins'],
+                sites: ['loadednz', 'culturekings', 'hallensteins'],
                 fullUrls: ['https://loadednz.com', 'https://www.culturekings.co.nz', 'https://www.hallensteins.com'],
                 budget: 140,
                 categories: ['pants', 'shoes', 'hats']
             };
 
-            // ... [all your existing renderSites, showSuggestions, budget sync code stays exactly the same] ...
+            const input = document.getElementById('site-input');
+            const suggestionsList = document.getElementById('suggestions-list');
+            const tagsContainer = document.getElementById('sites-tags');
+            const budgetDisplay = document.getElementById('budget-display');
+            const budgetSlider = document.getElementById('budget-slider');
 
-            function renderSites() { /* unchanged */ }
-            function showSuggestions(query) { /* unchanged */ }
             function updateBudget(value) {
                 value = Math.max(0, Math.min(1000, parseInt(value) || 0));
                 settings.budget = value;
-                document.getElementById('budget-display').textContent = value;
-                document.getElementById('budget-slider').value = value;
+                budgetDisplay.textContent = value;
+                budgetSlider.value = value;
             }
 
+            function renderSites() {
+                tagsContainer.innerHTML = '';
+                settings.sites.forEach((name, idx) => {
+                    const tag = document.createElement('div');
+                    tag.className = 'tag';
+                    tag.innerHTML = `${name} <span class="remove">×</span>`;
+                    tag.onclick = () => {
+                        settings.sites.splice(idx, 1);
+                        settings.fullUrls.splice(idx, 1);
+                        renderSites();
+                    };
+                    tagsContainer.appendChild(tag);
+                });
+            }
+
+            function showSuggestions(query) {
+                suggestionsList.innerHTML = '';
+                if (!query.trim()) {
+                    suggestionsList.style.display = 'none';
+                    return;
+                }
+
+                const matches = Object.entries(siteMap)
+                    .filter(([url, name]) => name.toLowerCase().includes(query.toLowerCase()))
+                    .slice(0, 8);
+
+                if (matches.length === 0) {
+                    suggestionsList.style.display = 'none';
+                    return;
+                }
+
+                matches.forEach(([url, name]) => {
+                    const item = document.createElement('div');
+                    item.className = 'suggestion-item';
+                    item.textContent = name;
+                    item.onclick = () => {
+                        if (!settings.sites.includes(name)) {
+                            settings.sites.push(name);
+                            settings.fullUrls.push(url);
+                            renderSites();
+                        }
+                        input.value = '';
+                        suggestionsList.style.display = 'none';
+                    };
+                    suggestionsList.appendChild(item);
+                });
+
+                suggestionsList.style.display = 'block';
+            }
+
+            // Hide suggestions when clicking outside
+            document.addEventListener('click', e => {
+                if (!input.contains(e.target) && !suggestionsList.contains(e.target)) {
+                    suggestionsList.style.display = 'none';
+                }
+            });
+
             return {
-                init: function() {
+                init: function () {
                     renderSites();
-                    document.getElementById('site-input').addEventListener('input', e => showSuggestions(e.target.value));
-                    document.getElementById('budget-slider').addEventListener('input', e => updateBudget(e.target.value));
-                    document.getElementById('budget-display').addEventListener('input', e => {
+
+                    input.addEventListener('input', e => showSuggestions(e.target.value));
+                    input.addEventListener('focus', () => input.value && showSuggestions(input.value));
+
+                    budgetSlider.addEventListener('input', e => updateBudget(e.target.value));
+                    budgetDisplay.addEventListener('input', e => {
                         const val = e.target.textContent.replace(/[^0-9]/g, '');
                         e.target.textContent = val;
                         updateBudget(val);
                     });
-                    document.addEventListener('click', e => {
-                        if (!document.getElementById('site-input').contains(e.target) && 
-                            !document.getElementById('suggestions-list').contains(e.target)) {
-                            document.getElementById('suggestions-list').style.display = 'none';
+                    budgetDisplay.addEventListener('keydown', e => {
+                        if (e.key === 'Enter') {
+                            e.preventDefault();
+                            budgetDisplay.blur();
                         }
                     });
+                    budgetDisplay.addEventListener('focus', function () {
+                        const range = document.createRange();
+                        const sel = window.getSelection();
+                        range.selectNodeContents(this);
+                        range.collapse(false);
+                        sel.removeAllRanges();
+                        sel.addRange(range);
+                    });
                 },
-                getSettings: function() {
-                    // Update active categories
-                    const activeCats = Array.from(document.querySelectorAll('.category-btn.active'))
-                                           .map(btn => btn.dataset.category);
-                    settings.categories = activeCats;
+                getSettings: function () {
+                    const activeCategories = Array.from(document.querySelectorAll('.category-btn.active'))
+                        .map(btn => btn.dataset.category);
+                    settings.categories = activeCategories;
+
                     return {
                         sites: settings.fullUrls,
                         budget: settings.budget,
-                        search_items: activeCats.join(', ')
+                        search_items: activeCategories.join(', ')
                     };
                 }
             };
@@ -213,32 +287,31 @@
             btn.addEventListener('click', () => btn.classList.toggle('active'));
         });
 
-        // === MAIN: Send to Worker ===
+        // === SEND TO YOUR CLOUDFLARE WORKER ===
         document.getElementById('save-btn').addEventListener('click', async () => {
             const btn = document.getElementById('save-btn');
             const modal = document.getElementById('results-modal');
             const resultsText = document.getElementById('results-text');
 
             btn.classList.add('loading');
-            btn.textContent = "Building your outfits...";
+            btn.textContent = "Building outfits…";
 
             try {
-                const data = SettingsManager.getSettings();
+                const payload = SettingsManager.getSettings();
 
-                const response = await fetch(WORKER_URL, {
+                const res = await fetch(WORKER_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
+                    body: JSON.stringify(payload)
                 });
 
-                if (!response.ok) throw new Error(`Worker error: ${response.status}`);
+                if (!res.ok) throw new Error(`Worker returned ${res.status}`);
 
-                const text = await response.text();
+                const text = await res.text();
                 resultsText.textContent = text;
                 modal.style.display = 'flex';
-
             } catch (err) {
-                resultsText.textContent = `Error: ${err.message}\n\nCheck console (F12) and make sure your Worker URL is correct.`;
+                resultsText.textContent = `Error: ${err.message}\n\nCheck your Worker URL and try again.`;
                 modal.style.display = 'flex';
             } finally {
                 btn.classList.remove('loading');
@@ -247,14 +320,8 @@
         });
 
         // Close modal
-        document.getElementById('close-modal').onclick = () => {
-            document.getElementById('results-modal').style.display = 'none';
-        };
-        window.onclick = (e) => {
-            if (e.target === document.getElementById('results-modal')) {
-                document.getElementById('results-modal').style.display = 'none';
-            }
-        };
+        document.getElementById('close-modal').onclick = () => document.getElementById('results-modal').style.display = 'none';
+        window.onclick = e => { if (e.target === document.getElementById('results-modal')) document.getElementById('results-modal').style.display = 'none'; };
     </script>
 </body>
 </html>
