@@ -1,75 +1,384 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ShadowDrop – Early Access Beta</title>
-  <meta name="description" content="Only 10 early access keys per model. Top performers win lifetime access."/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highstakes-ai/Odysseus@main/styles.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FITTED.AI - Top AI Picks</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        .header {
+            background-color: #f0f0f0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+            position: relative;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: -1px;
+            color: #2c3e50;
+        }
+
+        .menu-icon {
+            font-size: 28px;
+            cursor: pointer;
+            position: absolute;
+            right: 20px;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            min-height: 100vh;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            color: #2c3e50;
+        }
+
+        .user-budget {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .username {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .total-price {
+            font-size: 20px;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .products-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .product-card {
+            background-color: #e8e8e8;
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .product-card:hover {
+            transform: translateX(2px);
+        }
+
+        .product-image {
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            flex-shrink: 0;
+        }
+
+        .product-info {
+            flex-grow: 1;
+        }
+
+        .product-name {
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        .product-price {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .more-options {
+            color: #999;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .browse-btn {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 0;
+            font-size: 15px;
+            font-weight: normal;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+
+        .browse-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .container {
+            padding-bottom: 80px;
+        }
+
+        .budget-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .budget-btn {
+            background-color: white;
+            border: 2px solid #333;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: normal;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .budget-btn:hover {
+            background-color: #f8f8f8;
+        }
+
+        .add-to-cart {
+            width: 100%;
+            background-color: #2c3e50;
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .add-to-cart:hover {
+            background-color: #1a252f;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h1>ShadowDrop</h1>
-   
-    <p class="subtitle">
-      <span class="early-access">Early Access Beta</span><br>
-      We are giving away <span class="limited">10 keys per model</span>
-    </p>
-    <div class="projects">
-      <div class="project">
-        <h3>HyperReal</h3>
-        <p>One prompt → 60-second hyper-realistic video with lifelike AI humans and studio-quality voiceover.<br>
-        <strong>Auto-posts to TikTok, YouTube Shorts & Instagram Reels — everything from your phone.</strong></p>
-        <div class="mobile-badge">100% mobile workflow</div>
-      </div>
-      <div class="project">
-        <h3>Remix Beast</h3>
-        <p>Paste any link → AI instantly extracts the best moments, writes viral captions, adds pro edits + gameplay overlays.<br>
-        <strong>Auto-posts to TikTok, YouTube Shorts & Instagram Reels — everything from your phone.</strong></p>
-        <div class="mobile-badge">100% mobile workflow</div>
-      </div>
+    <div class="header">
+        <div class="logo">FITTED.AI</div>
+        <div class="menu-icon">☰</div>
     </div>
-    <div class="prize">
-      The <strong>top-performing creator on each model</strong> during early access will receive a <strong>lifetime license key</strong>
-    </div>
-    <form id="whitelistForm">
-      <select name="model" required>
-        <option value="" disabled selected>Select your preferred model (10 spots each)</option>
-        <option value="HyperReal">HyperReal – Realistic 60-second videos</option>
-        <option value="Remix Beast">Remix Beast – Link to instant viral short</option>
-      </select>
-      <input type="email" name="email" placeholder="Email address" required />
-      <input type="text" name="username" placeholder="TikTok / YouTube username (optional)" />
-      <button type="submit" class="btn-primary">Apply for Early Access</button>
-    </form>
-    <div class="success" id="successMsg">
-      Application received. We’ll contact selected testers soon.
-    </div>
-    <div class="footer">
-      Multiple entries will be disqualified.<br>
-      Early access begins December 2025.
-    </div>
-  </div>
 
-  <script type="module">
-    import { components } from './components.js';
+    <div class="container">
+        <h1 class="title">Top Ai picks</h1>
 
-    // Example future use: document.body.insertAdjacentHTML('afterbegin', components.header);
-    // document.body.insertAdjacentHTML('beforeend', components.footer);
+        <div class="user-budget">
+            <div class="username" id="username">Loading...</div>
+            <div class="total-price" id="total-price">$0</div>
+        </div>
 
-    const form = document.getElementById('whitelistForm');
-    const success = document.getElementById('successMsg');
-   
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      await fetch('https://usebasin.com/f/3d9a1f7c8e2b', {
-        method: 'POST',
-        body: new FormData(form)
-      });
-      form.style.display = 'none';
-      success.style.display = 'block';
-    });
-  </script>
+        <div class="products-grid" id="products-container">
+            <div class="loading">Loading products...</div>
+        </div>
+
+        <div class="more-options" id="more-options">More options from user</div>
+
+        <div class="budget-buttons">
+            <button class="budget-btn" id="under-budget-btn">
+                Under budget ⬇
+            </button>
+            <button class="budget-btn" id="over-budget-btn">
+                Over budget ⬆
+            </button>
+        </div>
+
+        <button class="add-to-cart" id="add-to-cart-btn">Add to cart</button>
+    </div>
+
+    <button class="browse-btn" id="browse-all-btn">
+        Browse All Products<br>
+        <span style="font-size: 13px; opacity: 0.9;">Select Your Own</span>
+    </button>
+
+    <script>
+        // Product Picker Module
+        const ProductPicker = (function() {
+            // Private state
+            let state = {
+                username: '',
+                products: [],
+                totalPrice: 0
+            };
+
+            // Private methods
+            function calculateTotal(products) {
+                return products.reduce((sum, product) => sum + product.price, 0);
+            }
+
+            function renderProducts(products) {
+                const container = document.getElementById('products-container');
+                
+                if (products.length === 0) {
+                    container.innerHTML = '<div class="loading">No products available</div>';
+                    return;
+                }
+
+                container.innerHTML = products.map(product => `
+                    <div class="product-card" data-id="${product.id}">
+                        <div class="product-image">${product.image}</div>
+                        <div class="product-info">
+                            <div class="product-name">${product.name}</div>
+                            <div class="product-price">$${product.price}</div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            function renderUserInfo() {
+                document.getElementById('username').textContent = state.username;
+                document.getElementById('total-price').textContent = `$${state.totalPrice}`;
+                document.getElementById('more-options').textContent = `More options from ${state.username}`;
+            }
+
+            // Public API
+            return {
+                // Initialize the app with data
+                init: function(data) {
+                    state.username = data.username;
+                    state.products = data.products;
+                    state.totalPrice = calculateTotal(data.products);
+                    
+                    renderUserInfo();
+                    renderProducts(state.products);
+                },
+
+                // Load data from API
+                loadFromAPI: async function(apiUrl) {
+                    try {
+                        const response = await fetch(apiUrl);
+                        const data = await response.json();
+                        this.init(data);
+                    } catch (error) {
+                        console.error('Error loading data:', error);
+                        document.getElementById('products-container').innerHTML = 
+                            '<div class="loading">Error loading products</div>';
+                    }
+                },
+
+                // Get current state
+                getState: function() {
+                    return { ...state };
+                },
+
+                // Update products
+                setProducts: function(products) {
+                    state.products = products;
+                    state.totalPrice = calculateTotal(products);
+                    renderUserInfo();
+                    renderProducts(products);
+                },
+
+                // Add product
+                addProduct: function(product) {
+                    state.products.push(product);
+                    state.totalPrice = calculateTotal(state.products);
+                    renderUserInfo();
+                    renderProducts(state.products);
+                },
+
+                // Remove product
+                removeProduct: function(productId) {
+                    state.products = state.products.filter(p => p.id !== productId);
+                    state.totalPrice = calculateTotal(state.products);
+                    renderUserInfo();
+                    renderProducts(state.products);
+                }
+            };
+        })();
+
+        // Event Listeners
+        document.getElementById('add-to-cart-btn').addEventListener('click', function() {
+            const state = ProductPicker.getState();
+            console.log('Adding to cart:', state);
+            alert(`Adding ${state.products.length} items to cart. Total: $${state.totalPrice}`);
+        });
+
+        document.getElementById('under-budget-btn').addEventListener('click', function() {
+            console.log('Show under budget options');
+            alert('Under budget options coming soon!');
+        });
+
+        document.getElementById('over-budget-btn').addEventListener('click', function() {
+            console.log('Show over budget options');
+            alert('Over budget options coming soon!');
+        });
+
+        document.getElementById('browse-all-btn').addEventListener('click', function() {
+            console.log('Browse all products');
+            alert('Opening product browser for manual selection!');
+            // Future: Open modal or navigate to browse page
+        });
+
+        // Initialize with sample data
+        // In production, replace this with: ProductPicker.loadFromAPI('your-api-url');
+        ProductPicker.init({
+            username: 'loadednz',
+            products: [
+                { id: 1, name: 'Casio Watch', price: 109, image: '⌚' },
+                { id: 2, name: 'Nike Runner', price: 90, image: '👟' },
+                { id: 3, name: 'Hoodie MOFO', price: 120, image: '🧥' }
+            ]
+        });
+
+        // Example of how to use the API in the future:
+        // ProductPicker.loadFromAPI('https://api.example.com/products');
+    </script>
 </body>
 </html>
