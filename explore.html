@@ -289,7 +289,7 @@
 
         // Create a store module
         function createStoreModule(storeUrl, storeData) {
-            const storeName = getStoreName(storeUrl);
+            const storeName = storeUrl;
             const recommended = storeData.recommended || [];
             const underBudget = storeData.under_budget || [];
             const overBudget = storeData.over_budget || [];
@@ -380,9 +380,7 @@
             // Get store data
             const storeName = module.querySelector('.store-name').textContent;
             const storeData = Object.values(window.outfitData).find(data => {
-                const url = Object.keys(window.outfitData).find(key => 
-                    getStoreName(key) === storeName
-                );
+                const url = Object.keys(window.outfitData).find(key => key === storeName);
                 return url && window.outfitData[url] === data;
             });
             
