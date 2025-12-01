@@ -10,14 +10,12 @@
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             background-color: #f5f5f5;
             color: #333;
             padding-bottom: 80px;
         }
-
         .header {
             background-color: #f0f0f0;
             padding: 20px;
@@ -27,21 +25,18 @@
             border-bottom: 1px solid #ddd;
             position: relative;
         }
-
         .logo {
             font-size: 28px;
             font-weight: 900;
             letter-spacing: -1px;
             color: #2c3e50;
         }
-
         .menu-icon {
             font-size: 28px;
             cursor: pointer;
             position: absolute;
             right: 20px;
         }
-
         .page-title {
             text-align: center;
             font-size: 24px;
@@ -49,7 +44,6 @@
             margin: 30px 0;
             color: #2c3e50;
         }
-
         .store-module {
             max-width: 400px;
             margin: 0 auto 40px;
@@ -58,7 +52,6 @@
             border-radius: 12px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
-
         .user-budget {
             display: flex;
             justify-content: space-between;
@@ -67,32 +60,27 @@
             padding-bottom: 15px;
             border-bottom: 2px solid #eee;
         }
-
         .store-name {
             font-size: 18px;
             font-weight: 600;
         }
-
         .store-status {
             font-size: 14px;
             font-weight: 300;
             color: #999;
             margin-left: 8px;
         }
-
         .total-price {
             font-size: 20px;
             font-weight: 700;
             color: #2c3e50;
         }
-
         .products-grid {
             display: flex;
             flex-direction: column;
             gap: 15px;
             margin-bottom: 20px;
         }
-
         .product-card {
             background-color: #e8e8e8;
             border-radius: 12px;
@@ -103,11 +91,9 @@
             cursor: pointer;
             transition: transform 0.2s;
         }
-
         .product-card:hover {
             transform: translateX(2px);
         }
-
         .product-image {
             width: 80px;
             height: 80px;
@@ -119,43 +105,36 @@
             border-radius: 8px;
             background-color: #fff;
         }
-
         .product-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-
         .product-info {
             flex-grow: 1;
         }
-
         .product-name {
             font-size: 13px;
             font-weight: 500;
             margin-bottom: 5px;
             color: #555;
         }
-
         .product-price {
             font-size: 14px;
             font-weight: 600;
             color: #333;
         }
-
         .more-options {
             color: #999;
             font-size: 14px;
             margin-bottom: 15px;
         }
-
         .budget-buttons {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
             margin-bottom: 15px;
         }
-
         .budget-btn {
             background-color: white;
             border: 2px solid #333;
@@ -170,17 +149,14 @@
             gap: 8px;
             transition: all 0.2s;
         }
-
         .budget-btn:hover {
             background-color: #f8f8f8;
         }
-
         .budget-btn.active {
             background-color: #3498db;
             border-color: #3498db;
             color: white;
         }
-
         .add-to-cart {
             width: 100%;
             background-color: #2c3e50;
@@ -193,11 +169,9 @@
             cursor: pointer;
             transition: background-color 0.2s;
         }
-
         .add-to-cart:hover {
             background-color: #1a252f;
         }
-
         .browse-btn {
             position: fixed;
             bottom: 0;
@@ -217,17 +191,14 @@
             box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
             z-index: 100;
         }
-
         .browse-btn:hover {
             background-color: #2980b9;
         }
-
         .loading {
             text-align: center;
             padding: 40px;
             color: #999;
         }
-
         .no-data {
             text-align: center;
             padding: 40px;
@@ -238,32 +209,17 @@
 <body>
     <div class="header">
         <div class="logo">FITTED.AI</div>
-        <div class="menu-icon">☰</div>
+        <div class="menu-icon">Menu</div>
     </div>
-
     <h1 class="page-title">Top Ai picks</h1>
-
     <div id="modules-container">
         <div class="loading">Loading your outfits...</div>
     </div>
-
     <button class="browse-btn" id="browse-all-btn">
         Browse All Products<br>
         <span style="font-size: 13px; opacity: 0.9;">Select Your Own</span>
     </button>
-
     <script>
-        // Extract store name from URL
-        function getStoreName(url) {
-            try {
-                const domain = new URL(url).hostname;
-                // Remove www. and .co.nz or .com
-                return domain.replace('www.', '').replace(/\.(co\.nz|com|co)$/, '');
-            } catch {
-                return url;
-            }
-        }
-
         // Calculate total price
         function calculateTotal(items) {
             return items.reduce((sum, item) => {
@@ -271,13 +227,12 @@
                 return sum + price;
             }, 0).toFixed(2);
         }
-
         // Render products
         function renderProducts(items) {
             return items.map(item => `
                 <div class="product-card" onclick="window.open('${item.link}', '_blank')">
                     <div class="product-image">
-                        ${item.image ? `<img src="${item.image}" alt="${item.title}">` : '👕'}
+                        ${item.image ? `<img src="${item.image}" alt="${item.title}">` : 'Shirt'}
                     </div>
                     <div class="product-info">
                         <div class="product-name">${item.title}</div>
@@ -286,18 +241,17 @@
                 </div>
             `).join('');
         }
-
         // Create a store module
         function createStoreModule(storeUrl, storeData) {
             const storeName = storeUrl;
             const recommended = storeData.recommended || [];
             const underBudget = storeData.under_budget || [];
             const overBudget = storeData.over_budget || [];
-            
+           
             const total = calculateTotal(recommended);
-            
+           
             const moduleId = `module-${storeName.replace(/[^a-z0-9]/g, '-')}`;
-            
+           
             return `
                 <div class="store-module" id="${moduleId}" data-current-view="recommended">
                     <div class="user-budget">
@@ -307,163 +261,110 @@
                         </div>
                         <div class="total-price">${total}</div>
                     </div>
-
                     <div class="products-grid">
                         ${renderProducts(recommended)}
                     </div>
-
                     <div class="more-options">More options from ${storeName}</div>
-
                     <div class="budget-buttons">
                         <button class="budget-btn" data-type="under" data-module="${moduleId}">
-                            Under budget ⬇
+                            Under budget Down Arrow
                         </button>
                         <button class="budget-btn" data-type="over" data-module="${moduleId}">
-                            Over budget ⬆
+                            Over budget Up Arrow
                         </button>
                     </div>
-
                     <button class="add-to-cart" data-store="${storeName}">Add to cart</button>
                 </div>
             `;
         }
-
         // Load and render data
         function loadOutfits() {
             const dataStr = sessionStorage.getItem('outfitData');
-            
+           
             if (!dataStr) {
-                document.getElementById('modules-container').innerHTML = 
+                document.getElementById('modules-container').innerHTML =
                     '<div class="no-data">No outfits found. Please go back to settings.</div>';
                 return;
             }
-
             try {
                 const data = JSON.parse(dataStr);
                 const container = document.getElementById('modules-container');
-                
-                // Store data globally for button interactions
+               
                 window.outfitData = data;
-                
-                // Create modules for each store
+               
                 const modules = Object.entries(data)
                     .map(([storeUrl, storeData]) => createStoreModule(storeUrl, storeData))
                     .join('');
-                
+               
                 container.innerHTML = modules;
-                
-                // Add event listeners for budget buttons
+               
                 document.querySelectorAll('.budget-btn').forEach(btn => {
                     btn.addEventListener('click', handleBudgetClick);
                 });
-
-                // Add event listeners for add to cart buttons
                 document.querySelectorAll('.add-to-cart').forEach(btn => {
                     btn.addEventListener('click', handleAddToCart);
                 });
-                
+               
             } catch (err) {
                 console.error('Error loading outfits:', err);
-                document.getElementById('modules-container').innerHTML = 
+                document.getElementById('modules-container').innerHTML =
                     '<div class="no-data">Error loading outfits. Please try again.</div>';
             }
         }
 
-        // Handle budget button clicks
+        // FIXED: Handle budget button clicks — now 100% reliable
         function handleBudgetClick(e) {
             const btn = e.currentTarget;
             const type = btn.dataset.type;
             const moduleId = btn.dataset.module;
             const module = document.getElementById(moduleId);
             const currentView = module.dataset.currentView;
-            
-            // Get store data
+
+            // DIRECT LOOKUP — this is the key fix
             const storeName = module.querySelector('.store-name').textContent;
-            const storeData = Object.values(window.outfitData).find(data => {
-                const url = Object.keys(window.outfitData).find(key => key === storeName);
-                return url && window.outfitData[url] === data;
-            });
-            
+            const storeData = window.outfitData[storeName];
             if (!storeData) return;
-            
-            // Determine what to show
-            let items, newView, buttonLabel;
-            
-            if (type === 'recommended') {
-                // Currently showing under/over, switching back to recommended
-                items = storeData.recommended || [];
-                newView = 'recommended';
-                buttonLabel = currentView === 'under' ? 'Under budget ⬇' : 'Over budget ⬆';
-                btn.dataset.type = currentView; // Reset to original type
-            } else if (type === 'under') {
-                if (currentView === 'under') {
-                    // Already showing under budget, switch back to recommended
-                    items = storeData.recommended || [];
-                    newView = 'recommended';
-                    buttonLabel = 'Under budget ⬇';
-                    btn.dataset.type = 'under';
-                } else {
-                    // Switch to under budget
+
+            let items = [];
+            let newView = 'recommended';
+
+            if (currentView === 'recommended') {
+                if (type === 'under') {
                     items = storeData.under_budget || [];
                     newView = 'under';
-                    buttonLabel = 'Recommended ✨';
-                    btn.dataset.type = 'recommended';
-                }
-            } else if (type === 'over') {
-                if (currentView === 'over') {
-                    // Already showing over budget, switch back to recommended
-                    items = storeData.recommended || [];
-                    newView = 'recommended';
-                    buttonLabel = 'Over budget ⬆';
-                    btn.dataset.type = 'over';
-                } else {
-                    // Switch to over budget
+                } else if (type === 'over') {
                     items = storeData.over_budget || [];
                     newView = 'over';
-                    buttonLabel = 'Recommended ✨';
-                    btn.dataset.type = 'recommended';
                 }
+            } else {
+                items = storeData.recommended || [];
+                newView = 'recommended';
             }
-            
-            // Update products
-            const productsGrid = module.querySelector('.products-grid');
-            productsGrid.innerHTML = renderProducts(items);
-            
-            // Update total
-            const total = calculateTotal(items);
-            module.querySelector('.total-price').textContent = `${total}`;
-            
-            // Update store status text
-            module.querySelector('.store-status').textContent = newView === 'under' ? 'under budget' : (newView === 'over' ? 'over budget' : 'recommended');
-            
-            // Update module's current view
+
+            // Update UI
+            module.querySelector('.products-grid').innerHTML = renderProducts(items);
+            module.querySelector('.total-price').textContent = calculateTotal(items);
+            module.querySelector('.store-status').textContent = 
+                newView === 'under' ? 'under budget' : 
+                newView === 'over' ? 'over budget' : 'recommended';
             module.dataset.currentView = newView;
-            
-            // Update button states
-            const buttons = module.querySelectorAll('.budget-btn');
-            buttons.forEach(b => {
-                if (b === btn) {
-                    b.classList.add('active');
-                    b.textContent = buttonLabel;
+
+            // Update button appearance
+            module.querySelectorAll('.budget-btn').forEach(b => {
+                b.classList.remove('active');
+                if (newView === 'recommended') {
+                    b.textContent = b.dataset.type === 'under' ? 'Under budget Down Arrow' : 'Over budget Up Arrow';
                 } else {
-                    b.classList.remove('active');
-                    // Reset other button if we're going back to recommended
-                    if (newView === 'recommended') {
-                        const otherType = b.dataset.type;
-                        if (otherType === 'recommended') {
-                            b.dataset.type = b === buttons[0] ? 'under' : 'over';
-                            b.textContent = b === buttons[0] ? 'Under budget ⬇' : 'Over budget ⬆';
-                        }
-                    }
+                    b.textContent = 'Recommended Sparkles';
                 }
             });
+            btn.classList.add('active');
         }
 
         // Handle add to cart
         function handleAddToCart(e) {
             const storeName = e.currentTarget.dataset.store;
             alert(`Adding items from ${storeName} to cart!`);
-            // TODO: Implement actual cart functionality
         }
 
         // Browse button
