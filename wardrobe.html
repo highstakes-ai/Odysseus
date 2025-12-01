@@ -47,6 +47,7 @@
             margin: 0 auto;
             padding: 30px 20px;
             min-height: calc(100vh - 140px);
+            padding-bottom: 120px;
         }
 
         .title {
@@ -110,6 +111,7 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 10px;
+            margin-bottom: 30px;
         }
 
         .grid-item {
@@ -214,6 +216,31 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
+
+        .continue-btn {
+            width: calc(100% - 40px);
+            max-width: 360px;
+            margin: 0 auto;
+            display: block;
+            background-color: white;
+            color: #333;
+            border: 2px solid #ddd;
+            padding: 16px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-bottom: 20px;
+        }
+
+        .continue-btn:hover {
+            background-color: #f8f8f8;
+            border-color: #ccc;
+        }
     </style>
 </head>
 <body>
@@ -244,6 +271,8 @@
             <div class="grid-item">🕶️</div>
             <div class="grid-item">⌚</div>
         </div>
+
+        <button class="continue-btn" id="continue-btn">Continue</button>
     </div>
 
     <!-- Upload Modal -->
@@ -361,6 +390,11 @@
         });
 
         document.getElementById('nav-settings').addEventListener('click', function() {
+            window.location.href = 'settings.html';
+        });
+
+        // Continue button
+        document.getElementById('continue-btn').addEventListener('click', function() {
             window.location.href = 'settings.html';
         });
     </script>
