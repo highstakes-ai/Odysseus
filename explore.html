@@ -304,18 +304,21 @@
             `).join('');
         }
         // Create a store module
+        // 2. Replace your createStoreModule function with this
         function createStoreModule(storeUrl, storeData) {
             const storeName = storeUrl;
-            const rec = storeData.recommended || { items: [] };
-            const under = storeData.under_budget || { items: [] };
-            const over = storeData.over_budget || { items: [] };
         
-            const total = calculateTotal(rec);
+            // Safely extract items arrays
+            const recommendedItems = storeData.recommended?.items || [];
+            const underBudgetItems   = storeData.under_budget?.items || [];
+            const overBudgetItems    = storeData.over_budget?.items || [];
+        
+            const total = calculateTotal({ items: recommendedItems });
         
             const moduleId = `module-${storeName.replace(/[^a-z0-9]/gi, '-')}`;
         
             return `
-                <div class="store-module" id="${moduleId}" data-current-view="recommended">
+                <div class="store-module" id="${moduleId}" data-current-view="recommended" data-store="${storeName}">
                     <div class="user-budget">
                         <div>
                             <span class="store-name">${storeName}</span>
@@ -324,16 +327,12 @@
                         <div class="total-price">$${total}</div>
                     </div>
                     <div class="products-grid">
-                        ${renderProducts(rec.items)}
+                        ${renderProducts(recommendedItems)}
                     </div>
                     <div class="more-options">More options from ${storeName}</div>
                     <div class="budget-buttons">
-                        <button class="budget-btn" data-type="under" data-module="${moduleId}">
-                            Under budget ↓
-                        </button>
-                        <button class="budget-btn" data-type="over" data-module="${moduleId}">
-                            Over budget ↑
-                        </button>
+                        <button class="budget-btn" data-type="under" data-module="${moduleId}">Under budget</button>
+                        <button class="budget-btn" data-type="over"  data-module="${moduleId}">Over budget</button>
                     </div>
                     <button class="add-to-cart" data-store="${storeName}">Add to cart</button>
                 </div>
