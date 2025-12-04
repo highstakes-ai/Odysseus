@@ -285,11 +285,9 @@
 
     <script>
         // Calculate total price
-        function calculateTotal(items) {
-            return items.reduce((sum, item) => {
-                const price = parseFloat(item.price) || 0;
-                return sum + price;
-            }, 0).toFixed(2);
+        function calculateTotal(bundle) {
+            if (!bundle || !Array.isArray(bundle.items)) return "0.00";
+            return bundle.items.reduce((sum, item) => sum + (parseFloat(item.price) || 0), 0).toFixed(2);
         }
         // Render products
         function renderProducts(items) {
@@ -308,14 +306,14 @@
         // Create a store module
         function createStoreModule(storeUrl, storeData) {
             const storeName = storeUrl;
-            const recommended = storeData.recommended || [];
-            const underBudget = storeData.under_budget || [];
-            const overBudget = storeData.over_budget || [];
-           
-            const total = calculateTotal(recommended);
-           
-            const moduleId = `module-${storeName.replace(/[^a-z0-9]/g, '-')}`;
-           
+            const rec = storeData.recommended || { items: [] };
+            const under = storeData.under_budget || { items: [] };
+            const over = storeData.over_budget || { items: [] };
+        
+            const total = calculateTotal(rec);
+        
+            const moduleId = `module-${storeName.replace(/[^a-z0-9]/gi, '-')}`;
+        
             return `
                 <div class="store-module" id="${moduleId}" data-current-view="recommended">
                     <div class="user-budget">
@@ -326,15 +324,15 @@
                         <div class="total-price">$${total}</div>
                     </div>
                     <div class="products-grid">
-                        ${renderProducts(recommended)}
+                        ${renderProducts(rec.items)}
                     </div>
                     <div class="more-options">More options from ${storeName}</div>
                     <div class="budget-buttons">
                         <button class="budget-btn" data-type="under" data-module="${moduleId}">
-                            Under budget <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+                            Under budget ↓
                         </button>
                         <button class="budget-btn" data-type="over" data-module="${moduleId}">
-                            Over budget <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+                            Over budget ↑
                         </button>
                     </div>
                     <button class="add-to-cart" data-store="${storeName}">Add to cart</button>
@@ -388,19 +386,23 @@
             const storeData = window.outfitData[storeName];
             if (!storeData) return;
 
+            const bundles = {
+                recommended: storeData.recommended?.items || [],
+                under: storeData.under_budget?.items || [],
+                over: storeData.over_budget?.items || []
+            };
+            
             let items = [];
             let newView = 'recommended';
-
-            if (currentView === 'recommended') {
-                if (type === 'under') {
-                    items = storeData.under_budget || [];
-                    newView = 'under';
-                } else if (type === 'over') {
-                    items = storeData.over_budget || [];
-                    newView = 'over';
-                }
+            
+            if (currentView === 'recommended' && type === 'under') {
+                items = bundles.under;
+                newView = 'under';
+            } else if (currentView === 'recommended' && type === 'over') {
+                items = bundles.over;
+                newView = 'over';
             } else {
-                items = storeData.recommended || [];
+                items = bundles.recommended;
                 newView = 'recommended';
             }
 
