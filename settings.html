@@ -557,12 +557,17 @@
 
                 const data = await res.json();
                 console.log("Worker JSON:", data);
-                
-                // Don't redirect yet — let's confirm data exists!
+
+                //redirect upon completion
                 sessionStorage.setItem('outfitData', JSON.stringify(data));
-                alert("Worker responded! Check console 👀");
+                document.body.style.transition = "opacity 0.3s";
+                document.body.style.opacity = "0";
                 
-                
+                setTimeout(() => {
+                  window.location.href = "explore.html";
+                }, 300);
+                                
+                                
 
                 
             } catch (err) {
