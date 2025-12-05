@@ -553,11 +553,16 @@
 
                 if (!res.ok) throw new Error(`Worker returned ${res.status}`);
 
-                const data = await res.json();
-                
-                sessionStorage.setItem('outfitData', JSON.stringify(data));
-                window.location.href = 'explore.html';
+                console.log("Fetched response:", res);
 
+                const data = await res.json();
+                console.log("Worker JSON:", data);
+                
+                // Don't redirect yet — let's confirm data exists!
+                sessionStorage.setItem('outfitData', JSON.stringify(data));
+                alert("Worker responded! Check console 👀");
+                
+                
 
                 
             } catch (err) {
