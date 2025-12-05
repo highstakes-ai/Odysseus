@@ -555,10 +555,9 @@
 
                 const data = await res.json();
                 
-                // Store data in sessionStorage and redirect to index.html
                 sessionStorage.setItem('outfitData', JSON.stringify(data));
-                // ←←← ADD THIS ONE LINE ONLY ←←←
-                setTimeout(() => { window.location.href = 'explore.html'; }, 800);
+                window.location.href = 'explore.html';
+
 
                 
             } catch (err) {
