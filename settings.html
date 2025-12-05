@@ -557,7 +557,7 @@
                 
                 // Store data in sessionStorage and redirect to index.html
                 sessionStorage.setItem('outfitData', JSON.stringify(data));
-                window.location.href = 'index.html';
+                window.location.href = 'settings.html';
             } catch (err) {
                 resultsText.textContent = `Error: ${err.message}\n\nCheck your Worker URL and try again.`;
                 modal.style.display = 'flex';
