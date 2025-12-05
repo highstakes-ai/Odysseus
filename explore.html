@@ -123,6 +123,14 @@
             font-size: 14px;
             font-weight: 600;
             color: #333;
+            margin-bottom: 8px;
+        }
+        .product-why {
+            font-size: 12px;
+            font-weight: 300;
+            color: #999;
+            line-height: 1.4;
+            font-style: italic;
         }
         .more-options {
             color: #999;
@@ -286,13 +294,16 @@
     <script>
         // Calculate total price
         function calculateTotal(items) {
+            if (!items || !Array.isArray(items)) return "0.00";
             return items.reduce((sum, item) => {
                 const price = parseFloat(item.price) || 0;
                 return sum + price;
             }, 0).toFixed(2);
         }
+
         // Render products
         function renderProducts(items) {
+            if (!items || !Array.isArray(items)) return '';
             return items.map(item => `
                 <div class="product-card" onclick="window.open('${item.link}', '_blank')">
                     <div class="product-image">
@@ -300,20 +311,23 @@
                     </div>
                     <div class="product-info">
                         <div class="product-name">${item.title}</div>
-                        <div class="product-price">${item.price}</div>
+                        <div class="product-price">$${item.price}</div>
                         ${item.why ? `<div class="product-why">${item.why}</div>` : ''}
                     </div>
                 </div>
             `).join('');
         }
+
         // Create a store module
         function createStoreModule(storeUrl, storeData) {
             const storeName = storeUrl;
-            const recommended = storeData.recommended || [];
-            const underBudget = storeData.under_budget || [];
-            const overBudget = storeData.over_budget || [];
+            
+            // Extract items arrays from the new nested structure
+            const recommendedItems = storeData.recommended?.items || [];
+            const underBudgetItems = storeData.under_budget?.items || [];
+            const overBudgetItems = storeData.over_budget?.items || [];
            
-            const total = calculateTotal(recommended);
+            const total = calculateTotal(recommendedItems);
            
             const moduleId = `module-${storeName.replace(/[^a-z0-9]/g, '-')}`;
            
@@ -327,7 +341,7 @@
                         <div class="total-price">$${total}</div>
                     </div>
                     <div class="products-grid">
-                        ${renderProducts(recommended)}
+                        ${renderProducts(recommendedItems)}
                     </div>
                     <div class="more-options">More options from ${storeName}</div>
                     <div class="budget-buttons">
@@ -342,6 +356,7 @@
                 </div>
             `;
         }
+
         // Load and render data
         function loadOutfits() {
             const dataStr = sessionStorage.getItem('outfitData');
@@ -394,14 +409,14 @@
 
             if (currentView === 'recommended') {
                 if (type === 'under') {
-                    items = storeData.under_budget || [];
+                    items = storeData.under_budget?.items || [];
                     newView = 'under';
                 } else if (type === 'over') {
-                    items = storeData.over_budget || [];
+                    items = storeData.over_budget?.items || [];
                     newView = 'over';
                 }
             } else {
-                items = storeData.recommended || [];
+                items = storeData.recommended?.items || [];
                 newView = 'recommended';
             }
 
