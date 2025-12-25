@@ -412,7 +412,7 @@
     async function loadLeaderboard() {
       const container = document.getElementById('leaderboard-body');
       try {
-        const res = await fetch('/api/leaderboard');
+        const res = await fetch('https://fitted.aihighstakes.workers.dev/leaderboard');
         if (!res.ok) throw new Error();
         const data = await res.json();
 
@@ -441,4 +441,5 @@
     setInterval(loadLeaderboard, 60000);
   </script>
 </body>
+
 </html>
