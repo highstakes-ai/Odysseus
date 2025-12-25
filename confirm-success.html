@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fitted – Email Confirmed!</title>
+  <meta name="description" content="Your Fitted waitlist spot is confirmed. Start referring friends!" />
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f5f5f5;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1rem;
+    }
+    .container {
+      width: 100%;
+      max-width: 420px;
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    header {
+      text-align: center;
+      padding: 2rem 1rem 1.5rem;
+      background: #000;
+      color: white;
+    }
+    h1 {
+      font-size: 1.8rem;
+      margin: 0;
+      font-weight: bold;
+    }
+    .subtitle {
+      font-size: 1.1rem;
+      margin: 0.5rem 0 0;
+      opacity: 0.9;
+    }
+    .success-section {
+      padding: 1.5rem 1rem 2rem;
+      text-align: center;
+    }
+    .success-icon {
+      font-size: 4.5rem;
+      margin-bottom: 1rem;
+    }
+    .share-section {
+      padding: 1.5rem 1rem;
+      background: #f0f8ff;
+      border-top: 1px solid #eee;
+    }
+    .share-title {
+      font-size: 1.3rem;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 1.2rem;
+    }
+    .ref-code {
+      font-family: monospace;
+      font-size: 1.5rem;
+      font-weight: bold;
+      background: #000;
+      color: white;
+      padding: 0.8rem 1.4rem;
+      border-radius: 12px;
+      display: inline-block;
+      margin: 1rem 0;
+    }
+    .link-box {
+      position: relative;
+      margin: 1.5rem 0;
+    }
+    .link-input {
+      width: 100%;
+      padding: 1rem 3.5rem 1rem 1rem;
+      background: #f0f0f0;
+      border: none;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      color: #333;
+      word-break: break-all;
+      box-sizing: border-box;
+    }
+    .copy-icon {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+      opacity: 0.7;
+    }
+    .copy-icon:hover {
+      opacity: 1;
+    }
+    .copy-message {
+      text-align: center;
+      margin-top: 0.8rem;
+      font-weight: bold;
+      color: #2e8b57;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .copy-message.show {
+      opacity: 1;
+    }
+    .share-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .share-btn {
+      padding: 0.8rem 1.2rem;
+      border-radius: 30px;
+      font-weight: bold;
+      text-decoration: none;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .twitter { background: #1DA1F2; color: white; }
+    .facebook { background: #1877F2; color: white; }
+    .whatsapp { background: #25D366; color: white; }
+
+    /* Your Referral Stats */
+    .ref-stats-section {
+      padding: 1.5rem 1rem;
+      background: #f9f9f9;
+      border-top: 1px solid #eee;
+    }
+    .ref-stats-title {
+      font-size: 1.3rem;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .stat-item {
+      background: white;
+      padding: 1rem;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .stat-label {
+      font-size: 0.9rem;
+      color: #666;
+    }
+    .stat-value {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-top: 0.5rem;
+    }
+    .milestones {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .milestone {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .milestone-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .milestone-check {
+      font-size: 1.5rem;
+    }
+    .milestone-text {
+      font-weight: 600;
+    }
+    .milestone-gems {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: bold;
+    }
+    .small-gem {
+      width: 24px;
+      height: 24px;
+    }
+    .milestone-button {
+      padding: 0.6rem 1.2rem;
+      border-radius: 30px;
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+    .claimed { background: #e0e0e0; color: #999; }
+    .claimable { background: #000; color: white; }
+    .locked { background: #f0f0f0; color: #aaa; }
+
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      color: #888;
+      font-size: 0.9rem;
+    }
+    a {
+      color: #ff4e4e;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Email Confirmed! 🎉</h1>
+      <p class="subtitle">Your Fitted spot is secured</p>
+    </header>
+
+    <div class="success-section">
+      <div class="success-icon">✅</div>
+      <h2>Congratulations!</h2>
+      <p>You’re officially on the Fitted waitlist.<br>Now invite friends to climb the leaderboard!</p>
+    </div>
+
+    <div class="share-section">
+      <div class="share-title">Share Your Referral Link</div>
+      <div class="ref-code" id="ref-code">Loading...</div>
+
+      <div class="link-box">
+        <div class="link-input" id="share-link">Loading...</div>
+        <svg class="copy-icon" id="copy-btn" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2">
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+        </svg>
+      </div>
+      <div class="copy-message" id="copy-message">Copied to clipboard!</div>
+
+      <div class="share-buttons">
+        <a href="#" class="share-btn twitter" id="twitter-share">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          Share on X
+        </a>
+        <a href="#" class="share-btn facebook" id="facebook-share">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          Facebook
+        </a>
+        <a href="#" class="share-btn whatsapp" id="whatsapp-share">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982 1.002-3.638-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.884 3.488"/></svg>
+          WhatsApp
+        </a>
+      </div>
+    </div>
+
+    <div class="ref-stats-section">
+      <div class="ref-stats-title">Your Referral Stats</div>
+      <div class="stats-grid">
+        <div class="stat-item">
+          <div class="stat-label">Your Rank</div>
+          <div class="stat-value" id="user-rank">—</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">Referrals</div>
+          <div class="stat-value" id="user-referrals">0</div>
+        </div>
+      </div>
+
+      <div class="milestones">
+        <div class="milestone">
+          <div class="milestone-left">
+            <span class="milestone-check">✓</span>
+            <span class="milestone-text">Email Confirmed</span>
+          </div>
+          <div class="milestone-gems">
+            500
+            <img src="https://www.shutterstock.com/image-vector/blue-diamond-icon-polygonal-gem-260nw-2535489491.jpg" alt="Gem" class="small-gem">
+          </div>
+          <div class="milestone-button claimed">Claimed!</div>
+        </div>
+        <div class="milestone">
+          <div class="milestone-left">
+            <span class="milestone-check"></span>
+            <span class="milestone-text">3 Referrals</span>
+          </div>
+          <div class="milestone-gems">
+            500
+            <img src="https://www.shutterstock.com/image-vector/blue-diamond-icon-polygonal-gem-260nw-2535489491.jpg" alt="Gem" class="small-gem">
+          </div>
+          <div class="milestone-button locked">Locked</div>
+        </div>
+        <div class="milestone">
+          <div class="milestone-left">
+            <span class="milestone-check"></span>
+            <span class="milestone-text">10 Referrals</span>
+          </div>
+          <div class="milestone-gems">
+            2,000
+            <img src="https://www.shutterstock.com/image-vector/blue-diamond-icon-polygonal-gem-260nw-2535489491.jpg" alt="Gem" class="small-gem">
+          </div>
+          <div class="milestone-button locked">Locked</div>
+        </div>
+        <div class="milestone">
+          <div class="milestone-left">
+            <span class="milestone-check"></span>
+            <span class="milestone-text">25 Referrals</span>
+          </div>
+          <div class="milestone-gems">
+            10,000
+            <img src="https://www.shutterstock.com/image-vector/blue-diamond-icon-polygonal-gem-260nw-2535489491.jpg" alt="Gem" class="small-gem">
+          </div>
+          <div class="milestone-button locked">Locked</div>
+        </div>
+        <div class="milestone">
+          <div class="milestone-left">
+            <span class="milestone-check"></span>
+            <span class="milestone-text">50 Referrals</span>
+          </div>
+          <div class="milestone-gems">
+            25,000
+            <img src="https://www.shutterstock.com/image-vector/blue-diamond-icon-polygonal-gem-260nw-2535489491.jpg" alt="Gem" class="small-gem">
+          </div>
+          <div class="milestone-button locked">Locked</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <a href="/leaderboard">Back to Leaderboard</a> • <a href="/">Home</a>
+  </footer>
+
+  <script>
+	  // Get code from URL
+	  const urlParams = new URLSearchParams(window.location.search);
+	  const userCode = urlParams.get('code') || "ERROR";
+
+	  if (userCode === "ERROR") {
+	    document.body.innerHTML = "<h1 style='text-align:center;margin-top:100px;'>Invalid confirmation</h1>";
+	  } else {
+	    // Update UI with real code
+	    document.getElementById('ref-code').textContent = userCode;
+
+	    const fullLink = `https://highstakes-ai.github.io/Odysseus/leaderboard?ref=${userCode}`;
+	    document.getElementById('share-link').textContent = fullLink;
+
+	    // Compelling copy message
+	    const shareMessage = "Fitted is the AI that finally understands your style. No more scrolling through bad fits. Join the waitlist with my link for early access:";
+
+	    // Copy button
+	    document.getElementById('copy-btn').addEventListener('click', () => {
+	      navigator.clipboard.writeText(`${shareMessage}\n\n${fullLink}`);
+	      const msg = document.getElementById('copy-message');
+	      msg.classList.add('show');
+	      setTimeout(() => msg.classList.remove('show'), 2000);
+	    });
+
+	    // Social shares
+	    const encodedMessage = encodeURIComponent(shareMessage);
+	    const encodedLink = encodeURIComponent(fullLink);
+
+	    document.getElementById('twitter-share').href = `https://twitter.com/intent/tweet?text=${encodedMessage}&url=${encodedLink}`;
+	    document.getElementById('facebook-share').href = `https://www.facebook.com/sharer/sharer.php?u=${encodedLink}`;
+	    document.getElementById('whatsapp-share').href = `https://wa.me/?text=${encodedMessage}%20${encodedLink}`;
+
+	    // Load stats (referrals & rank)
+	    async function loadStats() {
+	      try {
+	        const res = await fetch('https://fitted.aihighstakes.workers.dev/leaderboard');
+	        const users = await res.json();
+
+	        const currentUser = users.find(u => u.email.toLowerCase().includes(emailFromTokenOrSomething)); // Optional: if you pass email too
+	        const referrals = users.find(u => u.email.split('@')[0] + "***" === userCode) ? users.find(...) : { referrals: 0 }; // Placeholder logic
+
+	        // Simple: show referrals as 0 until we pass more data
+	        document.getElementById('user-referrals').textContent = 0;
+	        document.getElementById('user-rank').textContent = users.length > 0 ? users.length + 1 : 1;
+	      } catch {
+	        document.getElementById('user-referrals').textContent = 0;
+	        document.getElementById('user-rank').textContent = "—";
+	      }
+	    }
+
+	    loadStats();
+	  }
+	</script>
+</body>
+</html>
