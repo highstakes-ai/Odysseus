@@ -52,11 +52,11 @@
       padding: 1.5rem 1rem;
       background: #f0f8ff;
       border-top: 1px solid #eee;
+      text-align: center; /* Center all content */
     }
     .share-title {
       font-size: 1.3rem;
       font-weight: bold;
-      text-align: center;
       margin-bottom: 1.2rem;
     }
     .ref-code {
@@ -72,7 +72,10 @@
     }
     .link-box {
       position: relative;
-      margin: 1.5rem 0;
+      max-width: 100%;
+      margin: 1.5rem auto 0 auto;
+      display: inline-block;
+      width: 90%;
     }
     .link-input {
       width: 100%;
@@ -99,7 +102,6 @@
       opacity: 1;
     }
     .copy-message {
-      text-align: center;
       margin-top: 0.8rem;
       font-weight: bold;
       color: #2e8b57;
@@ -206,6 +208,27 @@
     }
     .claimed { background: #e0e0e0; color: #999; }
     .locked { background: #f0f0f0; color: #aaa; }
+
+    /* Big Back to Leaderboard Button */
+    .leaderboard-btn-section {
+      padding: 1.5rem 1rem;
+      text-align: center;
+    }
+    .leaderboard-btn {
+      display: inline-block;
+      background: #000;
+      color: white;
+      font-weight: bold;
+      font-size: 1.2rem;
+      padding: 1.2rem 2rem;
+      border-radius: 12px;
+      text-decoration: none;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transition: transform 0.2s;
+    }
+    .leaderboard-btn:hover {
+      transform: translateY(-2px);
+    }
 
     footer {
       text-align: center;
@@ -332,10 +355,17 @@
         </div>
       </div>
     </div>
+
+    <!-- Big Back to Leaderboard Button -->
+    <div class="leaderboard-btn-section">
+      <a href="https://highstakes-ai.github.io/Odysseus/leaderboard" class="leaderboard-btn">
+        Back to Leaderboard
+      </a>
+    </div>
   </div>
 
   <footer>
-    <a href="/leaderboard">Back to Leaderboard</a> • <a href="/">Home</a>
+    <a href="/">Home</a>
   </footer>
 
   <script>
@@ -345,16 +375,13 @@
     if (!userCode) {
       document.body.innerHTML = "<h1 style='text-align:center;margin-top:100px;color:#c53030;'>Invalid confirmation link</h1>";
     } else {
-      // Display real referral code
       document.getElementById('ref-code').textContent = userCode;
 
       const fullLink = `https://highstakes-ai.github.io/Odysseus/leaderboard?ref=${userCode}`;
       document.getElementById('share-link').textContent = fullLink;
 
-      // Sharp, compelling copy message
       const shareMessage = "Fitted is the AI that finally understands your style. No more endless scrolling. Join the waitlist with my link for early access:";
 
-      // Copy button: copies message + link
       document.getElementById('copy-btn').addEventListener('click', () => {
         navigator.clipboard.writeText(`${shareMessage}\n\n${fullLink}`);
         const msg = document.getElementById('copy-message');
@@ -362,7 +389,6 @@
         setTimeout(() => msg.classList.remove('show'), 2000);
       });
 
-      // Social share links
       const encodedMessage = encodeURIComponent(shareMessage);
       const encodedLink = encodeURIComponent(fullLink);
 
@@ -370,25 +396,17 @@
       document.getElementById('facebook-share').href = `https://www.facebook.com/sharer/sharer.php?u=${encodedLink}`;
       document.getElementById('whatsapp-share').href = `https://wa.me/?text=${encodedMessage}%20${encodedLink}`;
 
-      // Load real referrals & approximate rank from leaderboard
+      // Placeholder stats (replace with real fetch if needed)
       async function loadStats() {
         try {
           const res = await fetch('https://fitted.aihighstakes.workers.dev/leaderboard');
-          if (!res.ok) throw new Error();
           const users = await res.json();
-
-          // Find this user's referrals (leaderboard returns email masked, so we can't match exactly)
-          // For now, show 0 — to make accurate, pass referrals in URL from Worker
-          document.getElementById('user-referrals').textContent = 0;
-
-          // Approximate rank (total users + 1)
+          document.getElementById('user-referrals').textContent = 0; // Placeholder
           document.getElementById('user-rank').textContent = users.length ? users.length + 1 : 1;
-        } catch (err) {
-          document.getElementById('user-referrals').textContent = 0;
+        } catch {
           document.getElementById('user-rank').textContent = "—";
         }
       }
-
       loadStats();
     }
   </script>
