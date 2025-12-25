@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Fitted Launch Referral Contest</title>
   <meta name="description" content="Join the Fitted referral contest – refer friends to climb the leaderboard and win massive prizes!" />
-
   <style>
     body {
       margin: 0;
@@ -17,7 +16,6 @@
       align-items: center;
       padding: 1rem;
     }
-
     .container {
       width: 100%;
       max-width: 420px;
@@ -26,36 +24,30 @@
       overflow: hidden;
       box-shadow: 0 10px 30px rgba(0,0,0,0.1);
     }
-
     header {
       text-align: center;
       padding: 1.5rem 1rem 1rem;
     }
-
     h1 {
       font-size: 1.8rem;
       margin: 0;
       font-weight: bold;
     }
-
     .subtitle {
       font-size: 1.2rem;
       margin: 0.5rem 0 1rem;
       font-weight: 600;
     }
-
     .prize-pot {
       background: #000;
       color: white;
       text-align: center;
       padding: 1.5rem;
     }
-
     .prize-pot h2 {
       margin: 0 0 0.5rem;
       font-size: 1.3rem;
     }
-
     .grand-prize {
       font-size: 2.5rem;
       font-weight: bold;
@@ -64,18 +56,15 @@
       justify-content: center;
       gap: 0.5rem;
     }
-
     .diamond {
       width: 40px;
       height: 40px;
     }
-
     .prize-list {
       background: white;
       padding: 1.5rem;
       text-align: center;
     }
-
     .prize-item {
       display: flex;
       justify-content: space-between;
@@ -83,24 +72,19 @@
       border-bottom: 1px solid #eee;
       font-size: 1.1rem;
     }
-
     .prize-item:last-child {
       border-bottom: none;
     }
-
     .rank-label {
       color: #888;
     }
-
     .amount {
       font-weight: bold;
     }
-
     .leaderboard-section {
       padding: 1.5rem 1rem;
       background: white;
     }
-
     .live-badge {
       display: inline-flex;
       align-items: center;
@@ -112,26 +96,22 @@
       font-weight: bold;
       margin-bottom: 1rem;
     }
-
     .live-badge::before {
       content: "●";
       color: red;
       margin-right: 0.5rem;
       animation: pulse 1.5s infinite;
     }
-
     @keyframes pulse {
       0% { opacity: 1; }
       50% { opacity: 0.5; }
       100% { opacity: 1; }
     }
-
     .lb-title {
       font-size: 1.3rem;
       font-weight: bold;
       margin-bottom: 1rem;
     }
-
     .lb-header {
       background: #000;
       color: white;
@@ -140,47 +120,106 @@
       font-weight: bold;
       border-radius: 8px 8px 0 0;
     }
-
     .lb-rank { width: 15%; }
     .lb-user { width: 55%; }
     .lb-refs { width: 30%; text-align: right; }
-
     .lb-row {
       display: flex;
       padding: 1rem;
       border-bottom: 1px solid #eee;
       align-items: center;
     }
-
     .lb-row:last-child {
       border-bottom: none;
     }
-
     .lb-rank-num {
       font-weight: bold;
       font-size: 1.2rem;
     }
-
     .crown {
       width: 28px;
       height: 28px;
       margin-right: 0.5rem;
     }
-
     .lb-user-name {
       font-weight: 600;
     }
-
     .lb-refs-num {
       font-weight: bold;
       text-align: right;
       flex: 1;
     }
-
     .loading {
       text-align: center;
       padding: 2rem;
       color: #888;
+    }
+
+    /* Sign-up Module */
+    .signup-section {
+      padding: 1.5rem 1rem;
+      background: #f0f8ff;
+      border-top: 1px solid #eee;
+    }
+    .signup-title {
+      font-size: 1.3rem;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+    .signup-subtitle {
+      text-align: center;
+      color: #666;
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+    }
+    .signup-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .email-input {
+      padding: 1rem;
+      font-size: 1rem;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      outline: none;
+    }
+    .email-input:focus {
+      border-color: #ff4e4e;
+    }
+    .submit-btn {
+      padding: 1rem;
+      background: #000;
+      color: white;
+      font-weight: bold;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .submit-btn:hover {
+      background: #333;
+    }
+    .submit-btn:disabled {
+      background: #999;
+      cursor: not-allowed;
+    }
+    .message {
+      text-align: center;
+      padding: 0.8rem;
+      border-radius: 8px;
+      font-weight: 600;
+      margin-top: 0.5rem;
+    }
+    .success {
+      background: #e6f7ee;
+      color: #2e8b57;
+    }
+    .error {
+      background: #ffe6e6;
+      color: #c53030;
     }
 
     /* Your Ref Stats Section */
@@ -189,26 +228,22 @@
       background: #f9f9f9;
       border-top: 1px solid #eee;
     }
-
     .ref-stats-title {
       font-size: 1.3rem;
       font-weight: bold;
       text-align: center;
       margin-bottom: 1rem;
     }
-
     .ref-stats-subtitle {
       text-align: center;
       color: #888;
       margin-bottom: 1.5rem;
     }
-
     .milestones {
       display: flex;
       flex-direction: column;
       gap: 1rem;
     }
-
     .milestone {
       display: flex;
       align-items: center;
@@ -218,62 +253,51 @@
       border-radius: 12px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
-
     .milestone-left {
       display: flex;
       align-items: center;
       gap: 1rem;
     }
-
     .milestone-check {
       font-size: 1.5rem;
     }
-
     .milestone-text {
       font-weight: 600;
     }
-
     .milestone-gems {
       display: flex;
       align-items: center;
       gap: 0.5rem;
       font-weight: bold;
     }
-
     .small-gem {
       width: 24px;
       height: 24px;
     }
-
     .milestone-button {
       padding: 0.6rem 1.2rem;
       border-radius: 30px;
       font-weight: bold;
       font-size: 0.9rem;
     }
-
     .claimed {
       background: #e0e0e0;
       color: #999;
     }
-
     .claimable {
       background: #000;
       color: white;
     }
-
     .locked {
       background: #f0f0f0;
       color: #aaa;
     }
-
     footer {
       text-align: center;
       padding: 2rem 1rem;
       color: #888;
       font-size: 0.9rem;
     }
-
     a {
       color: #ff4e4e;
       text-decoration: none;
@@ -286,7 +310,6 @@
       <h1>Launch Referral Contest</h1>
       <p class="subtitle">Win Massive Shopping Credits</p>
     </header>
-
     <div class="prize-pot">
       <h2>Grand Prize Pot</h2>
       <div class="grand-prize">
@@ -294,7 +317,6 @@
         100,000
       </div>
     </div>
-
     <div class="prize-list">
       <div class="prize-item">
         <span class="rank-label">1st</span>
@@ -317,29 +339,51 @@
         <span class="amount">5,000</span>
       </div>
     </div>
-
     <div class="leaderboard-section">
       <div class="live-badge">
         Live Leaderboard
       </div>
       <div class="lb-title">Top Referrers</div>
-
       <div class="lb-header">
         <div class="lb-rank">Rank</div>
         <div class="lb-user">User</div>
         <div class="lb-refs">Referrals</div>
       </div>
-
       <div id="leaderboard-body">
         <div class="loading">Loading live leaderboard...</div>
       </div>
+    </div>
+
+    <!-- Sign-up Module with Optional Referral Code Field -->
+    <div class="signup-section">
+      <div class="signup-title">Join the Waitlist</div>
+      <p class="signup-subtitle">Get early access + start earning referrals</p>
+      <form id="signup-form" class="signup-form">
+        <input 
+          type="email" 
+          id="email" 
+          name="email" 
+          class="email-input" 
+          placeholder="Enter your email" 
+          required 
+        />
+        <input 
+          type="text" 
+          id="ref-code" 
+          class="email-input" 
+          placeholder="Referral code (optional)" 
+          maxlength="10"
+          style="margin-top: 0.8rem;"
+        />
+        <button type="submit" class="submit-btn" id="submit-btn">Join Now</button>
+        <div id="message"></div>
+      </form>
     </div>
 
     <!-- Your Ref Stats Section -->
     <div class="ref-stats-section">
       <div class="ref-stats-title">Your Ref Stats</div>
       <p class="ref-stats-subtitle">Refer friends to unlock rewards</p>
-
       <div class="milestones">
         <div class="milestone">
           <div class="milestone-left">
@@ -352,7 +396,6 @@
           </div>
           <div class="milestone-button claimed">Claimed!</div>
         </div>
-
         <div class="milestone">
           <div class="milestone-left">
             <span class="milestone-check"></span>
@@ -364,7 +407,6 @@
           </div>
           <div class="milestone-button claimable">Claim</div>
         </div>
-
         <div class="milestone">
           <div class="milestone-left">
             <span class="milestone-check"></span>
@@ -376,7 +418,6 @@
           </div>
           <div class="milestone-button locked">Locked</div>
         </div>
-
         <div class="milestone">
           <div class="milestone-left">
             <span class="milestone-check"></span>
@@ -388,7 +429,6 @@
           </div>
           <div class="milestone-button locked">Locked</div>
         </div>
-
         <div class="milestone">
           <div class="milestone-left">
             <span class="milestone-check"></span>
@@ -409,18 +449,24 @@
   </footer>
 
   <script>
+    // Load Leaderboard (added JSON parse safety)
     async function loadLeaderboard() {
       const container = document.getElementById('leaderboard-body');
       try {
         const res = await fetch('https://fitted.aihighstakes.workers.dev/leaderboard');
-        if (!res.ok) throw new Error();
-        const data = await res.json();
-
+        if (!res.ok) throw new Error('Bad status');
+        
+        const text = await res.text(); // Get raw text first
+        if (text.includes('Python Port')) {
+          throw new Error('Wrong worker version');
+        }
+        
+        const data = JSON.parse(text); // Now safe
+        
         if (data.length === 0) {
           container.innerHTML = '<div class="loading">No referrals yet – be the first!</div>';
           return;
         }
-
         container.innerHTML = data.map((user, index) => {
           const rank = index + 1;
           const crown = rank === 1 ? `<img src="https://thumbs.dreamstime.com/b/golden-crown-ranking-ribbons-vector-illustration-two-gold-japanese-text-meaning-no-sales-popularity-flat-graphic-style-413010595.jpg" alt="Crown" class="crown">` : '';
@@ -433,13 +479,74 @@
           `;
         }).join('');
       } catch (err) {
-        container.innerHTML = '<div class="loading">Failed to load – try again later</div>';
+        console.error(err);
+        container.innerHTML = '<div class="loading">Failed to load – try again later<br><small>Check if API worker is deployed</small></div>';
       }
     }
-
     loadLeaderboard();
     setInterval(loadLeaderboard, 60000);
+
+    // Pre-fill referral code from URL on page load
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlRef = urlParams.get('ref');
+    if (urlRef) {
+      document.getElementById('ref-code').value = urlRef.toUpperCase();
+    }
+
+    // Sign-up Form Handler (unchanged except success message tweak)
+    const form = document.getElementById('signup-form');
+    const messageDiv = document.getElementById('message');
+    const submitBtn = document.getElementById('submit-btn');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      messageDiv.innerHTML = '';
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Joining...';
+
+      const email = document.getElementById('email').value.trim();
+      const manualRefCode = document.getElementById('ref-code').value.trim().toUpperCase();
+
+      let ref = urlParams.get('ref') || '';
+      if (manualRefCode) {
+        ref = manualRefCode;
+      }
+
+      try {
+        const formData = new FormData();
+        formData.append('email', email);
+
+        const endpoint = ref 
+          ? `https://fitted.aihighstakes.workers.dev/signup?ref=${encodeURIComponent(ref)}`
+          : 'https://fitted.aihighstakes.workers.dev/signup';
+
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          body: formData
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.success) {
+          let successMsg = result.message || 'Welcome! You’re on the waitlist.';
+          if (result.code) {
+            successMsg += `<br>Your referral code: <strong>${result.code}</strong><br>Share: <strong>https://highstakes-ai.github.io/Odysseus/leaderboard?ref=${result.code}</strong>`;
+          }
+          messageDiv.innerHTML = `<div class="message success">${successMsg}</div>`;
+          form.reset();
+          // Clear pre-filled ref after successful signup (optional)
+          document.getElementById('ref-code').value = '';
+          loadLeaderboard();
+        } else {
+          messageDiv.innerHTML = `<div class="message error">${result.error || 'Something went wrong'}</div>`;
+        }
+      } catch (err) {
+        messageDiv.innerHTML = `<div class="message error">Network error – try again</div>`;
+      }
+
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Join Now';
+    });
   </script>
 </body>
-
 </html>
