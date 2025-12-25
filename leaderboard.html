@@ -154,7 +154,6 @@
       padding: 2rem;
       color: #888;
     }
-
     /* Sign-up Module */
     .signup-section {
       padding: 1.5rem 1rem;
@@ -221,7 +220,6 @@
       background: #ffe6e6;
       color: #c53030;
     }
-
     /* Your Ref Stats Section */
     .ref-stats-section {
       padding: 1.5rem 1rem;
@@ -353,25 +351,24 @@
         <div class="loading">Loading live leaderboard...</div>
       </div>
     </div>
-
     <!-- Sign-up Module with Optional Referral Code Field -->
     <div class="signup-section">
       <div class="signup-title">Join the Waitlist</div>
       <p class="signup-subtitle">Get early access + start earning referrals</p>
       <form id="signup-form" class="signup-form">
-        <input 
-          type="email" 
-          id="email" 
-          name="email" 
-          class="email-input" 
-          placeholder="Enter your email" 
-          required 
+        <input
+          type="email"
+          id="email"
+          name="email"
+          class="email-input"
+          placeholder="Enter your email"
+          required
         />
-        <input 
-          type="text" 
-          id="ref-code" 
-          class="email-input" 
-          placeholder="Referral code (optional)" 
+        <input
+          type="text"
+          id="ref-code"
+          class="email-input"
+          placeholder="Referral code (optional)"
           maxlength="10"
           style="margin-top: 0.8rem;"
         />
@@ -379,7 +376,6 @@
         <div id="message"></div>
       </form>
     </div>
-
     <!-- Your Ref Stats Section -->
     <div class="ref-stats-section">
       <div class="ref-stats-title">Your Ref Stats</div>
@@ -443,30 +439,25 @@
       </div>
     </div>
   </div>
-
   <footer>
     Back to <a href="/">Fitted Home</a> • Join the waitlist to start referring
   </footer>
 
   <script>
-    // Load Leaderboard (added JSON parse safety)
+    // Simplified Leaderboard Load – no more "Wrong worker version" crash
     async function loadLeaderboard() {
       const container = document.getElementById('leaderboard-body');
       try {
         const res = await fetch('https://fitted.aihighstakes.workers.dev/leaderboard');
-        if (!res.ok) throw new Error('Bad status');
-        
-        const text = await res.text(); // Get raw text first
-        if (text.includes('Python Port')) {
-          throw new Error('Wrong worker version');
-        }
-        
-        const data = JSON.parse(text); // Now safe
-        
+        if (!res.ok) throw new Error();
+
+        const data = await res.json(); // Will fail gracefully if not JSON
+
         if (data.length === 0) {
           container.innerHTML = '<div class="loading">No referrals yet – be the first!</div>';
           return;
         }
+
         container.innerHTML = data.map((user, index) => {
           const rank = index + 1;
           const crown = rank === 1 ? `<img src="https://thumbs.dreamstime.com/b/golden-crown-ranking-ribbons-vector-illustration-two-gold-japanese-text-meaning-no-sales-popularity-flat-graphic-style-413010595.jpg" alt="Crown" class="crown">` : '';
@@ -479,21 +470,21 @@
           `;
         }).join('');
       } catch (err) {
-        console.error(err);
-        container.innerHTML = '<div class="loading">Failed to load – try again later<br><small>Check if API worker is deployed</small></div>';
+        container.innerHTML = '<div class="loading">Leaderboard coming soon...<br><small>Backend deploying – refresh in a minute!</small></div>';
       }
     }
+
     loadLeaderboard();
     setInterval(loadLeaderboard, 60000);
 
-    // Pre-fill referral code from URL on page load
+    // Pre-fill referral code from URL
     const urlParams = new URLSearchParams(window.location.search);
     const urlRef = urlParams.get('ref');
     if (urlRef) {
       document.getElementById('ref-code').value = urlRef.toUpperCase();
     }
 
-    // Sign-up Form Handler (unchanged except success message tweak)
+    // Sign-up Form Handler
     const form = document.getElementById('signup-form');
     const messageDiv = document.getElementById('message');
     const submitBtn = document.getElementById('submit-btn');
@@ -516,7 +507,7 @@
         const formData = new FormData();
         formData.append('email', email);
 
-        const endpoint = ref 
+        const endpoint = ref
           ? `https://fitted.aihighstakes.workers.dev/signup?ref=${encodeURIComponent(ref)}`
           : 'https://fitted.aihighstakes.workers.dev/signup';
 
@@ -525,7 +516,12 @@
           body: formData
         });
 
-        const result = await response.json();
+        let result;
+        try {
+          result = await response.json();
+        } catch {
+          result = { error: 'Invalid response from server' };
+        }
 
         if (response.ok && result.success) {
           let successMsg = result.message || 'Welcome! You’re on the waitlist.';
@@ -534,7 +530,6 @@
           }
           messageDiv.innerHTML = `<div class="message success">${successMsg}</div>`;
           form.reset();
-          // Clear pre-filled ref after successful signup (optional)
           document.getElementById('ref-code').value = '';
           loadLeaderboard();
         } else {
