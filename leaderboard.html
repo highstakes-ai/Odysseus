@@ -523,33 +523,33 @@
       const container = document.getElementById('milestones');
       const feedback = document.getElementById('claim-feedback');
       feedback.textContent = '';
-
       if (!currentUser) {
         container.innerHTML = '<p style="text-align:center;color:#888;">Enter your email above to view progress</p>';
         return;
       }
-
       document.getElementById('gems-total').textContent = `Gems Earned: ${currentUser.gemsEarned || 0}`;
-
       container.innerHTML = MILESTONES.map(m => {
         const isReached = m.id === "confirmed" ? currentUser.confirmed : (currentUser.referrals || 0) >= m.requiredRefs;
         const isClaimed = currentUser.claimedMilestones?.includes(m.id) || false;
-
+    
         let buttonClass = 'locked';
         let buttonText = 'Locked';
-        let clickable = false;
-
+        let onclick = '';
+        let cursor = 'default';
+    
         if (isReached && !isClaimed) {
           buttonClass = 'claimable';
           buttonText = 'Claim';
-          clickable = true;
+          onclick = `onclick="claimGems('${m.id}')"`
+          cursor = 'pointer';
         } else if (isClaimed) {
           buttonClass = 'claimed';
           buttonText = 'Claimed!';
+          cursor = 'default'; // No pointer cursor
         }
-
+    
         const check = isClaimed ? '✓' : '';
-
+    
         return `
           <div class="milestone">
             <div class="milestone-left">
@@ -560,7 +560,7 @@
               ${m.gems}
               <img src="https://www.shutterstock.com/image-vector/blue-diamond-icon-polygonal-gem-260nw-2535489491.jpg" alt="Gem" class="small-gem">
             </div>
-            <div class="milestone-button ${buttonClass}" ${clickable ? `onclick="claimGems('${m.id}')" ` : ''}>
+            <div class="milestone-button ${buttonClass}" style="cursor:${cursor};" ${onclick}>
               ${buttonText}
             </div>
           </div>
@@ -749,3 +749,4 @@
   </script>
 </body>
 </html>
+
