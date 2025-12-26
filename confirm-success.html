@@ -52,7 +52,7 @@
       padding: 1.5rem 1rem;
       background: #f0f8ff;
       border-top: 1px solid #eee;
-      text-align: center; /* Center all content */
+      text-align: center;
     }
     .share-title {
       font-size: 1.3rem;
@@ -79,7 +79,7 @@
     }
     .link-input {
       width: 100%;
-      padding: 1rem 3.5rem 1rem 1rem;
+      padding: | 1rem 3.5rem 1rem 1rem;
       background: #f0f0f0;
       border: none;
       border-radius: 12px;
@@ -131,7 +131,6 @@
     .twitter { background: #1DA1F2; color: white; }
     .facebook { background: #1877F2; color: white; }
     .whatsapp { background: #25D366; color: white; }
-
     .ref-stats-section {
       padding: 1.5rem 1rem;
       background: #f9f9f9;
@@ -142,6 +141,13 @@
       font-weight: bold;
       text-align: center;
       margin-bottom: 1rem;
+    }
+    .gems-total {
+      text-align: center;
+      font-size: 1.4rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+      color: #000;
     }
     .stats-grid {
       display: grid;
@@ -205,11 +211,28 @@
       border-radius: 30px;
       font-weight: bold;
       font-size: 0.9rem;
+      cursor: pointer;
     }
-    .claimed { background: #e0e0e0; color: #999; }
-    .locked { background: #f0f0f0; color: #aaa; }
-
-    /* Big Back to Leaderboard Button */
+    .claimed {
+      background: #e0e0e0;
+      color: #999;
+      cursor: default;
+    }
+    .claimable {
+      background: #000;
+      color: white;
+    }
+    .locked {
+      background: #f0f0f0;
+      color: #aaa;
+      cursor: default;
+    }
+    .claim-feedback {
+      text-align: center;
+      margin-top: 0.5rem;
+      font-weight: bold;
+      color: #2e8b57;
+    }
     .leaderboard-btn-section {
       padding: 1.5rem 1rem;
       text-align: center;
@@ -229,7 +252,6 @@
     .leaderboard-btn:hover {
       transform: translateY(-2px);
     }
-
     footer {
       text-align: center;
       padding: 2rem 1rem;
@@ -248,17 +270,14 @@
       <h1>Email Confirmed! 🎉</h1>
       <p class="subtitle">Your Fitted spot is secured</p>
     </header>
-
     <div class="success-section">
       <div class="success-icon">✅</div>
       <h2>Congratulations!</h2>
       <p>You’re officially on the Fitted waitlist.<br>Now invite friends to climb the leaderboard!</p>
     </div>
-
     <div class="share-section">
       <div class="share-title">Share Your Referral Link</div>
       <div class="ref-code" id="ref-code">Loading...</div>
-
       <div class="link-box">
         <div class="link-input" id="share-link">Loading...</div>
         <svg class="copy-icon" id="copy-btn" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -267,7 +286,6 @@
         </svg>
       </div>
       <div class="copy-message" id="copy-message">Copied to clipboard!</div>
-
       <div class="share-buttons">
         <a href="#" class="share-btn twitter" id="twitter-share">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
@@ -284,8 +302,10 @@
       </div>
     </div>
 
+    <!-- Your Referral Stats with Tasks Module -->
     <div class="ref-stats-section">
       <div class="ref-stats-title">Your Referral Stats</div>
+      <div class="gems-total" id="gems-total">Gems Earned: 0</div>
       <div class="stats-grid">
         <div class="stat-item">
           <div class="stat-label">Your Rank</div>
@@ -296,64 +316,10 @@
           <div class="stat-value" id="user-referrals">0</div>
         </div>
       </div>
-
-      <div class="milestones">
-        <div class="milestone">
-          <div class="milestone-left">
-            <span class="milestone-check">✓</span>
-            <span class="milestone-text">Email Confirmed</span>
-          </div>
-          <div class="milestone-gems">
-            500
-            <img src="https://www.shutterstock.com/image-vector/blue-diamond-icon-polygonal-gem-260nw-2535489491.jpg" alt="Gem" class="small-gem">
-          </div>
-          <div class="milestone-button claimed">Claimed!</div>
-        </div>
-        <div class="milestone">
-          <div class="milestone-left">
-            <span class="milestone-check"></span>
-            <span class="milestone-text">3 Referrals</span>
-          </div>
-          <div class="milestone-gems">
-            500
-            <img src="https://www.shutterstock.com/image-vector/blue-diamond-icon-polygonal-gem-260nw-2535489491.jpg" alt="Gem" class="small-gem">
-          </div>
-          <div class="milestone-button locked">Locked</div>
-        </div>
-        <div class="milestone">
-          <div class="milestone-left">
-            <span class="milestone-check"></span>
-            <span class="milestone-text">10 Referrals</span>
-          </div>
-          <div class="milestone-gems">
-            2,000
-            <img src="https://www.shutterstock.com/image-vector/blue-diamond-icon-polygonal-gem-260nw-2535489491.jpg" alt="Gem" class="small-gem">
-          </div>
-          <div class="milestone-button locked">Locked</div>
-        </div>
-        <div class="milestone">
-          <div class="milestone-left">
-            <span class="milestone-check"></span>
-            <span class="milestone-text">25 Referrals</span>
-          </div>
-          <div class="milestone-gems">
-            10,000
-            <img src="https://www.shutterstock.com/image-vector/blue-diamond-icon-polygonal-gem-260nw-2535489491.jpg" alt="Gem" class="small-gem">
-          </div>
-          <div class="milestone-button locked">Locked</div>
-        </div>
-        <div class="milestone">
-          <div class="milestone-left">
-            <span class="milestone-check"></span>
-            <span class="milestone-text">50 Referrals</span>
-          </div>
-          <div class="milestone-gems">
-            25,000
-            <img src="https://www.shutterstock.com/image-vector/blue-diamond-icon-polygonal-gem-260nw-2535489491.jpg" alt="Gem" class="small-gem">
-          </div>
-          <div class="milestone-button locked">Locked</div>
-        </div>
+      <div class="milestones" id="milestones">
+        <!-- Dynamically filled by tasks.js -->
       </div>
+      <div class="claim-feedback" id="claim-feedback"></div>
     </div>
 
     <!-- Big Back to Leaderboard Button -->
@@ -363,12 +329,16 @@
       </a>
     </div>
   </div>
-
   <footer>
     <a href="/">Home</a>
   </footer>
 
+  <!-- Load modular tasks system -->
+  <script src="tasks.js"></script>
+
   <script>
+    const WORKER_URL = 'https://fitted.aihighstakes.workers.dev';
+
     const urlParams = new URLSearchParams(window.location.search);
     const userCode = urlParams.get('code');
 
@@ -376,7 +346,6 @@
       document.body.innerHTML = "<h1 style='text-align:center;margin-top:100px;color:#c53030;'>Invalid confirmation link</h1>";
     } else {
       document.getElementById('ref-code').textContent = userCode;
-
       const fullLink = `https://highstakes-ai.github.io/Odysseus/leaderboard?ref=${userCode}`;
       document.getElementById('share-link').textContent = fullLink;
 
@@ -391,24 +360,50 @@
 
       const encodedMessage = encodeURIComponent(shareMessage);
       const encodedLink = encodeURIComponent(fullLink);
-
       document.getElementById('twitter-share').href = `https://twitter.com/intent/tweet?text=${encodedMessage}&url=${encodedLink}`;
       document.getElementById('facebook-share').href = `https://www.facebook.com/sharer/sharer.php?u=${encodedLink}`;
       document.getElementById('whatsapp-share').href = `https://wa.me/?text=${encodedMessage}%20${encodedLink}`;
 
-      // Placeholder stats (replace with real fetch if needed)
-      async function loadStats() {
+      // Load user stats using code → find email via /leaderboard then full data via /status
+      async function loadUserStats() {
         try {
-          const res = await fetch('https://fitted.aihighstakes.workers.dev/leaderboard');
+          const res = await fetch(`${WORKER_URL}/leaderboard`);
           const users = await res.json();
-          document.getElementById('user-referrals').textContent = 0; // Placeholder
-          document.getElementById('user-rank').textContent = users.length ? users.length + 1 : 1;
-        } catch {
-          document.getElementById('user-rank').textContent = "—";
+          const user = users.find(u => u.code === userCode || u.email.endsWith(userCode)); // fallback if needed
+
+          if (user) {
+            // Now get full data including claimedMilestones
+            const statusRes = await fetch(`${WORKER_URL}/status?email=${encodeURIComponent(user.email)}`);
+            if (statusRes.ok) {
+              const fullUser = await statusRes.json();
+              TasksModule.setUser({
+                email: fullUser.email,
+                referrals: fullUser.referrals,
+                gemsEarned: fullUser.gemsEarned,
+                confirmed: fullUser.confirmed,
+                claimedMilestones: fullUser.claimedMilestones
+              });
+
+              // Update rank and referrals
+              const rank = users.findIndex(u => u.email === user.email) + 1;
+              document.getElementById('user-rank').textContent = rank > 0 ? `#${rank}` : '—';
+              document.getElementById('user-referrals').textContent = fullUser.referrals;
+            }
+          } else {
+            document.getElementById('user-rank').textContent = '—';
+            document.getElementById('user-referrals').textContent = '0';
+          }
+        } catch (err) {
+          console.error("Failed to load stats", err);
+          document.getElementById('user-rank').textContent = '—';
         }
       }
-      loadStats();
+
+      loadUserStats();
     }
+
+    // Initial render
+    TasksModule.render();
   </script>
 </body>
 </html>
