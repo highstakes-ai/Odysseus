@@ -453,7 +453,7 @@
       </div>
 
       <div class="milestones" id="milestones">
-        <!-- Milestones will be dynamically updated -->
+        <!-- Loaded by tasks.js -->
       </div>
 
       <div class="claim-feedback" id="claim-feedback"></div>
@@ -504,10 +504,12 @@
     </div>
   </div>
 
+  <!-- Load shared tasks module -->
   <script src="tasks.js"></script>
+
   <script>
     const WORKER_URL = 'https://fitted.aihighstakes.workers.dev';
-  
+
     // Leaderboard load
     async function loadLeaderboard() {
       const container = document.getElementById('leaderboard-body');
@@ -536,14 +538,14 @@
     }
     loadLeaderboard();
     setInterval(loadLeaderboard, 60000);
-  
+
     // Pre-fill referral code from URL
     const urlParams = new URLSearchParams(window.location.search);
     const urlRef = urlParams.get('ref');
     if (urlRef) {
       document.getElementById('ref-code').value = urlRef.toUpperCase();
     }
-  
+
     // Main sign-up form
     const form = document.getElementById('signup-form');
     const messageDiv = document.getElementById('message');
@@ -580,8 +582,8 @@
       submitBtn.disabled = false;
       submitBtn.textContent = 'Join Now';
     });
-  
-    // Stats Login
+
+    // Stats Login — uses TasksModule
     const statsEmailInput = document.getElementById('stats-email');
     const checkStatsBtn = document.getElementById('check-stats-btn');
     const statsMessage = document.getElementById('stats-message');
@@ -591,7 +593,7 @@
     const modalRefCode = document.getElementById('modal-ref-code');
     const modalForm = document.getElementById('modal-signup-form');
     const modalMessage = document.getElementById('modal-message');
-  
+
     checkStatsBtn.addEventListener('click', async () => {
       const email = statsEmailInput.value.trim().toLowerCase();
       if (!email || !email.includes('@')) {
@@ -599,23 +601,24 @@
         return;
       }
       statsMessage.innerHTML = 'Checking...';
-  
+
       try {
         const res = await fetch(`${WORKER_URL}/leaderboard`);
         const users = await res.json();
         const user = users.find(u => u.email.toLowerCase() === email);
-  
+
         if (user) {
-          currentUser = {
+          // Set user in TasksModule
+          TasksModule.setUser({
             email: user.email,
             referrals: user.referrals || 0,
             gemsEarned: user.gemsEarned || 0,
             confirmed: true,
-            claimedMilestones: [] // We don't have this in leaderboard response yet — optional future
-          };
+            claimedMilestones: [] // Will be enhanced later if needed
+          });
           statsMessage.innerHTML = '<small style="color:#2e8b57;">Stats loaded!</small>';
-          TasksModule.render();
         } else {
+          // Show signup modal
           modalEmail.value = email;
           modalRefCode.value = urlRef ? urlRef.toUpperCase() : '';
           modal.style.display = 'flex';
@@ -625,9 +628,11 @@
         statsMessage.innerHTML = '<small style="color:#c53030;">Error checking email</small>';
       }
     });
-  
-    closeModal.addEventListener('click', () => modal.style.display = 'none');
-  
+
+    closeModal.addEventListener('click', () => {
+      modal.style.display = 'none';
+    });
+
     modalForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       modalMessage.innerHTML = 'Joining...';
@@ -650,8 +655,8 @@
         modalMessage.innerHTML = '<div class="message error">Network error</div>';
       }
     });
-  
-    // Initial render
+
+    // Initial render of tasks
     TasksModule.render();
   </script>
 </body>
