@@ -1,112 +1,152 @@
-// tasks.js - Shared Tasks Tracker Module
-// Used in leaderboard.html and confirm-success.html
+<script src="tasks.js"></script>
+<script>
+  // Remove this line — it's already in tasks.js
+  // const WORKER_URL = 'https://fitted.aihighstakes.workers.dev';
 
-const WORKER_URL = 'https://fitted.aihighstakes.workers.dev';
+  // Leaderboard load — use the global WORKER_URL from tasks.js
+  async function loadLeaderboard() {
+    const container = document.getElementById('leaderboard-body');
+    try {
+      const res = await fetch(`${WORKER_URL}/leaderboard`);
+      if (!res.ok) throw new Error();
+      const data = await res.json();
+      if (data.length === 0) {
+        container.innerHTML = '<div class="loading">No referrals yet – be the first!</div>';
+        return;
+      }
+      container.innerHTML = data.map((user, index) => {
+        const rank = index + 1;
+        const crown = rank === 1 ? `<img src="https://thumbs.dreamstime.com/b/golden-crown-ranking-ribbons-vector-illustration-two-gold-japanese-text-meaning-no-sales-popularity-flat-graphic-style-413010595.jpg" alt="Crown" class="crown">` : '';
+        return `
+          <div class="lb-row">
+            <div class="lb-rank-num">${crown || ''}${rank === 1 ? '' : rank}</div>
+            <div class="lb-user-name">${user.email.split('@')[0]}***</div>
+            <div class="lb-refs-num">${user.referrals}</div>
+          </div>
+        `;
+      }).join('');
+    } catch (err) {
+      container.innerHTML = '<div class="loading">Leaderboard coming soon...<br><small>Backend deploying – refresh in a minute!</small></div>';
+    }
+  }
+  loadLeaderboard();
+  setInterval(loadLeaderboard, 60000);
 
-let currentUser = null; // { email, referrals, gemsEarned, confirmed, claimedMilestones }
-
-const MILESTONES = [
-  { id: "confirmed", text: "Email Confirmed", gems: 500, requiredRefs: 0 },
-  { id: "3", text: "3 Referrals", gems: 500, requiredRefs: 3 },
-  { id: "10", text: "10 Referrals", gems: 2000, requiredRefs: 10 },
-  { id: "25", text: "25 Referrals", gems: 10000, requiredRefs: 25 },
-  { id: "50", text: "50 Referrals", gems: 25000, requiredRefs: 50 }
-];
-
-function renderTasks(containerId = 'milestones', gemsTotalId = 'gems-total', feedbackId = 'claim-feedback') {
-  const container = document.getElementById(containerId);
-  const gemsTotal = document.getElementById(gemsTotalId);
-  const feedback = document.getElementById(feedbackId);
-
-  if (!container) return;
-
-  if (feedback) feedback.textContent = '';
-
-  if (!currentUser) {
-    container.innerHTML = '<p style="text-align:center;color:#888;padding:1rem;">Enter your email to view your progress</p>';
-    if (gemsTotal) gemsTotal.textContent = 'Gems Earned: 0';
-    return;
+  // Pre-fill referral code from URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const urlRef = urlParams.get('ref');
+  if (urlRef) {
+    document.getElementById('ref-code').value = urlRef.toUpperCase();
   }
 
-  if (gemsTotal) gemsTotal.textContent = `Gems Earned: ${currentUser.gemsEarned || 0}`;
-
-  container.innerHTML = MILESTONES.map(m => {
-    const isReached = m.id === "confirmed" 
-      ? currentUser.confirmed 
-      : (currentUser.referrals || 0) >= m.requiredRefs;
-
-    const isClaimed = currentUser.claimedMilestones?.includes(m.id) || false;
-
-    let buttonClass = 'locked';
-    let buttonText = 'Locked';
-    let onclick = '';
-
-    if (isReached && !isClaimed) {
-      buttonClass = 'claimable';
-      buttonText = 'Claim';
-      onclick = `onclick="claimGems('${m.id}', '${feedbackId}')"`
-    } else if (isClaimed) {
-      buttonClass = 'claimed';
-      buttonText = 'Claimed!';
+  // Main sign-up form
+  const form = document.getElementById('signup-form');
+  const messageDiv = document.getElementById('message');
+  const submitBtn = document.getElementById('submit-btn');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    messageDiv.innerHTML = '';
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Joining...';
+    const email = document.getElementById('email').value.trim();
+    const manualRefCode = document.getElementById('ref-code').value.trim().toUpperCase();
+    let ref = urlParams.get('ref') || '';
+    if (manualRefCode) ref = manualRefCode;
+    try {
+      const formData = new FormData();
+      formData.append('email', email);
+      const endpoint = ref ? `${WORKER_URL}/signup?ref=${encodeURIComponent(ref)}` : `${WORKER_URL}/signup`;
+      const response = await fetch(endpoint, { method: 'POST', body: formData });
+      let result;
+      try { result = await response.json(); } catch { result = { error: 'Invalid response' }; }
+      if (response.ok && result.success) {
+        let successMsg = result.message || 'Welcome! You’re on the waitlist.';
+        if (result.code) successMsg += `<br>Your referral code: <strong>${result.code}</strong><br>Share: <strong>https://highstakes-ai.github.io/Odysseus/leaderboard?ref=${result.code}</strong>`;
+        messageDiv.innerHTML = `<div class="message success">${successMsg}</div>`;
+        form.reset();
+        document.getElementById('ref-code').value = '';
+        loadLeaderboard();
+      } else {
+        messageDiv.innerHTML = `<div class="message error">${result.error || 'Something went wrong'}</div>`;
+      }
+    } catch (err) {
+      messageDiv.innerHTML = `<div class="message error">Network error – try again</div>`;
     }
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Join Now';
+  });
 
-    const check = isClaimed ? '✓' : '';
+  // Stats Login
+  const statsEmailInput = document.getElementById('stats-email');
+  const checkStatsBtn = document.getElementById('check-stats-btn');
+  const statsMessage = document.getElementById('stats-message');
+  const modal = document.getElementById('signup-modal');
+  const closeModal = document.getElementById('close-modal');
+  const modalEmail = document.getElementById('modal-email');
+  const modalRefCode = document.getElementById('modal-ref-code');
+  const modalForm = document.getElementById('modal-signup-form');
+  const modalMessage = document.getElementById('modal-message');
 
-    return `
-      <div class="milestone">
-        <div class="milestone-left">
-          <span class="milestone-check">${check}</span>
-          <span class="milestone-text">${m.text}</span>
-        </div>
-        <div class="milestone-gems">
-          ${m.gems}
-          <img src="https://www.shutterstock.com/image-vector/blue-diamond-icon-polygonal-gem-260nw-2535489491.jpg" alt="Gem" class="small-gem">
-        </div>
-        <div class="milestone-button ${buttonClass}" ${onclick}>
-          ${buttonText}
-        </div>
-      </div>
-    `;
-  }).join('');
-}
-
-async function claimGems(milestone, feedbackId = 'claim-feedback') {
-  const feedback = document.getElementById(feedbackId);
-  if (!feedback) return;
-
-  feedback.textContent = 'Claiming...';
-  feedback.style.color = '#000';
-
-  try {
-    const res = await fetch(`${WORKER_URL}/claim`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: currentUser.email, milestone })
-    });
-    const data = await res.json();
-
-    if (data.success) {
-      currentUser.gemsEarned = data.totalGems;
-      if (!currentUser.claimedMilestones) currentUser.claimedMilestones = [];
-      currentUser.claimedMilestones.push(milestone);
-      feedback.textContent = `+${data.gemsAdded} gems claimed!`;
-      feedback.style.color = '#2e8b57';
-      renderTasks(); // Re-render all task modules
-    } else {
-      feedback.textContent = data.error || 'Error claiming';
-      feedback.style.color = '#c53030';
+  checkStatsBtn.addEventListener('click', async () => {
+    const email = statsEmailInput.value.trim().toLowerCase();
+    if (!email || !email.includes('@')) {
+      statsMessage.innerHTML = '<small style="color:#c53030;">Enter a valid email</small>';
+      return;
     }
-  } catch (err) {
-    feedback.textContent = 'Network error';
-    feedback.style.color = '#c53030';
-  }
+    statsMessage.innerHTML = 'Checking...';
 
-  setTimeout(() => feedback.textContent = '', 4000);
-}
+    try {
+      const res = await fetch(`${WORKER_URL}/leaderboard`);
+      const users = await res.json();
+      const user = users.find(u => u.email.toLowerCase() === email);
 
-// Optional: expose for debugging or other pages
-window.TasksModule = {
-  setUser: (user) => { currentUser = user; renderTasks(); },
-  render: renderTasks,
-  claimGems
-};
+      if (user) {
+        TasksModule.setUser({
+          email: user.email,
+          referrals: user.referrals || 0,
+          gemsEarned: user.gemsEarned || 0,
+          confirmed: true,
+          claimedMilestones: [] // Placeholder — can be enhanced later
+        });
+        statsMessage.innerHTML = '<small style="color:#2e8b57;">Stats loaded!</small>';
+      } else {
+        modalEmail.value = email;
+        modalRefCode.value = urlRef ? urlRef.toUpperCase() : '';
+        modal.style.display = 'flex';
+        statsMessage.innerHTML = '';
+      }
+    } catch {
+      statsMessage.innerHTML = '<small style="color:#c53030;">Error checking email</small>';
+    }
+  });
+
+  closeModal.addEventListener('click', () => {
+    modal.style.display = 'none';
+  });
+
+  modalForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    modalMessage.innerHTML = 'Joining...';
+    const email = modalEmail.value.trim();
+    const ref = modalRefCode.value.trim().toUpperCase() || urlParams.get('ref') || '';
+    try {
+      const formData = new FormData();
+      formData.append('email', email);
+      const endpoint = ref ? `${WORKER_URL}/signup?ref=${encodeURIComponent(ref)}` : `${WORKER_URL}/signup`;
+      const response = await fetch(endpoint, { method: 'POST', body: formData });
+      const result = await response.json();
+      if (response.ok && result.success) {
+        modalMessage.innerHTML = '<div class="message success">Welcome! Check your email to confirm.</div>';
+        setTimeout(() => modal.style.display = 'none', 2000);
+        loadLeaderboard();
+      } else {
+        modalMessage.innerHTML = `<div class="message error">${result.error || 'Error'}</div>`;
+      }
+    } catch {
+      modalMessage.innerHTML = '<div class="message error">Network error</div>';
+    }
+  });
+
+  // Initial render
+  TasksModule.render();
+</script>
