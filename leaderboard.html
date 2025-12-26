@@ -690,30 +690,28 @@
         return;
       }
       statsMessage.innerHTML = 'Checking...';
-
+    
       try {
-        const res = await fetch(`${WORKER_URL}/leaderboard`);
-        const users = await res.json();
-        const user = users.find(u => u.email.toLowerCase() === email);
-
-        if (user) {
-          currentUser = {
-            email: user.email,
-            referrals: user.referrals || 0,
-            gemsEarned: user.gemsEarned || 0,
-            confirmed: true, // assume confirmed if in leaderboard
-            claimedMilestones: user.claimedMilestones || []
-          };
-          statsMessage.innerHTML = '<small style="color:#2e8b57;">Stats loaded!</small>';
-          renderMilestones();
-        } else {
-          modalEmail.value = email;
-          modalRefCode.value = urlRef ? urlRef.toUpperCase() : '';
-          modal.style.display = 'flex';
-          statsMessage.innerHTML = '';
+        const res = await fetch(`${WORKER_URL}/status?email=${encodeURIComponent(email)}`);
+        if (!res.ok) {
+          const errData = await res.json();
+          statsMessage.innerHTML = `<small style="color:#c53030;">${errData.error || 'User not found'}</small>`;
+          return;
         }
-      } catch {
-        statsMessage.innerHTML = '<small style="color:#c53030;">Error checking email</small>';
+        const user = await res.json();
+    
+        currentUser = {
+          email: user.email,
+          referrals: user.referrals,
+          gemsEarned: user.gemsEarned,
+          confirmed: user.confirmed,
+          claimedMilestones: user.claimedMilestones
+        };
+    
+        statsMessage.innerHTML = '<small style="color:#2e8b57;">Stats loaded!</small>';
+        renderMilestones();
+      } catch (err) {
+        statsMessage.innerHTML = '<small style="color:#c53030;">Network error</small>';
       }
     });
 
@@ -749,4 +747,5 @@
   </script>
 </body>
 </html>
+
 
