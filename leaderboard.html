@@ -453,7 +453,7 @@
       </div>
 
       <div class="milestones" id="milestones">
-        <!-- Loaded by tasks.js -->
+        <!-- Milestones will be dynamically updated -->
       </div>
 
       <div class="claim-feedback" id="claim-feedback"></div>
@@ -504,11 +504,101 @@
     </div>
   </div>
 
-  <!-- Load shared tasks module -->
-  <!-- Inline tasks.js module (GitHub Pages MIME fix) -->
   <script>
-    // Page-specific script
-  
+    const WORKER_URL = 'https://fitted.aihighstakes.workers.dev';
+
+    let currentUser = null; // Will hold { email, referrals, gemsEarned, claimedMilestones }
+
+    // Milestones definition
+    const MILESTONES = [
+      { id: "confirmed", text: "Email Confirmed", gems: 500, requiredRefs: 0 },
+      { id: "3", text: "3 Referrals", gems: 500, requiredRefs: 3 },
+      { id: "10", text: "10 Referrals", gems: 2000, requiredRefs: 10 },
+      { id: "25", text: "25 Referrals", gems: 10000, requiredRefs: 25 },
+      { id: "50", text: "50 Referrals", gems: 25000, requiredRefs: 50 }
+    ];
+
+    // Render milestones
+    function renderMilestones() {
+      const container = document.getElementById('milestones');
+      const feedback = document.getElementById('claim-feedback');
+      feedback.textContent = '';
+
+      if (!currentUser) {
+        container.innerHTML = '<p style="text-align:center;color:#888;">Enter your email above to view progress</p>';
+        return;
+      }
+
+      document.getElementById('gems-total').textContent = `Gems Earned: ${currentUser.gemsEarned || 0}`;
+
+      container.innerHTML = MILESTONES.map(m => {
+        const isReached = m.id === "confirmed" ? currentUser.confirmed : (currentUser.referrals || 0) >= m.requiredRefs;
+        const isClaimed = currentUser.claimedMilestones?.includes(m.id) || false;
+
+        let buttonClass = 'locked';
+        let buttonText = 'Locked';
+        let clickable = false;
+
+        if (isReached && !isClaimed) {
+          buttonClass = 'claimable';
+          buttonText = 'Claim';
+          clickable = true;
+        } else if (isClaimed) {
+          buttonClass = 'claimed';
+          buttonText = 'Claimed!';
+        }
+
+        const check = isClaimed ? '✓' : '';
+
+        return `
+          <div class="milestone">
+            <div class="milestone-left">
+              <span class="milestone-check">${check}</span>
+              <span class="milestone-text">${m.text}</span>
+            </div>
+            <div class="milestone-gems">
+              ${m.gems}
+              <img src="https://www.shutterstock.com/image-vector/blue-diamond-icon-polygonal-gem-260nw-2535489491.jpg" alt="Gem" class="small-gem">
+            </div>
+            <div class="milestone-button ${buttonClass}" ${clickable ? `onclick="claimGems('${m.id}')" ` : ''}>
+              ${buttonText}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Claim gems
+    async function claimGems(milestone) {
+      const feedback = document.getElementById('claim-feedback');
+      feedback.textContent = 'Claiming...';
+
+      try {
+        const res = await fetch(`${WORKER_URL}/claim`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: currentUser.email, milestone })
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          currentUser.gemsEarned = data.totalGems;
+          if (!currentUser.claimedMilestones) currentUser.claimedMilestones = [];
+          currentUser.claimedMilestones.push(milestone);
+          feedback.textContent = `+${data.gemsAdded} gems claimed!`;
+          renderMilestones();
+        } else {
+          feedback.textContent = data.error || 'Error claiming';
+          feedback.style.color = '#c53030';
+        }
+      } catch {
+        feedback.textContent = 'Network error';
+        feedback.style.color = '#c53030';
+      }
+
+      setTimeout(() => feedback.textContent = '', 3000);
+    }
+
     // Leaderboard load
     async function loadLeaderboard() {
       const container = document.getElementById('leaderboard-body');
@@ -537,14 +627,14 @@
     }
     loadLeaderboard();
     setInterval(loadLeaderboard, 60000);
-  
+
     // Pre-fill referral code from URL
     const urlParams = new URLSearchParams(window.location.search);
     const urlRef = urlParams.get('ref');
     if (urlRef) {
       document.getElementById('ref-code').value = urlRef.toUpperCase();
     }
-  
+
     // Main sign-up form
     const form = document.getElementById('signup-form');
     const messageDiv = document.getElementById('message');
@@ -581,8 +671,8 @@
       submitBtn.disabled = false;
       submitBtn.textContent = 'Join Now';
     });
-  
-    // === STATS LOGIN - FULLY RESTORED ===
+
+    // Stats Login
     const statsEmailInput = document.getElementById('stats-email');
     const checkStatsBtn = document.getElementById('check-stats-btn');
     const statsMessage = document.getElementById('stats-message');
@@ -592,7 +682,7 @@
     const modalRefCode = document.getElementById('modal-ref-code');
     const modalForm = document.getElementById('modal-signup-form');
     const modalMessage = document.getElementById('modal-message');
-  
+
     checkStatsBtn.addEventListener('click', async () => {
       const email = statsEmailInput.value.trim().toLowerCase();
       if (!email || !email.includes('@')) {
@@ -600,36 +690,37 @@
         return;
       }
       statsMessage.innerHTML = 'Checking...';
-  
+
       try {
         const res = await fetch(`${WORKER_URL}/leaderboard`);
         const users = await res.json();
         const user = users.find(u => u.email.toLowerCase() === email);
-  
+
         if (user) {
-          TasksModule.setUser({
+          currentUser = {
             email: user.email,
             referrals: user.referrals || 0,
             gemsEarned: user.gemsEarned || 0,
-            confirmed: true,
-            claimedMilestones: [] // We don't track this in leaderboard response yet
-          });
+            confirmed: true, // assume confirmed if in leaderboard
+            claimedMilestones: user.claimedMilestones || []
+          };
           statsMessage.innerHTML = '<small style="color:#2e8b57;">Stats loaded!</small>';
+          renderMilestones();
         } else {
           modalEmail.value = email;
           modalRefCode.value = urlRef ? urlRef.toUpperCase() : '';
           modal.style.display = 'flex';
           statsMessage.innerHTML = '';
         }
-      } catch (err) {
+      } catch {
         statsMessage.innerHTML = '<small style="color:#c53030;">Error checking email</small>';
       }
     });
-  
+
     closeModal.addEventListener('click', () => {
       modal.style.display = 'none';
     });
-  
+
     modalForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       modalMessage.innerHTML = 'Joining...';
@@ -652,12 +743,9 @@
         modalMessage.innerHTML = '<div class="message error">Network error</div>';
       }
     });
-  
+
     // Initial render
-    TasksModule.render();
+    renderMilestones();
   </script>
 </body>
 </html>
-
-
-
