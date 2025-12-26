@@ -337,73 +337,69 @@
   <script src="tasks.js"></script>
 
   <script>
-    const WORKER_URL = 'https://fitted.aihighstakes.workers.dev';
-
+    // NO const WORKER_URL here — it's defined in tasks.js
+  
     const urlParams = new URLSearchParams(window.location.search);
     const userCode = urlParams.get('code');
-
+  
     if (!userCode) {
       document.body.innerHTML = "<h1 style='text-align:center;margin-top:100px;color:#c53030;'>Invalid confirmation link</h1>";
     } else {
       document.getElementById('ref-code').textContent = userCode;
       const fullLink = `https://highstakes-ai.github.io/Odysseus/leaderboard?ref=${userCode}`;
       document.getElementById('share-link').textContent = fullLink;
-
+  
       const shareMessage = "Fitted is the AI that finally understands your style. No more endless scrolling. Join the waitlist with my link for early access:";
-
+  
       document.getElementById('copy-btn').addEventListener('click', () => {
         navigator.clipboard.writeText(`${shareMessage}\n\n${fullLink}`);
         const msg = document.getElementById('copy-message');
         msg.classList.add('show');
         setTimeout(() => msg.classList.remove('show'), 2000);
       });
-
+  
       const encodedMessage = encodeURIComponent(shareMessage);
       const encodedLink = encodeURIComponent(fullLink);
       document.getElementById('twitter-share').href = `https://twitter.com/intent/tweet?text=${encodedMessage}&url=${encodedLink}`;
       document.getElementById('facebook-share').href = `https://www.facebook.com/sharer/sharer.php?u=${encodedLink}`;
       document.getElementById('whatsapp-share').href = `https://wa.me/?text=${encodedMessage}%20${encodedLink}`;
-
+  
       // Load user stats using code → find email via /leaderboard then full data via /status
       async function loadUserStats() {
         try {
           const res = await fetch(`${WORKER_URL}/leaderboard`);
           const users = await res.json();
-          const user = users.find(u => u.code === userCode || u.email.endsWith(userCode)); // fallback if needed
-
-          if (user) {
-            // Now get full data including claimedMilestones
-            const statusRes = await fetch(`${WORKER_URL}/status?email=${encodeURIComponent(user.email)}`);
-            if (statusRes.ok) {
-              const fullUser = await statusRes.json();
-              TasksModule.setUser({
-                email: fullUser.email,
-                referrals: fullUser.referrals,
-                gemsEarned: fullUser.gemsEarned,
-                confirmed: fullUser.confirmed,
-                claimedMilestones: fullUser.claimedMilestones
-              });
-
-              // Update rank and referrals
-              const rank = users.findIndex(u => u.email === user.email) + 1;
-              document.getElementById('user-rank').textContent = rank > 0 ? `#${rank}` : '—';
-              document.getElementById('user-referrals').textContent = fullUser.referrals;
-            }
-          } else {
-            document.getElementById('user-rank').textContent = '—';
-            document.getElementById('user-referrals').textContent = '0';
-          }
+  
+          // Find user by referral code (since leaderboard returns code? Wait — actually leaderboard doesn't return code)
+          // Better: we need to reverse-lookup email by code
+          // But leaderboard doesn't have code — so we need a new endpoint or accept limitation
+  
+          // TEMP FIX: Assume we can't get exact rank here, just load full user data if possible
+          // We'll load stats using a new /user-by-code endpoint later if needed
+          // For now, just show referrals = 0 and rank = —
+  
+          document.getElementById('user-referrals').textContent = '0';
+          document.getElementById('user-rank').textContent = '—';
+  
+          // But still try to load gem progress if possible (requires email)
+          // Since we only have code, we can't fetch /status
+          // So tasks will show "Enter email" message until we add /user-by-code
+  
+          // Optional: Auto-claim "confirmed" milestone on load (since they're here)
+          // But better to keep manual
+  
         } catch (err) {
-          console.error("Failed to load stats", err);
+          console.error("Failed to load leaderboard", err);
           document.getElementById('user-rank').textContent = '—';
         }
       }
-
+  
       loadUserStats();
+  
+      // Initial render of tasks (will show "Enter email" prompt until we have email)
+      TasksModule.render();
     }
-
-    // Initial render
-    TasksModule.render();
   </script>
 </body>
 </html>
+
