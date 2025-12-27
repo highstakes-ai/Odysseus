@@ -622,8 +622,6 @@ a {
 .hero-section {
   width: 100%;
   max-width: 420px;
-  margin: 2rem 1rem 1.5rem 1rem;
-  overflow: hidden;
 }
 
 .hero-image {
