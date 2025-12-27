@@ -122,9 +122,10 @@ h1 {
 .live-badge {
   display: inline-flex;
   align-items: center;
-  background: #000;
-  color: white;
-  padding: 0.4rem 0.8rem;
+  background: white;           /* White background */
+  color: #000;                 /* Black text */
+  border: 2px solid #000;      /* 2px black stroke */
+  padding: 0.4rem 0.9rem;      /* Slightly more horizontal padding for balance */
   border-radius: 30px;
   font-size: 0.9rem;
   font-weight: bold;
