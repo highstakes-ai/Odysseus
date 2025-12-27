@@ -184,6 +184,10 @@ h1 {
 .leaderboard-section {
   padding: 1.5rem 1rem;
   background: white;
+  border-radius: 16px;           /* Slightly larger radius for modern look */
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1); /* Same shadow as main container */
+  overflow: hidden;              /* Ensures rounded corners clip content */
+  margin: 0 1rem 2rem 1rem;      /* Optional: space from sides and below */
 }
 
 .leaderboard-header {
@@ -235,7 +239,6 @@ h1 {
   display: flex;
   padding: 0.8rem 1rem;
   font-weight: bold;
-  border-radius: 8px 8px 0 0;
 }
 
 .lb-rank { width: 15%; }
