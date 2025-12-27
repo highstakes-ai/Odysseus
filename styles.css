@@ -185,7 +185,6 @@ h1 {
   padding: 1.5rem 1rem;
   background: white;
   border-radius: 16px;           /* Slightly larger radius for modern look */
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1); /* Same shadow as main container */
   overflow: hidden;              /* Ensures rounded corners clip content */
   margin: 0 1rem 2rem 1rem;      /* Optional: space from sides and below */
 }
@@ -239,6 +238,7 @@ h1 {
   display: flex;
   padding: 0.8rem 1rem;
   font-weight: bold;
+  border-radius: 12px;
 }
 
 .lb-rank { width: 15%; }
