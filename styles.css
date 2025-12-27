@@ -19,7 +19,6 @@
 
 body {
   margin: 0;
-  padding-top: 40px; /* ← Add this line */
   font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background: #ffffff;
   color: #333;
@@ -114,6 +113,7 @@ strong, b,
 header {
   text-align: center;
   padding: 1.5rem 1rem 1rem;
+  margin-bottom: 40px;
 }
 
 h1 {
