@@ -19,14 +19,17 @@
 
 body {
   margin: 0;
+  padding-top: 40px; /* ← Add this line */
   font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background: #ffffff;
   color: #333;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 1rem;
-} /* ← This closing brace was missing */
+  padding-left: 1rem;   /* optional: keep side padding */
+  padding-right: 1rem;
+  padding-bottom: 1rem;
+}
 
 h1, h2, h3, h4, h5, h6,
 strong, b,
