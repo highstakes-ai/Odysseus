@@ -129,56 +129,83 @@ h1 {
 }
 
 .prize-pot {
-  background: rgba(255, 255, 255, 0.15);     /* Semi-transparent white */
-  backdrop-filter: blur(20px);              /* The frosted glass blur */
-  -webkit-backdrop-filter: blur(20px);      /* Safari support */
-  border-radius: 24px;                      /* Rounded corners */
-  border: 1px solid rgba(255, 255, 255, 0.3); /* Subtle glowing border */
-  box-shadow: 
-    0 8px 32px rgba(0, 0, 0, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.4); /* Outer shadow + inner highlight */
-  padding: 2rem;
+  position: relative;
+  background: rgba(173, 216, 255, 0.25); /* Light blue tint, semi-transparent */
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 28px;
+  padding: 2.5rem 2rem;
   text-align: center;
   color: white;
   margin: 2rem 1rem;
-  position: relative;
   overflow: hidden;
+  box-shadow: 
+    0 12px 32px rgba(0, 0, 0, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
 
-/* Optional: subtle inner glow */
+/* Iridescent gradient border */
 .prize-pot::before {
   content: '';
   position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: linear-gradient(135deg, 
-    rgba(255, 255, 255, 0.1) 0%, 
-    rgba(255, 255, 255, 0) 50%);
+  inset: 0;
+  padding: 2px; /* Thickness of the border */
+  background: linear-gradient(
+    135deg,
+    #00f0ff 0%,
+    #7ec0ff 20%,
+    #a0d8ff 40%,
+    #c0e8ff 60%,
+    #e0f4ff 80%,
+    #ffffff 100%
+  );
+  border-radius: 30px;
+  mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: destination-out;
   pointer-events: none;
-  border-radius: 24px;
 }
 
+/* Inner subtle glow */
+.prize-pot::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(255, 255, 255, 0.2) 0%,
+    transparent 50%
+  );
+  border-radius: 28px;
+  pointer-events: none;
+}
+
+/* Text styling for maximum shine */
 .prize-pot h2 {
-  margin: 0 0 0.8rem;
+  margin: 0 0 1rem;
   font-size: 1.4rem;
   font-weight: bold;
-  opacity: 0.9;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .grand-prize {
-  font-size: 3rem;
+  font-size: 3.2rem;
   font-weight: bold;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.8rem;
+  gap: 1rem;
   margin: 0.5rem 0;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3); /* Helps readability */
+  text-shadow: 
+    0 2px 10px rgba(0, 0, 0, 0.4),
+    0 0 20px rgba(0, 240, 255, 0.4);
+  letter-spacing: 1px;
 }
 
 .diamond {
   width: auto;
-  height: 50px;
-  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+  height: 56px;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
 }
 
 .prize-list {
