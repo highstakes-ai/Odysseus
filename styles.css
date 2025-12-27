@@ -133,6 +133,7 @@ h1 {
   color: white;
   text-align: center;
   padding: 1.5rem;
+  border-radius: 12px;
 }
 
 .prize-pot h2 {
