@@ -43,17 +43,21 @@
       </div>
     </div>
     <div class="leaderboard-section">
-      <div class="live-badge">
-        Live Leaderboard
+      <div class="leaderboard-header">
+        <div class="lb-title">Top Referrers</div>
+        <div class="live-badge">
+          Live Leaderboard
+        </div>
       </div>
-      <div class="lb-title">Top Referrers</div>
-      <div class="lb-header">
-        <div class="lb-rank">Rank</div>
-        <div class="lb-user">User</div>
-        <div class="lb-refs">Referrals</div>
-      </div>
-      <div id="leaderboard-body">
-        <div class="loading">Loading live leaderboard...</div>
+      <div class="leaderboard-table">
+        <div class="lb-header">
+          <div class="lb-rank">Rank</div>
+          <div class="lb-user">User</div>
+          <div class="lb-refs">Referrals</div>
+        </div>
+        <div id="leaderboard-body">
+          <div class="loading">Loading live leaderboard...</div>
+        </div>
       </div>
     </div>
     <!-- Your Ref Stats Section -->
@@ -152,7 +156,6 @@
       }
     }
     loadLeaderboard();
-    setInterval(loadLeaderboard, 60000);
 
     // Pre-fill referral code from URL
     const urlParams = new URLSearchParams(window.location.search);
@@ -272,6 +275,7 @@
   </script>
 </body>
 </html>
+
 
 
 
