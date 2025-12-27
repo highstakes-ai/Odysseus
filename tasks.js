@@ -57,7 +57,7 @@ function renderMilestones() {
           <span class="milestone-text">${m.text}</span>
         </div>
         <div class="milestone-gems">
-          ${m.gems}
+          <span class="gem-amount">${m.gems}</span>
           <img src="gem.png" alt="Gem" class="small-gem">
         </div>
         <div class="milestone-button ${buttonClass}" style="cursor:${cursor};" ${onclick}>
@@ -109,5 +109,4 @@ window.TasksModule = {
     currentUser = user;
     renderMilestones();
   }
-
 };
