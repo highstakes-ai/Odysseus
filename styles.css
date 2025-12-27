@@ -239,7 +239,7 @@ h1 {
 }
 
 .leaderboard-section {
-  padding: 1.5rem 1rem;
+  /*padding: 1.5rem 1rem;*/
   background: white;
   border-radius: 16px;           /* Slightly larger radius for modern look */
   overflow: hidden;              /* Ensures rounded corners clip content */
