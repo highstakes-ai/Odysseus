@@ -108,12 +108,12 @@ strong, b,
   border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  margin-top: 40px;
 }
 
 header {
   text-align: center;
   padding: 1.5rem 1rem 1rem;
-  margin-bottom: 40px;
 }
 
 h1 {
