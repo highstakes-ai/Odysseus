@@ -39,6 +39,7 @@ strong, b,
 
 /* Fitted Header */
 /* Fitted Header - Fully Responsive */
+/* Fitted Header - Full width on all screens */
 .fitted-header {
   width: 100%;
   height: 60px;
@@ -55,9 +56,10 @@ strong, b,
   justify-content: space-between;
   align-items: center;
   height: 100%;
-  padding: 0 15px; /* 15px padding on both sides */
-  max-width: 420px; /* Matches your main container */
-  margin: 0 auto;   /* Centers content on wider screens */
+  width: 100%;
+  padding: 0 15px;           /* 15px padding left and right */
+  max-width: none;           /* Remove max-width limit */
+  margin: 0;                 /* No auto centering */
   box-sizing: border-box;
 }
 
@@ -76,7 +78,7 @@ strong, b,
 .hamburger-menu {
   background: none;
   border: none;
-  padding: 10px; /* Larger tap area */
+  padding: 10px;
   cursor: pointer;
   color: #000;
   display: flex;
