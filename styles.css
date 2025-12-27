@@ -40,15 +40,19 @@ strong, b,
 /* Fitted Header */
 /* Fitted Header - Fully Responsive */
 /* Fitted Header - Full width on all screens */
+/* Fitted Header - FULL WIDTH on all screens, no exceptions */
 .fitted-header {
-  width: 100%;
+  width: 100vw;                    /* Full viewport width */
   height: 60px;
   background: white;
   border-bottom: 1px solid #eee;
   position: sticky;
   top: 0;
+  left: 0;                         /* Ensure it starts at screen edge */
   z-index: 1000;
   box-sizing: border-box;
+  margin: 0;                       /* Override any inherited margin */
+  padding: 0;                      /* Clean slate */
 }
 
 .header-container {
@@ -57,9 +61,7 @@ strong, b,
   align-items: center;
   height: 100%;
   width: 100%;
-  padding: 0 15px;           /* 15px padding left and right */
-  max-width: none;           /* Remove max-width limit */
-  margin: 0;                 /* No auto centering */
+  padding: 0 15px;                 /* 15px from left and right edges */
   box-sizing: border-box;
 }
 
