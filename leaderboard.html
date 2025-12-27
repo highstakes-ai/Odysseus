@@ -293,12 +293,21 @@
     .milestone-gems {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 6px;
       font-weight: bold;
+      min-width: 80px;           /* Ensures consistent width */
+      justify-content: flex-end; /* Aligns number + gem to the right */
+    }
+
+    .gem-amount {
+      font-size: 1.1em;
+      min-width: 50px;           /* Forces numbers to take same space (500 vs 25000) */
+      text-align: right;
     }
     .small-gem {
-      width: auto;
-      height: 24px;
+      width: 24px;
+      height: auto;
+      object-fit: contain;
     }
     .milestone-button {
       padding: 0.6rem 1.2rem;
@@ -649,6 +658,7 @@
   </script>
 </body>
 </html>
+
 
 
 
