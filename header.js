@@ -1,4 +1,4 @@
-// header.js - Reusable Fitted Header Module (vanilla JS - no modules)
+// header.js - Reusable Fitted Header Module (vanilla JS - no modules) 
 
 document.addEventListener('DOMContentLoaded', () => {
   // Avoid injecting multiple headers if script loads twice
