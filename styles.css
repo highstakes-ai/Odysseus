@@ -38,6 +38,7 @@ strong, b,
 }
 
 /* Fitted Header */
+/* Fitted Header - Fully Responsive */
 .fitted-header {
   width: 100%;
   height: 60px;
@@ -54,15 +55,16 @@ strong, b,
   justify-content: space-between;
   align-items: center;
   height: 100%;
-  max-width: 420px;
-  margin: 0 auto;
-  padding: 0 1rem;
+  padding: 0 15px; /* 15px padding on both sides */
+  max-width: 420px; /* Matches your main container */
+  margin: 0 auto;   /* Centers content on wider screens */
   box-sizing: border-box;
 }
 
 .logo-link {
   display: block;
   height: 25px;
+  flex-shrink: 0;
 }
 
 .fitted-logo {
@@ -74,21 +76,25 @@ strong, b,
 .hamburger-menu {
   background: none;
   border: none;
-  padding: 0;
+  padding: 10px; /* Larger tap area */
   cursor: pointer;
   color: #000;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
+  border-radius: 8px;
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+
+.hamburger-menu:hover {
+  background: #f0f0f0;
 }
 
 .hamburger-menu svg {
   width: 24px;
   height: 24px;
 }
-
 .container {
   width: 100%;
   max-width: 420px;
