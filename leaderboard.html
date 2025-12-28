@@ -65,12 +65,12 @@
     </div>
     <div class="leaderboard-section">
       <div class="leaderboard-header">
-        <div class="lb-title">Top Referrers</div>
+        <div class="lb-title">Contest Leaderboard</div>
         <div class="live-badge">
           Live
         </div>
       </div>
-      <div class="leaderboard-table" style="border-radius:0 12px 12px 0; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+      <div class="leaderboard-table" style="border-radius:0 12px 12px 0;">
         <div class="lb-header">
           <div class="lb-rank">Rank</div>
           <div class="lb-user">User</div>
@@ -118,32 +118,77 @@
   <script src="tasks.js"></script>
 
   <script>
-    // Leaderboard load
+    // Leaderboard load – with dummy data for testing
     async function loadLeaderboard() {
       const container = document.getElementById('leaderboard-body');
+      container.innerHTML = '<div class="loading">Loading leaderboard...</div>';
+
+      // ────────────────────────────────────────────────
+      // DUMMY DATA – use this for testing / styling
+      const dummyData = [
+        { email: "zz@gmail.com",   referrals: 6 },
+        { email: "xx@gmail.com",   referrals: 1 },
+        { email: "aaa@gmail.com",  referrals: 0 },
+        { email: "sss@gmail.com",  referrals: 0 },
+        { email: "ssas@gmail.com", referrals: 0 }
+      ];
+      // ────────────────────────────────────────────────
+
+      // === FOR TESTING: uncomment next line to ALWAYS use dummy data
+      // return renderLeaderboard(dummyData);
+
       try {
         const res = await fetch(`${WORKER_URL}/leaderboard`);
-        if (!res.ok) throw new Error();
+        if (!res.ok) throw new Error("Leaderboard fetch failed");
         const data = await res.json();
+
         if (data.length === 0) {
           container.innerHTML = '<div class="loading">No referrals yet – be the first!</div>';
           return;
         }
-        container.innerHTML = data.map((user, index) => {
+
+        renderLeaderboard(data);
+      } catch (err) {
+        console.warn("Using dummy data because:", err.message);
+        renderLeaderboard(dummyData);
+        // Optional: show a small note
+        // container.innerHTML += '<br><small>(using test data)</small>';
+      }
+
+      // ────────────────────────────────────────────────
+      // Helper: render the rows (shared for real + dummy data)
+      function renderLeaderboard(users) {
+        // Sort descending by referrals (highest first)
+        const sorted = [...users].sort((a, b) => b.referrals - a.referrals);
+
+        container.innerHTML = sorted.map((user, index) => {
           const rank = index + 1;
-          const crown = rank === 1 ? `<img src="https://thumbs.dreamstime.com/b/golden-crown-ranking-ribbons-vector-illustration-two-gold-japanese-text-meaning-no-sales-popularity-flat-graphic-style-413010595.jpg" alt="Crown" class="crown">` : '';
+          const displayName = user.email.includes('@')
+            ? user.email.split('@')[0] + '***'
+            : user.email;
+          const rankLabel = getRankLabel(rank);
+
           return `
             <div class="lb-row">
-              <div class="lb-rank-num">${crown || ''}${rank === 1 ? '' : rank}</div>
-              <div class="lb-user-name">${user.email.split('@')[0]}***</div>
+              <div class="lb-rank-num">
+                ${rankLabel}
+              </div>
+              <div class="lb-user-name">${displayName}</div>
               <div class="lb-refs-num">${user.referrals}</div>
             </div>
           `;
         }).join('');
-      } catch (err) {
-        container.innerHTML = '<div class="loading">Leaderboard coming soon...<br><small>Backend deploying – refresh in a minute!</small></div>';
+      }
+
+      // Rank label helper (1st, 2nd, 3rd, 4th, 5th, ...)
+      function getRankLabel(rank) {
+        if (rank === 1) return "1st";
+        if (rank === 2) return "2nd";
+        if (rank === 3) return "3rd";
+        return `${rank}th`;
       }
     }
+
     loadLeaderboard();
 
     // Pre-fill referral code from URL
