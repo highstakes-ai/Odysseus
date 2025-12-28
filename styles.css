@@ -620,7 +620,7 @@ a {
   position: relative;
   width: 100%;
   max-width: 420px;
-  aspect-ratio: 5 / 8;  /* Makes it taller (portrait-like) – adjust if needed 9 / 16 */
+  aspect-ratio: 5 / 7;  /* Makes it taller (portrait-like) – adjust if needed 9 / 16 */
   overflow: hidden;      /* Ensures cropped edges are clean */
   border-radius: 20px;
   margin: 0 auto;        /* Centers it if needed */
@@ -714,4 +714,26 @@ a {
     0 4px 12px rgba(0,0,0,0.3),
     0 0 20px rgba(0,0,0,0.1);
   letter-spacing: 2px;
+}
+
+/* Center the subtitle and place the gem before the text */
+.subtitle-with-gem {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem; /* Space between gem and text */
+  margin-top: 0.5rem;
+  font-size: 1.2rem; /* Matches your usual subtitle size */
+}
+
+.small-gem {
+  width: 32px;        /* Adjust size as needed */
+  height: auto;
+  object-fit: contain;
+}
+
+/* Ensure the paragraph has no extra margin that breaks alignment */
+.subtitle-with-gem .subtitle {
+  margin: 0;
+  font-weight: 600;
 }
