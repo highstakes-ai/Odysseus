@@ -737,3 +737,45 @@ a {
   margin: 0;
   font-weight: 600;
 }
+
+/* Unified Auth Section (merged join + check) */
+.unified-auth-section {
+  padding: 1.5rem 1rem;
+  background: linear-gradient(to bottom, #f9f9f9, #f0f8ff);
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+}
+
+.auth-title {
+  font-size: 1.3rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.auth-subtitle {
+  text-align: center;
+  color: #666;
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Reuse your existing .email-input and .submit-btn styles – they fit perfectly */
+#auth-btn {
+  margin-top: 0.5rem;
+}
+
+/* Make sure messages look good */
+#auth-message {
+  text-align: center;
+  padding: 0.8rem;
+  border-radius: 8px;
+  font-weight: 600;
+  margin-top: 0.5rem;
+}
