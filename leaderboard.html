@@ -32,12 +32,13 @@
         <h1 class="grand-prize-number">100,000 Gems Grand Prize Pot</h1>
       </div>
 
-      <!-- Glass box with "Grand Prize Pot" -->
+      <!-- Glass box with "Participate Now" – now a button -->
       <div class="hero-text-overlay">
-        <div class="hero-text-box">
-          <p class="subtitle">Participate Now</p>
-        </div>
+        <button class="hero-participate-btn">
+          Participate Now
+        </button>
       </div>
+      
     </div>
         
     <div class="prize-list">
@@ -279,6 +280,17 @@
 
       authBtn.disabled = false;
       authBtn.textContent = 'Continue';
+    });
+
+    // Smooth scroll to join/check section when Participate Now button is clicked
+    document.querySelector('.hero-participate-btn')?.addEventListener('click', () => {
+      const target = document.querySelector('.unified-auth-section');
+      if (target) {
+        target.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'start' 
+        });
+      }
     });
 
     // Initial render of milestones (in case page loads with existing user somehow)
