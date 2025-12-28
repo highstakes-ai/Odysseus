@@ -428,57 +428,78 @@ a {
   position: relative;
   width: 100%;
   max-width: 420px;
-  aspect-ratio: 5 / 7;  /* Makes it taller (portrait-like) – adjust if needed 9 / 16 */
-  overflow: hidden;      /* Ensures cropped edges are clean */
+  aspect-ratio: 5 / 7; /* Makes it taller (portrait-like) – adjust if needed */
+  overflow: hidden;     /* Ensures cropped edges are clean */
   border-radius: 20px;
-  margin: 0 auto;        /* Centers it if needed */
+  margin: 0 auto;       /* Centers it if needed */
 }
 
 .hero-image {
   width: 100%;
   height: 100%;
-  object-fit: cover;     /* Fills the container, crops edges without distortion */
+  object-fit: cover;    /* Fills the container, crops edges without distortion */
   display: block;
 }
 
 /* Big prize number */
 .hero-grand-prize {
   position: absolute;
-  top: 10%;  /* Moved down a bit to fit the taller section */
+  top: 20%;             /* Adjusted to sit nicely above the button */
   left: 50%;
   transform: translateX(-50%);
   z-index: 2;
   text-align: center;
 }
 
-/* Keep your overlay styles – they work great with this */
+/* Overlay wrapper for the Participate Now button */
 .hero-text-overlay {
   position: absolute;
-  top: 28%;
+  bottom: 15%;          /* Pushes the button toward the bottom of the image */
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);
   text-align: center;
-  width: 100%;
-  color: white;
-  text-shadow: 0 2px 10px rgba(0,0,0,0.4);
-  z-index: 2;  /* Raised from 0 so it's above the image */
+  width: 90%;
+  z-index: 2;
 }
 
-/* Shining animation for the hero text box */
-.hero-text-box {
+/* The Participate Now button – solid black with shine */
+.hero-participate-btn {
   position: relative;
-  overflow: hidden; /* Needed to contain the shine */
-  background: black;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  border-radius: 20px;
-  padding: 0rem 1rem;
-  border: 3px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-  display: inline-block;
+  background: #000000;  /* Solid black – no glass */
+  border: none;         /* No border for clean look */
+  border-radius: 8px;
+  padding: 1rem 2.5rem;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  animation: float 3.8s ease-in-out infinite; /* soft constant float */
+  text-shadow: 0 2px 10px rgba(0,0,0,0.6);
+  white-space: nowrap;
 }
 
-.hero-text-box::before {
+/* Hover: lift higher + stronger shadow + slight scale */
+.hero-participate-btn:hover {
+  transform: translateY(-8px) scale(1.06);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  background: #111111; /* slightly lighter black on hover */
+}
+
+/* Floating animation – gentle up/down */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Shine effect on the button (kept for premium feel) */
+.hero-participate-btn::before {
   content: '';
   position: absolute;
   top: -50%;
@@ -488,11 +509,11 @@ a {
   background: linear-gradient(
     120deg,
     transparent 30%,
-    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0.25) 50%,  /* softer shine on black */
     transparent 70%
   );
   transform: translateX(-100%);
-  animation: shine 6s infinite linear;
+  animation: shine 5s infinite linear;
   pointer-events: none;
   z-index: 1;
 }
@@ -506,12 +527,13 @@ a {
   }
 }
 
-/* Ensure text stays above the shine effect */
-.hero-text-box > * {
+/* Ensure button text stays above shine */
+.hero-participate-btn {
   position: relative;
   z-index: 2;
 }
 
+/* Big prize number styling (unchanged) */
 .grand-prize-number {
   font-size: 1.5rem;
   font-weight: bold;
