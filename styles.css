@@ -106,7 +106,6 @@ strong, b,
   max-width: 420px;
   background: white;
   border-radius: 20px;
-  overflow: hidden;
   margin-top: 0px;
 }
 
@@ -237,10 +236,13 @@ h1 {
   font-weight: bold;
 }
 
+/* Soft shadow on the entire leaderboard container */
 .leaderboard-section {
-  /*padding: 1.5rem 1rem;*/
+  margin-bottom: 2.5rem;          /* adds nice whitespace below the leaderboard */
+  padding: 1.5rem 1rem;           /* optional: a bit more internal breathing room */
   background: white;
-  overflow: hidden;              /* Ensures rounded corners clip content */
+  border-radius: 16px;            /* softer corners to match modern feel */
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);   /* soft, subtle shadow */
 }
 
 .leaderboard-header {
@@ -265,6 +267,7 @@ h1 {
   border-radius: 30px;
   font-size: 0.9rem;
   font-weight: bold;
+  margin-bottom: 0.5rem;
 }
 
 .live-badge::before {
@@ -286,49 +289,70 @@ h1 {
   margin-bottom: 1rem;
 }
 
+/* Leaderboard table container */
+.leaderboard-table {
+  background: white;
+  border-radius: 12px;
+  
+}
+
+/* Restored table header */
 .lb-header {
   background: #000;
   color: white;
   display: flex;
-  padding: 0.8rem 1rem;
+  padding: 0.9rem 1.2rem;
   font-weight: bold;
-  border-radius: 12px;
+  border-radius: 12px 12px 0 0;
 }
 
-.lb-rank { width: 15%; }
-.lb-user { width: 55%; }
-.lb-refs { width: 30%; text-align: right; }
+.lb-rank   { width: 20%; }
+.lb-user   { width: 50%; }
+.lb-refs   { width: 30%; text-align: right; }
 
+/* Rows styled similarly to prize-item (clean, separated) */
 .lb-row {
   display: flex;
-  padding: 1rem;
-  border-bottom: 1px solid #eee;
+  justify-content: space-between;
   align-items: center;
+  padding: 0.9rem 1.2rem;
+  border-bottom: 1px solid #eee;
+  font-size: 1.1rem;
+  transition: background 0.15s ease;
 }
 
 .lb-row:last-child {
   border-bottom: none;
 }
 
+.lb-row:hover {
+  background: #f9f9f9;
+}
+
+/* Rank: grey, not bold */
 .lb-rank-num {
-  font-weight: bold;
-  font-size: 1.2rem;
+  color: #888;                      /* grey like prize rank-label */
+  font-weight: normal;              /* not bold */
+  min-width: 70px;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;                      /* space for crown + label */
 }
 
-.crown {
-  width: 28px;
-  height: 28px;
-  margin-right: 0.5rem;
-}
-
+/* Username */
 .lb-user-name {
-  font-weight: 600;
+  flex: 1;
+  padding: 0 1rem;
+  font-weight: 500;
+  color: #222;
 }
 
+/* Referrals: grey + bold */
 .lb-refs-num {
   font-weight: bold;
+  color: #666;                      /* grey */
+  min-width: 60px;
   text-align: right;
-  flex: 1;
 }
 
 .loading {
@@ -646,7 +670,7 @@ a {
 /* Keep your overlay styles – they work great with this */
 .hero-text-overlay {
   position: absolute;
-  top: 35%;
+  top: 28%;
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
