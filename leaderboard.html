@@ -41,6 +41,7 @@
     </div>
         
     <div class="prize-list">
+      <p class="subtitle">Prize Breakdown</p>
       <div class="prize-item">
         <span class="rank-label">1st</span>
         <span class="amount">30,000</span>
@@ -80,73 +81,43 @@
         </div>
       </div>
     </div>
-    <!-- Your Ref Stats Section -->
-    <div class="ref-stats-section">
-      <!-- Total Gems -->
-      <div class="gems-total" id="gems-total">Gems Earned: 0</div>
-      <!-- Stats Login -->
-      <div class="stats-login">
-        <p><strong>Already joined?</strong> Enter your email to view your progress</p>
-        <div style="display:flex;justify-content:center;margin-top:0.5rem;">
-          <input type="email" id="stats-email" placeholder="Your email" class="email-input" style="border-radius:12px 0 0 12px;width:65%;" />
-          <button id="check-stats-btn" style="border-radius:0 12px 12px 0;">Check</button>
-        </div>
-        <div id="stats-message" style="margin-top:0.5rem;"></div>
-      </div>
-      <div class="milestones" id="milestones">
-        <!-- Milestones will be dynamically updated -->
-      </div>
-      <div class="claim-feedback" id="claim-feedback"></div>
-    </div>
-    <!-- Sign-up Module -->
-    <div class="signup-section">
-      <div class="signup-title">Join the Waitlist</div>
-      <p class="signup-subtitle">Get early access + start earning referrals</p>
-      <form id="signup-form" class="signup-form">
+
+    <!-- Unified Join / Check Section -->
+    <div class="unified-auth-section">
+      <div class="auth-title">Join or Check Progress</div>
+      <p class="auth-subtitle">Enter your email to join the waitlist or view your referral stats</p>
+
+      <form id="auth-form" class="auth-form">
         <input
           type="email"
-          id="email"
+          id="auth-email"
           name="email"
           class="email-input"
-          placeholder="Enter your email"
+          placeholder="Your email"
           required
         />
         <input
           type="text"
-          id="ref-code"
+          id="auth-ref-code"
           class="email-input"
           placeholder="Referral code (optional)"
           maxlength="10"
           style="margin-top: 0.8rem;"
         />
-        <button type="submit" class="submit-btn" id="submit-btn">Join Now</button>
-        <div id="message"></div>
+        <button type="submit" class="submit-btn" id="auth-btn">Continue</button>
+        <div id="auth-message"></div>
       </form>
+
+      <!-- Gems total & milestones will appear here after successful check/login -->
+      <div class="gems-total" id="gems-total" style="display:none; margin-top:1.5rem;">Gems Earned: 0</div>
+      <div class="milestones" id="milestones" style="display:none;"></div>
+      <div class="claim-feedback" id="claim-feedback"></div>
     </div>
-  </div>
-  <footer>
-    Back to <a href="/">Fitted Home</a> • Join the waitlist to start referring
-  </footer>
-  <!-- Modal for New User Sign-up -->
-  <div class="modal" id="signup-modal">
-    <div class="modal-content">
-      <span class="close-modal" id="close-modal">×</span>
-      <div class="modal-title">Welcome! Join the Waitlist</div>
-      <form id="modal-signup-form" class="modal-form">
-        <input type="email" id="modal-email" class="email-input" placeholder="Your email" required disabled />
-        <input type="text" id="modal-ref-code" class="email-input" placeholder="Referral code (optional)" maxlength="10" style="margin-top:0.8rem;" />
-        <button type="submit" class="submit-btn">Join Now</button>
-        <div id="modal-message"></div>
-      </form>
-    </div>
-  </div>
 
   <!-- Load modular tasks system -->
   <script src="tasks.js"></script>
 
   <script>
-    // NO const WORKER_URL here — it's already in tasks.js
-
     // Leaderboard load
     async function loadLeaderboard() {
       const container = document.getElementById('leaderboard-body');
@@ -178,117 +149,94 @@
     // Pre-fill referral code from URL
     const urlParams = new URLSearchParams(window.location.search);
     const urlRef = urlParams.get('ref');
-    if (urlRef) {
-      document.getElementById('ref-code').value = urlRef.toUpperCase();
+    if (urlRef && document.getElementById('auth-ref-code')) {
+      document.getElementById('auth-ref-code').value = urlRef.toUpperCase();
     }
 
-    // Main sign-up form
-    const form = document.getElementById('signup-form');
-    const messageDiv = document.getElementById('message');
-    const submitBtn = document.getElementById('submit-btn');
-    form.addEventListener('submit', async (e) => {
+    // Unified Continue button logic (join OR check progress)
+    const authForm = document.getElementById('auth-form');
+    const authEmailInput = document.getElementById('auth-email');
+    const authRefInput = document.getElementById('auth-ref-code');
+    const authBtn = document.getElementById('auth-btn');
+    const authMessage = document.getElementById('auth-message');
+    const gemsTotal = document.getElementById('gems-total');
+    const milestonesDiv = document.getElementById('milestones');
+
+    authForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      messageDiv.innerHTML = '';
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Joining...';
-      const email = document.getElementById('email').value.trim();
-      const manualRefCode = document.getElementById('ref-code').value.trim().toUpperCase();
+      authMessage.innerHTML = '';
+      authBtn.disabled = true;
+      authBtn.textContent = 'Processing...';
+
+      const email = authEmailInput.value.trim().toLowerCase();
+      const manualRefCode = authRefInput.value.trim().toUpperCase();
       let ref = urlParams.get('ref') || '';
       if (manualRefCode) ref = manualRefCode;
-      try {
-        const formData = new FormData();
-        formData.append('email', email);
-        const endpoint = ref ? `${WORKER_URL}/signup?ref=${encodeURIComponent(ref)}` : `${WORKER_URL}/signup`;
-        const response = await fetch(endpoint, { method: 'POST', body: formData });
-        let result;
-        try { result = await response.json(); } catch { result = { error: 'Invalid response' }; }
-        if (response.ok && result.success) {
-          let successMsg = result.message || 'Welcome! You’re on the waitlist.';
-          if (result.code) successMsg += `<br>Your referral code: <strong>${result.code}</strong><br>Share: <strong>https://highstakes-ai.github.io/Odysseus/leaderboard?ref=${result.code}</strong>`;
-          messageDiv.innerHTML = `<div class="message success">${successMsg}</div>`;
-          form.reset();
-          document.getElementById('ref-code').value = '';
-          loadLeaderboard();
-        } else {
-          messageDiv.innerHTML = `<div class="message error">${result.error || 'Something went wrong'}</div>`;
-        }
-      } catch (err) {
-        messageDiv.innerHTML = `<div class="message error">Network error – try again</div>`;
-      }
-      submitBtn.disabled = false;
-      submitBtn.textContent = 'Join Now';
-    });
 
-    // Stats Login — uses TasksModule
-    const statsEmailInput = document.getElementById('stats-email');
-    const checkStatsBtn = document.getElementById('check-stats-btn');
-    const statsMessage = document.getElementById('stats-message');
-    const modal = document.getElementById('signup-modal');
-    const closeModal = document.getElementById('close-modal');
-    const modalEmail = document.getElementById('modal-email');
-    const modalRefCode = document.getElementById('modal-ref-code');
-    const modalForm = document.getElementById('modal-signup-form');
-    const modalMessage = document.getElementById('modal-message');
-
-    checkStatsBtn.addEventListener('click', async () => {
-      const email = statsEmailInput.value.trim().toLowerCase();
       if (!email || !email.includes('@')) {
-        statsMessage.innerHTML = '<small style="color:#c53030;">Enter a valid email</small>';
+        authMessage.innerHTML = '<div class="message error">Please enter a valid email</div>';
+        authBtn.disabled = false;
+        authBtn.textContent = 'Continue';
         return;
       }
-      statsMessage.innerHTML = 'Checking...';
 
       try {
-        const res = await fetch(`${WORKER_URL}/status?email=${encodeURIComponent(email)}`);
-        if (!res.ok) {
-          const errData = await res.json();
-          statsMessage.innerHTML = `<small style="color:#c53030;">${errData.error || 'User not found'}</small>`;
+        // Step 1: Check if user already exists
+        const statusRes = await fetch(`${WORKER_URL}/status?email=${encodeURIComponent(email)}`);
+
+        if (statusRes.ok) {
+          // Existing user → load their stats
+          const user = await statusRes.json();
+          TasksModule.setUser({
+            email: user.email,
+            referrals: user.referrals,
+            gemsEarned: user.gemsEarned || 0,
+            confirmed: user.confirmed,
+            claimedMilestones: user.claimedMilestones || []
+          });
+
+          gemsTotal.style.display = 'block';
+          gemsTotal.textContent = `Gems Earned: ${user.gemsEarned || 0}`;
+          milestonesDiv.style.display = 'block';
+          TasksModule.render(); // Refresh milestones
+
+          authMessage.innerHTML = '<div class="message success">Welcome back! Your stats are loaded below.</div>';
+          authBtn.textContent = 'Continue';
+          authBtn.disabled = false;
+          loadLeaderboard();
           return;
         }
-        const user = await res.json();
 
-        TasksModule.setUser({
-          email: user.email,
-          referrals: user.referrals,
-          gemsEarned: user.gemsEarned,
-          confirmed: user.confirmed,
-          claimedMilestones: user.claimedMilestones
-        });
-
-        statsMessage.innerHTML = '<small style="color:#2e8b57;">Stats loaded!</small>';
-      } catch (err) {
-        statsMessage.innerHTML = '<small style="color:#c53030;">Network error</small>';
-      }
-    });
-
-    closeModal.addEventListener('click', () => {
-      modal.style.display = 'none';
-    });
-
-    modalForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      modalMessage.innerHTML = 'Joining...';
-      const email = modalEmail.value.trim();
-      const ref = modalRefCode.value.trim().toUpperCase() || urlParams.get('ref') || '';
-      try {
+        // Step 2: New user → sign them up
         const formData = new FormData();
         formData.append('email', email);
+
         const endpoint = ref ? `${WORKER_URL}/signup?ref=${encodeURIComponent(ref)}` : `${WORKER_URL}/signup`;
-        const response = await fetch(endpoint, { method: 'POST', body: formData });
-        const result = await response.json();
-        if (response.ok && result.success) {
-          modalMessage.innerHTML = '<div class="message success">Welcome! Check your email to confirm.</div>';
-          setTimeout(() => modal.style.display = 'none', 2000);
+        const signupRes = await fetch(endpoint, { method: 'POST', body: formData });
+        let result;
+        try { result = await signupRes.json(); } catch { result = { error: 'Invalid response' }; }
+
+        if (signupRes.ok && result.success) {
+          let successMsg = result.message || 'Welcome! You’re now on the waitlist.';
+          if (result.code) {
+            successMsg += `<br><br>Your referral code: <strong>${result.code}</strong><br>Share this link:<br><strong>https://highstakes-ai.github.io/Odysseus/leaderboard.html?ref=${result.code}</strong>`;
+          }
+          authMessage.innerHTML = `<div class="message success">${successMsg}</div>`;
+          authForm.reset();
+          authRefInput.value = '';
           loadLeaderboard();
         } else {
-          modalMessage.innerHTML = `<div class="message error">${result.error || 'Error'}</div>`;
+          authMessage.innerHTML = `<div class="message error">${result.error || 'Something went wrong – try again'}</div>`;
         }
-      } catch {
-        modalMessage.innerHTML = '<div class="message error">Network error</div>';
+      } catch (err) {
+        authMessage.innerHTML = '<div class="message error">Network error – check your connection and try again</div>';
       }
+
+      authBtn.disabled = false;
+      authBtn.textContent = 'Continue';
     });
 
-    // Initial render
+    // Initial render of milestones (in case page loads with existing user somehow)
     TasksModule.render();
   </script>
 </body>
