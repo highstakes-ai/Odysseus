@@ -8,39 +8,33 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
   <!-- Load header module -->
   <script src="header.js"></script>
-  
+ 
   <div class="container">
-
     <header>
       <h1>Launch Referral Contest</h1>
-      
+     
       <div class="subtitle-with-gem">
         <img src="gem.png" alt="Gem" class="small-gem">
         <p class="subtitle">Win Massive Gems</p>
       </div>
     </header>
-
     <!-- Hero Image Section with Text Overlay -->
     <div class="hero-section">
       <img src="Gems_Scatter_Final.png" alt="Fitted Gems Hero" class="hero-image">
-
       <!-- Big 100,000 number - outside the glass box -->
       <div class="hero-grand-prize">
         <h1 class="grand-prize-number">100,000 Gems Grand Prize Pot</h1>
       </div>
-
       <!-- Glass box with "Participate Now" – now a button -->
       <div class="hero-text-overlay">
         <button class="hero-participate-btn">
           Participate Now
         </button>
       </div>
-
     </div>
-        
+       
     <div class="prize-list">
       <p class="subtitle">Prize Breakdown</p>
       <div class="prize-item">
@@ -82,12 +76,10 @@
         </div>
       </div>
     </div>
-
     <!-- Unified Join / Check Section -->
     <div class="unified-auth-section">
       <div class="auth-title" id="auth-heading">Join or Check Progress</div>
       <p class="auth-subtitle" id="auth-subtitle">Enter your email to join the waitlist or view your referral stats</p>
-
       <form id="auth-form" class="auth-form">
         <input
           type="email"
@@ -108,46 +100,40 @@
         <button type="submit" class="submit-btn" id="auth-btn">Continue</button>
         <div id="auth-message"></div>
       </form>
-
       <!-- Gems total & milestones will appear here after successful check/login -->
       <div class="gems-total" id="gems-total" style="display:none; margin-top:1.5rem;">Gems Earned: 0</div>
       <div class="milestones" id="milestones" style="display:none;"></div>
       <div class="claim-feedback" id="claim-feedback"></div>
     </div>
+  </div> <!-- close container -->
 
   <!-- Load modular tasks system -->
   <script src="tasks.js"></script>
-
   <script>
     // Leaderboard load – with dummy data for testing
     async function loadLeaderboard() {
       const container = document.getElementById('leaderboard-body');
       container.innerHTML = '<div class="loading">Loading leaderboard...</div>';
-
       // ────────────────────────────────────────────────
       // DUMMY DATA – use this for testing / styling
       const dummyData = [
-        { email: "zz@gmail.com",   referrals: 6 },
-        { email: "xx@gmail.com",   referrals: 1 },
-        { email: "aaa@gmail.com",  referrals: 0 },
-        { email: "sss@gmail.com",  referrals: 0 },
+        { email: "zz@gmail.com", referrals: 6 },
+        { email: "xx@gmail.com", referrals: 1 },
+        { email: "aaa@gmail.com", referrals: 0 },
+        { email: "sss@gmail.com", referrals: 0 },
         { email: "ssas@gmail.com", referrals: 0 }
       ];
       // ────────────────────────────────────────────────
-
       // === FOR TESTING: uncomment next line to ALWAYS use dummy data
       // return renderLeaderboard(dummyData);
-
       try {
         const res = await fetch(`${WORKER_URL}/leaderboard`);
         if (!res.ok) throw new Error("Leaderboard fetch failed");
         const data = await res.json();
-
         if (data.length === 0) {
           container.innerHTML = '<div class="loading">No referrals yet – be the first!</div>';
           return;
         }
-
         renderLeaderboard(data);
       } catch (err) {
         console.warn("Using dummy data because:", err.message);
@@ -155,20 +141,17 @@
         // Optional: show a small note
         // container.innerHTML += '<br><small>(using test data)</small>';
       }
-
       // ────────────────────────────────────────────────
       // Helper: render the rows (shared for real + dummy data)
       function renderLeaderboard(users) {
         // Sort descending by referrals (highest first)
         const sorted = [...users].sort((a, b) => b.referrals - a.referrals);
-
         container.innerHTML = sorted.map((user, index) => {
           const rank = index + 1;
           const displayName = user.email.includes('@')
             ? user.email.split('@')[0] + '***'
             : user.email;
           const rankLabel = getRankLabel(rank);
-
           return `
             <div class="lb-row">
               <div class="lb-rank-num">
@@ -180,7 +163,6 @@
           `;
         }).join('');
       }
-
       // Rank label helper (1st, 2nd, 3rd, 4th, 5th, ...)
       function getRankLabel(rank) {
         if (rank === 1) return "1st";
@@ -189,16 +171,13 @@
         return `${rank}th`;
       }
     }
-
     loadLeaderboard();
-
     // Pre-fill referral code from URL
     const urlParams = new URLSearchParams(window.location.search);
     const urlRef = urlParams.get('ref');
     if (urlRef && document.getElementById('auth-ref-code')) {
       document.getElementById('auth-ref-code').value = urlRef.toUpperCase();
     }
-
     // Unified Continue button logic (join OR check progress)
     const authForm = document.getElementById('auth-form');
     const authEmailInput = document.getElementById('auth-email');
@@ -209,29 +188,24 @@
     const milestonesDiv = document.getElementById('milestones');
     const authHeading = document.getElementById('auth-heading');
     const authSubtitle = document.getElementById('auth-subtitle');
-
     authForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       authMessage.innerHTML = '';
       authBtn.disabled = true;
       authBtn.textContent = 'Processing...';
-
       const email = authEmailInput.value.trim().toLowerCase();
       const manualRefCode = authRefInput.value.trim().toUpperCase();
       let ref = urlParams.get('ref') || '';
       if (manualRefCode) ref = manualRefCode;
-
       if (!email || !email.includes('@')) {
         authMessage.innerHTML = '<div class="message error">Please enter a valid email</div>';
         authBtn.disabled = false;
         authBtn.textContent = 'Continue';
         return;
       }
-
       try {
         // Step 1: Check if user already exists
         const statusRes = await fetch(`${WORKER_URL}/status?email=${encodeURIComponent(email)}`);
-
         if (statusRes.ok) {
           // Existing user → load their stats
           const user = await statusRes.json();
@@ -242,51 +216,40 @@
             confirmed: user.confirmed,
             claimedMilestones: user.claimedMilestones || []
           });
-
           // Show stats
-          gemsTotal.style.display = 'block';
-          gemsTotal.textContent = `Gems Earned: ${user.gemsEarned || 0}`;
+          gemsTotal.style.display = 'none'; // Hide Gems Earned display
           milestonesDiv.style.display = 'block';
           TasksModule.render(); // This loads the milestones automatically
-
-          // Update UI to "Your Progress" mode
-          authHeading.textContent = 'Your Progress';
+          // Update UI to progress mode (hide heading & form)
+          authHeading.style.display = 'none'; // Hide "Your Progress" heading
           authSubtitle.style.display = 'none'; // Hide subtitle
-          authForm.style.display = 'none';     // Hide form after success
-
+          authForm.style.display = 'none'; // Hide form after success
           authMessage.innerHTML = '<div class="message success">Stats loaded!</div>';
           authBtn.textContent = 'Continue';
           authBtn.disabled = false;
-
           loadLeaderboard();
           return;
         }
-
         // Step 2: New user → sign them up
         const formData = new FormData();
         formData.append('email', email);
-
         const endpoint = ref ? `${WORKER_URL}/signup?ref=${encodeURIComponent(ref)}` : `${WORKER_URL}/signup`;
         const signupRes = await fetch(endpoint, { method: 'POST', body: formData });
         let result;
         try { result = await signupRes.json(); } catch { result = { error: 'Invalid response' }; }
-
         if (signupRes.ok && result.success) {
           let successMsg = result.message || 'Welcome! You’re now on the waitlist.';
           if (result.code) {
             successMsg += `<br><br>Your referral code: <strong>${result.code}</strong><br>Share this link:<br><strong>https://highstakes-ai.github.io/Odysseus/leaderboard.html?ref=${result.code}</strong>`;
           }
           authMessage.innerHTML = `<div class="message success">${successMsg}</div>`;
-
-          // Optional: also update to progress mode if you want to show empty stats for new users
-          authHeading.textContent = 'Your Progress';
+          // Update to progress mode (hide heading, gems, form)
+          authHeading.style.display = 'none';
           authSubtitle.style.display = 'none';
           authForm.style.display = 'none';
-          gemsTotal.style.display = 'block';
-          gemsTotal.textContent = 'Gems Earned: 0';
+          gemsTotal.style.display = 'none'; // Hide Gems Earned
           milestonesDiv.style.display = 'block';
           TasksModule.render(); // Loads empty/locked milestones
-
           authForm.reset();
           authRefInput.value = '';
           loadLeaderboard();
@@ -296,36 +259,19 @@
       } catch (err) {
         authMessage.innerHTML = '<div class="message error">Network error – check your connection and try again</div>';
       }
-
       authBtn.disabled = false;
       authBtn.textContent = 'Continue';
     });
-
     // Smooth scroll to join/check section when Participate Now button is clicked
     document.querySelector('.hero-participate-btn')?.addEventListener('click', () => {
       const target = document.querySelector('.unified-auth-section');
       if (target) {
-        target.scrollIntoView({ 
-          behavior: 'smooth', 
-          block: 'start' 
+        target.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
         });
       }
     });
-
-    // Initial render of milestones (in case page loads with existing user somehow)
-    TasksModule.render();
   </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
