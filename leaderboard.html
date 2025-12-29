@@ -38,7 +38,7 @@
           Participate Now
         </button>
       </div>
-      
+
     </div>
         
     <div class="prize-list">
@@ -85,8 +85,8 @@
 
     <!-- Unified Join / Check Section -->
     <div class="unified-auth-section">
-      <div class="auth-title">Join or Check Progress</div>
-      <p class="auth-subtitle">Enter your email to join the waitlist or view your referral stats</p>
+      <div class="auth-title" id="auth-heading">Join or Check Progress</div>
+      <p class="auth-subtitle" id="auth-subtitle">Enter your email to join the waitlist or view your referral stats</p>
 
       <form id="auth-form" class="auth-form">
         <input
@@ -207,6 +207,8 @@
     const authMessage = document.getElementById('auth-message');
     const gemsTotal = document.getElementById('gems-total');
     const milestonesDiv = document.getElementById('milestones');
+    const authHeading = document.getElementById('auth-heading');
+    const authSubtitle = document.getElementById('auth-subtitle');
 
     authForm.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -241,14 +243,21 @@
             claimedMilestones: user.claimedMilestones || []
           });
 
+          // Show stats
           gemsTotal.style.display = 'block';
           gemsTotal.textContent = `Gems Earned: ${user.gemsEarned || 0}`;
           milestonesDiv.style.display = 'block';
-          TasksModule.render(); // Refresh milestones
+          TasksModule.render(); // This loads the milestones automatically
 
-          authMessage.innerHTML = '<div class="message success">Welcome back! Your stats are loaded below.</div>';
+          // Update UI to "Your Progress" mode
+          authHeading.textContent = 'Your Progress';
+          authSubtitle.style.display = 'none'; // Hide subtitle
+          authForm.style.display = 'none';     // Hide form after success
+
+          authMessage.innerHTML = '<div class="message success">Stats loaded!</div>';
           authBtn.textContent = 'Continue';
           authBtn.disabled = false;
+
           loadLeaderboard();
           return;
         }
@@ -268,6 +277,16 @@
             successMsg += `<br><br>Your referral code: <strong>${result.code}</strong><br>Share this link:<br><strong>https://highstakes-ai.github.io/Odysseus/leaderboard.html?ref=${result.code}</strong>`;
           }
           authMessage.innerHTML = `<div class="message success">${successMsg}</div>`;
+
+          // Optional: also update to progress mode if you want to show empty stats for new users
+          authHeading.textContent = 'Your Progress';
+          authSubtitle.style.display = 'none';
+          authForm.style.display = 'none';
+          gemsTotal.style.display = 'block';
+          gemsTotal.textContent = 'Gems Earned: 0';
+          milestonesDiv.style.display = 'block';
+          TasksModule.render(); // Loads empty/locked milestones
+
           authForm.reset();
           authRefInput.value = '';
           loadLeaderboard();
