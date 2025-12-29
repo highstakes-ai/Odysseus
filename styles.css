@@ -27,7 +27,6 @@ body {
   align-items: center;
   padding: 0;                        /* ← no left/right padding on body */
   padding-bottom: 1rem;
-  outline: 5px solid blue !important;
 }
 
 h1, h2, h3, h4, h5, h6,
@@ -814,17 +813,16 @@ a {
   position: relative;
   width: 100%;
   max-width: 420px;
-  aspect-ratio: 5 / 7;
-  overflow: hidden;
+  aspect-ratio: 5 / 7; /* Makes it taller (portrait-like) – adjust if needed */
+  overflow: hidden;     /* Ensures cropped edges are clean */
   border-radius: 0 0 20px 20px; /* top-left & top-right = 0px (sharp), bottom-left & bottom-right = 20px (rounded) */
-  margin: 2rem auto 0rem auto;
-  box-sizing: border-box;
+  margin: 0 auto;       /* Centers it if needed */
 }
 
 .landing-hero-image {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: cover;    /* Fills the container, crops edges without distortion */
   display: block;
 }
 
