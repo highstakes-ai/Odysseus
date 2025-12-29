@@ -24,8 +24,8 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-left: 1rem;   /* optional: keep side padding */
-  padding-right: 1rem;
+  padding-left: 0;   /* optional: keep side padding */
+  padding-right: 0;
   padding-bottom: 1rem;
 }
 
@@ -816,7 +816,7 @@ a {
   aspect-ratio: 5 / 7;           /* exact same tall portrait ratio */
   overflow: hidden;
   border-radius: 20px;           /* same rounded corners */
-  margin: 0 auto 2rem auto;      /* centered + space below */
+  margin: 0 auto;      /* centered + space below */
 }
 
 .landing-hero-image {
