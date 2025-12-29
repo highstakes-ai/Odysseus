@@ -20,27 +20,44 @@ function renderMilestones() {
   feedback.textContent = '';
 
   if (!currentUser) {
-    document.getElementById('gems-total').textContent = 'Gems Earned: 0';
+    const gemsEl = document.getElementById('gems-total');
+    if (gemsEl) gemsEl.textContent = 'Gems Earned: 0';
     return;
   }
 
-  document.getElementById('gems-total').textContent = `Gems Earned: ${currentUser.gemsEarned || 0}`;
+  // Safe update
+  const gemsEl = document.getElementById('gems-total');
+  if (gemsEl) {
+    gemsEl.textContent = `Gems Earned: ${currentUser.gemsEarned || 0}`;
+  }
 
-  // Build user rank info (example values - replace with real data from API/user object when available)
-  const userRank = currentUser.rank || 1294;                      // ← get from backend/user object
-  const userEmail = currentUser.email || 'user@example.com';
-  const userRefs  = currentUser.referrals || 0;
-  const peopleAhead = userRank > 1 ? userRank - 1 : 0;
+  // Updated: Render left-aligned heading + gems inline
+  const gemsEarned = currentUser.gemsEarned || 0;
+  const peopleAhead = (currentUser.rank ? currentUser.rank - 1 : 1293).toLocaleString();
+  const refLink = `https://highstakes-ai.github.io/Odysseus/leaderboard.html?ref=${currentUser.code || 'YOURCODE'}`;
 
   container.innerHTML = `
+    <div class="progress-header">
+      <h2 class="progress-title">Your Progress</h2>
+      <div class="gems-earned">Gems Earned ♦ ${gemsEarned.toLocaleString()}</div>
+    </div>
+
     <div class="user-rank-info">
-      <p class="people-ahead"><strong>${peopleAhead.toLocaleString()} People ahead of you</strong></p>
+      <p class="people-ahead"><strong>${peopleAhead} People ahead of you</strong></p>
       <p class="motivation">Climb the ranks by referring more people.</p>
       
       <div class="user-stats-row">
-        <div><strong>Rank:</strong> ${userRank}</div>
-        <div><strong>Email:</strong> ${userEmail}</div>
-        <div><strong>Referrals:</strong> ${userRefs}</div>
+        <div><strong>Rank:</strong> ${currentUser.rank || '—'}</div>
+        <div><strong>Email:</strong> ${currentUser.email || '—'}</div>
+        <div><strong>Referrals:</strong> ${currentUser.referrals || 0}</div>
+      </div>
+    </div>
+
+    <div class="share-section">
+      <p class="share-title">Share Your Ref Code</p>
+      <div class="ref-link-box">
+        <span class="ref-link">${refLink}</span>
+        <button class="copy-btn" onclick="TasksModule.copyRefLink('${refLink}')">Copy</button>
       </div>
     </div>
 
@@ -87,6 +104,17 @@ function renderMilestones() {
   `;
 }
 
+// New function to copy ref link to clipboard
+async function copyRefLink(link) {
+  try {
+    await navigator.clipboard.writeText(link);
+    alert('Referral link copied to clipboard!');
+  } catch (err) {
+    console.error('Copy failed:', err);
+    alert('Failed to copy – please select and copy manually.');
+  }
+}
+
 async function claimGems(milestone) {
   const feedback = document.getElementById('claim-feedback');
   if (!feedback || !currentUser) return;
@@ -127,5 +155,6 @@ window.TasksModule = {
   setUser: (user) => {
     currentUser = user;
     renderMilestones();
-  }
+  },
+  copyRefLink
 };
