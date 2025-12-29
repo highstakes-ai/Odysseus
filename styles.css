@@ -444,7 +444,7 @@ a {
 /* Big prize number */
 .hero-grand-prize {
   position: absolute;
-  top: 20%;             /* Adjusted to sit nicely above the button */
+  top: 10%;             /* Adjusted to sit nicely above the button */
   left: 50%;
   transform: translateX(-50%);
   z-index: 2;
