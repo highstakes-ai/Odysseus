@@ -693,7 +693,7 @@ a {
 .gems-earned {
   font-size: 1.5rem;          /* Same size as title */
   font-weight: 700;
-  color: #000;
+  color: white;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -730,7 +730,7 @@ a {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   text-align: left;
 }
 
