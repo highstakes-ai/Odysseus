@@ -734,24 +734,33 @@ a {
   text-align: left;
 }
 
+/* Progress section – Your Progress above Gems Earned */
 .progress-title {
   font-size: 1.5rem;
   font-weight: 700;
-  margin: 0;
+  margin: 0 0 0.6rem 0;  /* space between heading and gems box */
   color: #000;
+  text-align: left;
 }
 
 .gems-earned {
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: black;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #000;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  background: white;
-  padding: 0.4rem 1rem;
-  border-radius: 999px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  gap: 0.6rem;
+  background: #f0f0f0;
+  padding: 0.6rem 1.2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  width: fit-content; /* keeps it inline-sized */
+  text-align: left;
+}
+
+.gems-earned img.small-gem {
+  width: 32px;
+  height: auto;
 }
 
 /* People ahead & motivation – center aligned */
