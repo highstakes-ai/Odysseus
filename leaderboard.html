@@ -10,7 +10,20 @@
 <body>
   <!-- Load header module -->
   <script src="header.js"></script>
- 
+
+  <!-- New Landing Hero Container (full-width, separate from hero-section) -->
+  <div class="landing-hero">
+    <img src="Fitted_Hero.png" alt="Fitted Hero" class="landing-hero-image">
+    
+    <div class="landing-overlay">
+      <h1 class="landing-title">See an outfit you love?</h1>
+      <p class="landing-subtitle">Fitted captures the vibe and finds shoppable matches you can buy instantly.</p>
+      <button class="landing-signup-btn">
+        Sign Up
+      </button>
+    </div>
+  </div>
+
   <div class="container">
     <header>
       <h1>Launch Referral Contest</h1>
@@ -217,11 +230,12 @@
             claimedMilestones: user.claimedMilestones || []
           });
           // Show stats
-          gemsTotal.style.display = 'none'; // Hide Gems Earned display
+          gemsTotal.style.display = 'block';
+          gemsTotal.textContent = `Gems Earned: ${user.gemsEarned || 0}`;
           milestonesDiv.style.display = 'block';
           TasksModule.render(); // This loads the milestones automatically
-          // Update UI to progress mode (hide heading & form)
-          authHeading.style.display = 'none'; // Hide "Your Progress" heading
+          // Update UI to "Your Progress" mode
+          authHeading.textContent = 'Your Progress';
           authSubtitle.style.display = 'none'; // Hide subtitle
           authForm.style.display = 'none'; // Hide form after success
           authMessage.innerHTML = '<div class="message success">Stats loaded!</div>';
@@ -243,11 +257,12 @@
             successMsg += `<br><br>Your referral code: <strong>${result.code}</strong><br>Share this link:<br><strong>https://highstakes-ai.github.io/Odysseus/leaderboard.html?ref=${result.code}</strong>`;
           }
           authMessage.innerHTML = `<div class="message success">${successMsg}</div>`;
-          // Update to progress mode (hide heading, gems, form)
-          authHeading.style.display = 'none';
+          // Optional: also update to progress mode if you want to show empty stats for new users
+          authHeading.textContent = 'Your Progress';
           authSubtitle.style.display = 'none';
           authForm.style.display = 'none';
-          gemsTotal.style.display = 'none'; // Hide Gems Earned
+          gemsTotal.style.display = 'block';
+          gemsTotal.textContent = 'Gems Earned: 0';
           milestonesDiv.style.display = 'block';
           TasksModule.render(); // Loads empty/locked milestones
           authForm.reset();
