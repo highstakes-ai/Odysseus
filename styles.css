@@ -691,9 +691,9 @@ a {
 }
 
 .gems-earned {
-  font-size: 1.5rem;          /* Same size as title */
-  font-weight: 700;
-  color: white;
+  font-size: 0.95rem;          /* Same size as title */
+  font-weight: 600;
+  color: black;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -742,9 +742,9 @@ a {
 }
 
 .gems-earned {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #000;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: black;
   display: flex;
   align-items: center;
   gap: 0.5rem;
