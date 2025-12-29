@@ -734,31 +734,35 @@ a {
   text-align: left;
 }
 
-/* Progress section – Your Progress above Gems Earned */
+/* Center "Your Progress" heading */
 .progress-title {
   font-size: 1.5rem;
   font-weight: 700;
-  margin: 0 0 0.6rem 0;  /* space between heading and gems box */
+  margin: 0 auto 0.8rem auto;  /* centered with space below */
   color: #000;
-  text-align: left;
+  text-align: center;
+  width: fit-content;
 }
 
-.gems-earned {
+/* Centered Gems Earned box – white, max rounded, 2px black border */
+.gems-earned-box {
   font-size: 1.5rem;
   font-weight: 700;
   color: #000;
+  background: #ffffff;               /* solid white */
+  border: 2px solid #000000;         /* 2px black stroke */
+  border-radius: 999px;              /* maximum rounded corners (pill shape) */
+  padding: 0.7rem 1.5rem;
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  background: #f0f0f0;
-  padding: 0.6rem 1.2rem;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  width: fit-content; /* keeps it inline-sized */
-  text-align: left;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  margin: 0 auto 1.5rem auto;        /* centered with space below */
+  width: fit-content;
+  text-align: center;
 }
 
-.gems-earned img.small-gem {
+.gems-earned-box img.small-gem {
   width: 32px;
   height: auto;
 }
