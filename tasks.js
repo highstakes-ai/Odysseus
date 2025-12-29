@@ -39,10 +39,10 @@ function renderMilestones() {
   container.innerHTML = `
     <h2 class="progress-title">Your Progress</h2>
     
-    <div class="gems-earned">
+    <div class="gems-earned-box">
       Gems Earned <img src="gem.png" alt="Gem" class="small-gem"> ${gemsEarned.toLocaleString()}
     </div>
-
+  
     <div class="user-rank-info">
       <p class="people-ahead"><strong>${peopleAhead} People ahead of you</strong></p>
       <p class="motivation">Climb the ranks by referring more people.</p>
@@ -159,3 +159,4 @@ window.TasksModule = {
   },
   copyRefLink
 };
+
