@@ -11,21 +11,22 @@
   <!-- Load header module -->
   <script src="header.js"></script>
 
-  <!-- Landing Hero Container (full-width) -->
-    <div class="landing-hero">
-      <img src="Fitted_Hero.png" alt="Fitted Hero" class="landing-hero-image">
-      
-      <div class="landing-overlay">
-        <h1 class="landing-title">See an outfit<br>you love?</h1>
-        <p class="landing-subtitle">Fitted captures the vibe and finds shoppable matches you can buy instantly.</p>
-        <button class="landing-signup-btn">
-          Sign Up
-        </button>
-      </div>
-    </div>
-
     <!-- New section below the hero -->
     <div class="hero-info-section">
+
+      <!-- Landing Hero Container (full-width) -->
+      <div class="landing-hero">
+        <img src="Fitted_Hero.png" alt="Fitted Hero" class="landing-hero-image">
+        
+        <div class="landing-overlay">
+          <h1 class="landing-title">See an outfit<br>you love?</h1>
+          <p class="landing-subtitle">Fitted captures the vibe and finds shoppable matches you can buy instantly.</p>
+          <button class="landing-signup-btn">
+            Sign Up
+          </button>
+        </div>
+      </div>
+
       <p class="hero-info-text">
         The next-generation AI that curates shoppable clothing from millions of items across hundreds of stores. 
         Upload any outfit image, get perfect vibes-matched pieces, and purchase in one click.
@@ -37,98 +38,100 @@
         <div>1 Click Purchase</div>
       </div>
 
-    <header>
-      <h1>Launch Referral Contest</h1>
-     
-      <div class="subtitle-with-gem">
-        <img src="gem.png" alt="Gem" class="small-gem">
-        <p class="subtitle">Win Massive Gems</p>
-      </div>
-    </header>
-    <!-- Hero Image Section with Text Overlay -->
-    <div class="hero-section">
-      <img src="Gems_Scatter_Final.png" alt="Fitted Gems Hero" class="hero-image">
-      <!-- Big 100,000 number - outside the glass box -->
-      <div class="hero-grand-prize">
-        <h1 class="grand-prize-number">100,000 Gems Grand Prize Pot</h1>
-      </div>
-      <!-- Glass box with "Participate Now" – now a button -->
-      <div class="hero-text-overlay">
-        <button class="hero-participate-btn">
-          Participate Now
-        </button>
-      </div>
-    </div>
+      <header>
+        <h1>Launch Referral Contest</h1>
        
-    <div class="prize-list">
-      <p class="subtitle">Prize Breakdown</p>
-      <div class="prize-item">
-        <span class="rank-label">1st</span>
-        <span class="amount">30,000</span>
-      </div>
-      <div class="prize-item">
-        <span class="rank-label">2nd</span>
-        <span class="amount">20,000</span>
-      </div>
-      <div class="prize-item">
-        <span class="rank-label">3rd</span>
-        <span class="amount">15,000</span>
-      </div>
-      <div class="prize-item">
-        <span class="rank-label">4-6th</span>
-        <span class="amount">8,000</span>
-      </div>
-      <div class="prize-item">
-        <span class="rank-label">7-10th</span>
-        <span class="amount">5,000</span>
-      </div>
-    </div>
-    <div class="leaderboard-section">
-      <div class="leaderboard-header">
-        <div class="lb-title">Contest Leaderboard</div>
-        <div class="live-badge">
-          Live
+        <div class="subtitle-with-gem">
+          <img src="gem.png" alt="Gem" class="small-gem">
+          <p class="subtitle">Win Massive Gems</p>
+        </div>
+      </header>
+
+      <!-- Hero Image Section with Text Overlay -->
+      <div class="hero-section">
+        <img src="Gems_Scatter_Final.png" alt="Fitted Gems Hero" class="hero-image">
+        <!-- Big 100,000 number - outside the glass box -->
+        <div class="hero-grand-prize">
+          <h1 class="grand-prize-number">100,000 Gems Grand Prize Pot</h1>
+        </div>
+        <!-- Glass box with "Participate Now" – now a button -->
+        <div class="hero-text-overlay">
+          <button class="hero-participate-btn">
+            Participate Now
+          </button>
         </div>
       </div>
-      <div class="leaderboard-table" style="border-radius:0 12px 12px 0;">
-        <div class="lb-header">
-          <div class="lb-rank">Rank</div>
-          <div class="lb-user">User</div>
-          <div class="lb-refs">Referrals</div>
+         
+      <div class="prize-list">
+        <p class="subtitle">Prize Breakdown</p>
+        <div class="prize-item">
+          <span class="rank-label">1st</span>
+          <span class="amount">30,000</span>
         </div>
-        <div id="leaderboard-body">
-          <div class="loading">Loading live leaderboard...</div>
+        <div class="prize-item">
+          <span class="rank-label">2nd</span>
+          <span class="amount">20,000</span>
+        </div>
+        <div class="prize-item">
+          <span class="rank-label">3rd</span>
+          <span class="amount">15,000</span>
+        </div>
+        <div class="prize-item">
+          <span class="rank-label">4-6th</span>
+          <span class="amount">8,000</span>
+        </div>
+        <div class="prize-item">
+          <span class="rank-label">7-10th</span>
+          <span class="amount">5,000</span>
         </div>
       </div>
-    </div>
-    <!-- Unified Join / Check Section -->
-    <div class="unified-auth-section">
-      <div class="auth-title" id="auth-heading">Join or Check Progress</div>
-      <p class="auth-subtitle" id="auth-subtitle">Enter your email to join the waitlist or view your referral stats</p>
-      <form id="auth-form" class="auth-form">
-        <input
-          type="email"
-          id="auth-email"
-          name="email"
-          class="email-input"
-          placeholder="Your email"
-          required
-        />
-        <input
-          type="text"
-          id="auth-ref-code"
-          class="email-input"
-          placeholder="Referral code (optional)"
-          maxlength="10"
-          style="margin-top: 0.8rem;"
-        />
-        <button type="submit" class="submit-btn" id="auth-btn">Continue</button>
-        <div id="auth-message"></div>
-      </form>
-      <!-- Gems total & milestones will appear here after successful check/login -->
-      <div class="gems-total" id="gems-total" style="display:none; margin-top:1.5rem;"></div>
-      <div class="milestones" id="milestones" style="display:none;"></div>
-      <div class="claim-feedback" id="claim-feedback"></div>
+      <div class="leaderboard-section">
+        <div class="leaderboard-header">
+          <div class="lb-title">Contest Leaderboard</div>
+          <div class="live-badge">
+            Live
+          </div>
+        </div>
+        <div class="leaderboard-table" style="border-radius:0 12px 12px 0;">
+          <div class="lb-header">
+            <div class="lb-rank">Rank</div>
+            <div class="lb-user">User</div>
+            <div class="lb-refs">Referrals</div>
+          </div>
+          <div id="leaderboard-body">
+            <div class="loading">Loading live leaderboard...</div>
+          </div>
+        </div>
+      </div>
+      <!-- Unified Join / Check Section -->
+      <div class="unified-auth-section">
+        <div class="auth-title" id="auth-heading">Join or Check Progress</div>
+        <p class="auth-subtitle" id="auth-subtitle">Enter your email to join the waitlist or view your referral stats</p>
+        <form id="auth-form" class="auth-form">
+          <input
+            type="email"
+            id="auth-email"
+            name="email"
+            class="email-input"
+            placeholder="Your email"
+            required
+          />
+          <input
+            type="text"
+            id="auth-ref-code"
+            class="email-input"
+            placeholder="Referral code (optional)"
+            maxlength="10"
+            style="margin-top: 0.8rem;"
+          />
+          <button type="submit" class="submit-btn" id="auth-btn">Continue</button>
+          <div id="auth-message"></div>
+        </form>
+        <!-- Gems total & milestones will appear here after successful check/login -->
+        <div class="gems-total" id="gems-total" style="display:none; margin-top:1.5rem;"></div>
+        <div class="milestones" id="milestones" style="display:none;"></div>
+        <div class="claim-feedback" id="claim-feedback"></div>
+      </div>
     </div>
   </div> 
 
