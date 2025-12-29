@@ -16,6 +16,7 @@
   font-display: swap;
 }
 
+/* Remove body side padding to eliminate offset – mobile-first */
 body {
   margin: 0;
   font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -24,16 +25,9 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-left: 0;   /* optional: keep side padding */
-  padding-right: 0;
+  padding: 0;                        /* ← no left/right padding on body */
   padding-bottom: 1rem;
-}
-
-/* Ensure container and hero align perfectly */
-.container,
-.landing-hero {
-  margin-left: auto;
-  margin-right: auto;
+  outline: 5px solid blue !important;
 }
 
 h1, h2, h3, h4, h5, h6,
@@ -47,7 +41,7 @@ strong, b,
 
 /* Fitted Header - FULL WIDTH on all screens, no exceptions */
 .fitted-header {
-  width: 100vw;                    /* Full viewport width */
+  width: 100%;                   /* Full viewport width */
   height: 60px;
   background: white;
   border-bottom: 1px solid #eee;
@@ -111,6 +105,7 @@ strong, b,
   background: white;
   border-radius: 20px;
   margin-top: 0px;
+  outline: 5px solid red !important;
 }
 
 header {
@@ -815,21 +810,21 @@ a {
   background: #222;
 }
 
-/* Landing Hero – same proportions & style as hero-section, but separate */
 .landing-hero {
   position: relative;
   width: 100%;
   max-width: 420px;
-  aspect-ratio: 5 / 7;           /* exact same tall portrait ratio */
+  aspect-ratio: 5 / 7;
   overflow: hidden;
-  border-radius: 20px;           /* same rounded corners */
-  margin: 0 auto;      /* centered + space below */
+  border-radius: 0 0 20px 20px; /* top-left & top-right = 0px (sharp), bottom-left & bottom-right = 20px (rounded) */
+  margin: 2rem auto 0rem auto;
+  box-sizing: border-box;
 }
 
 .landing-hero-image {
   width: 100%;
   height: 100%;
-  object-fit: cover;             /* same smart cropping */
+  object-fit: cover;
   display: block;
 }
 
@@ -977,3 +972,4 @@ a {
 .count-up span {
   font-weight: 800;
 }
+
