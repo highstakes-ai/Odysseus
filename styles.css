@@ -610,3 +610,70 @@ a {
   font-weight: 600;
   margin-top: 0.5rem;
 }
+
+/* User progress header & stats */
+.user-rank-info {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.people-ahead {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin: 0.5rem 0;
+  color: #000;
+}
+
+.motivation {
+  font-size: 0.95rem;
+  color: #555;
+  margin: 0 0 1.2rem;
+  font-weight: 400;
+}
+
+.user-stats-row {
+  display: flex;
+  justify-content: space-between;
+  background: #f8f9fa;
+  padding: 0.9rem 1.2rem;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid #eee;
+}
+
+.user-stats-row div {
+  flex: 1;
+  text-align: center;
+}
+
+.user-stats-row strong {
+  display: block;
+  font-size: 1.1rem;
+  margin-bottom: 0.3rem;
+}
+
+/* Milestone list layout improvements */
+.milestone-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.milestone {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+/* Adjust gem icon size if needed */
+.small-gem {
+  width: 28px;
+  height: auto;
+}
+
