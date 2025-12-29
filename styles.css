@@ -724,3 +724,86 @@ a {
   margin: 0 0 1.2rem;
   font-weight: 400;
 }
+
+/* Progress header – left-aligned */
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.progress-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+  color: #000;
+}
+
+.gems-earned {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #000;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #f0f0f0;
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* People ahead & motivation – center aligned */
+.user-rank-info {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+/* Share section – centered title + link box */
+.share-section {
+  text-align: center;
+  margin: 1.5rem 0 2rem;
+}
+
+.share-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #000;
+  margin-bottom: 0.8rem;
+}
+
+.ref-link-box {
+  display: flex;
+  align-items: center;
+  background: #f0f0f0;
+  padding: 0.8rem 1.2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  justify-content: space-between;
+}
+
+.ref-link {
+  flex: 1;
+  font-size: 0.95rem;
+  color: #333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.copy-btn {
+  background: #000;
+  color: white;
+  font-weight: 700;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-left: 1rem;
+}
+
+.copy-btn:hover {
+  background: #222;
+}
