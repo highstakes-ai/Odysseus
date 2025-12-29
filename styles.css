@@ -5,7 +5,7 @@
   src: url('Satoshi-Regular.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
-  font-display: swap; /* Improves loading performance */
+  font-display: swap;
 }
 
 @font-face {
@@ -16,7 +16,17 @@
   font-display: swap;
 }
 
-/* Remove body side padding to eliminate offset – mobile-first */
+/* Universal box-sizing fix for mobile */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+/* Remove body side padding to eliminate offset — mobile-first */
 body {
   margin: 0;
   font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -25,8 +35,12 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0;                        /* ← no left/right padding on body */
+  padding: 0;
   padding-bottom: 1rem;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+  box-sizing: border-box;
 }
 
 h1, h2, h3, h4, h5, h6,
@@ -35,22 +49,23 @@ strong, b,
 .milestone-button,
 .share-btn,
 .leaderboard-btn {
-  font-weight: bold; /* Ensures Satoshi-Bold is used */
+  font-weight: bold;
 }
 
-/* Fitted Header - FULL WIDTH on all screens, no exceptions */
+/* Fitted Header - FULL WIDTH on all screens */
 .fitted-header {
-  width: 100%;                   /* Full viewport width */
+  width: 100%;
+  max-width: 100%;
   height: 60px;
   background: white;
   border-bottom: 1px solid #eee;
   position: sticky;
   top: 0;
-  left: 0;                         /* Ensure it starts at screen edge */
+  left: 0;
   z-index: 1000;
   box-sizing: border-box;
-  margin: 0;                       /* Override any inherited margin */
-  padding: 0;                      /* Clean slate */
+  margin: 0;
+  padding: 0;
 }
 
 .header-container {
@@ -59,7 +74,7 @@ strong, b,
   align-items: center;
   height: 100%;
   width: 100%;
-  padding: 0 25px;                 /* 15px from left and right edges */
+  padding: 0 25px;
   box-sizing: border-box;
 }
 
@@ -98,18 +113,12 @@ strong, b,
   height: 24px;
 }
 
-.container {
-  width: 100%;
-  max-width: 420px;
-  background: white;
-  border-radius: 20px;
-  margin-top: 0px;
-  outline: 5px solid red !important;
-}
-
 header {
   text-align: center;
   padding: 1.5rem 1rem 1rem;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 h1 {
@@ -128,6 +137,9 @@ h1 {
   background: white;
   padding: 1.5rem;
   text-align: center;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .prize-item {
@@ -152,11 +164,14 @@ h1 {
 
 /* Soft shadow on the entire leaderboard container */
 .leaderboard-section {
-  margin-bottom: 2.5rem;          /* adds nice whitespace below the leaderboard */
-  padding: 1.5rem 1rem;           /* optional: a bit more internal breathing room */
+  margin-bottom: 2.5rem;
+  padding: 1.5rem 1rem;
   background: white;
-  border-radius: 16px;            /* softer corners to match modern feel */
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);   /* soft, subtle shadow */
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .leaderboard-header {
@@ -201,7 +216,9 @@ h1 {
 .leaderboard-table {
   background: white;
   border-radius: 12px;
-  
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 /* Restored table header */
@@ -218,7 +235,7 @@ h1 {
 .lb-user   { width: 50%; }
 .lb-refs   { width: 30%; text-align: right; }
 
-/* Rows styled similarly to prize-item (clean, separated) */
+/* Rows styled similarly to prize-item */
 .lb-row {
   display: flex;
   justify-content: space-between;
@@ -239,12 +256,12 @@ h1 {
 
 /* Rank: grey, not bold */
 .lb-rank-num {
-  color: #888;                      /* grey like prize rank-label */
-  font-weight: normal;              /* not bold */
+  color: #888;
+  font-weight: normal;
   min-width: 70px;
   display: flex;
   align-items: center;
-  gap: 0.6rem;                      /* space for crown + label */
+  gap: 0.6rem;
 }
 
 /* Username */
@@ -258,7 +275,7 @@ h1 {
 /* Referrals: grey + bold */
 .lb-refs-num {
   font-weight: bold;
-  color: #666;                      /* grey */
+  color: #666;
   min-width: 60px;
   text-align: right;
 }
@@ -275,6 +292,9 @@ h1 {
   border: 1px solid #ddd;
   border-radius: 12px;
   outline: none;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .email-input:focus {
@@ -291,6 +311,9 @@ h1 {
   border-radius: 12px;
   cursor: pointer;
   transition: background 0.2s;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .submit-btn:hover {
@@ -308,6 +331,9 @@ h1 {
   border-radius: 8px;
   font-weight: 600;
   margin-top: 0.5rem;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .success {
@@ -332,6 +358,9 @@ h1 {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .milestone {
@@ -342,6 +371,8 @@ h1 {
   background: white;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .milestone-left {
@@ -417,6 +448,9 @@ footer {
   padding: 2rem 1rem;
   color: #888;
   font-size: 0.9rem;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 a {
@@ -428,24 +462,25 @@ a {
 .hero-section {
   position: relative;
   width: 100%;
-  max-width: 420px;
-  aspect-ratio: 5 / 7; /* Makes it taller (portrait-like) – adjust if needed */
-  overflow: hidden;     /* Ensures cropped edges are clean */
+  max-width: 360px;
+  aspect-ratio: 5 / 7;
+  overflow: hidden;
   border-radius: 20px;
-  margin: 0 auto;       /* Centers it if needed */
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 
 .hero-image {
   width: 100%;
   height: 100%;
-  object-fit: cover;    /* Fills the container, crops edges without distortion */
+  object-fit: cover;
   display: block;
 }
 
 /* Big prize number */
 .hero-grand-prize {
   position: absolute;
-  top: 10%;             /* Adjusted to sit nicely above the button */
+  top: 10%;
   left: 50%;
   transform: translateX(-50%);
   z-index: 2;
@@ -455,7 +490,7 @@ a {
 /* Overlay wrapper for the Participate Now button */
 .hero-text-overlay {
   position: absolute;
-  bottom: 8%;          /* Pushes the button toward the bottom of the image */
+  bottom: 8%;
   left: 50%;
   transform: translateX(-50%);
   text-align: center;
@@ -463,11 +498,11 @@ a {
   z-index: 2;
 }
 
-/* The Participate Now button – solid black with shine */
+/* The Participate Now button */
 .hero-participate-btn {
   position: relative;
-  background: #000000;  /* Solid black – no glass */
-  border: none;         /* No border for clean look */
+  background: #000000;
+  border: none;
   border-radius: 8px;
   padding: 1rem 2.5rem;
   font-size: 1.3rem;
@@ -477,7 +512,7 @@ a {
   box-shadow: 0 8px 32px rgba(0,0,0,0.4);
   overflow: hidden;
   transition: all 0.3s ease;
-  animation: float 3.8s ease-in-out infinite; /* soft constant float */
+  animation: float 3.8s ease-in-out infinite;
   text-shadow: 0 2px 10px rgba(0,0,0,0.6);
   white-space: nowrap;
 }
@@ -486,10 +521,10 @@ a {
 .hero-participate-btn:hover {
   transform: translateY(-8px) scale(1.06);
   box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-  background: #111111; /* slightly lighter black on hover */
+  background: #111111;
 }
 
-/* Floating animation – gentle up/down */
+/* Floating animation */
 @keyframes float {
   0%, 100% {
     transform: translateY(0);
@@ -499,7 +534,7 @@ a {
   }
 }
 
-/* Shine effect on the button (kept for premium feel) */
+/* Shine effect on the button */
 .hero-participate-btn::before {
   content: '';
   position: absolute;
@@ -510,7 +545,7 @@ a {
   background: linear-gradient(
     120deg,
     transparent 30%,
-    rgba(255, 255, 255, 0.25) 50%,  /* softer shine on black */
+    rgba(255, 255, 255, 0.25) 50%,
     transparent 70%
   );
   transform: translateX(-100%);
@@ -534,7 +569,7 @@ a {
   z-index: 2;
 }
 
-/* Big prize number styling (unchanged) */
+/* Big prize number styling */
 .grand-prize-number {
   font-size: 2rem;
   font-weight: bold;
@@ -552,30 +587,33 @@ a {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem; /* Space between gem and text */
+  gap: 0.5rem;
   margin-top: 0.5rem;
-  font-size: 1.2rem; /* Matches your usual subtitle size */
+  font-size: 1.2rem;
 }
 
 .small-gem {
-  width: 32px;        /* Adjust size as needed */
+  width: 32px;
   height: auto;
   object-fit: contain;
 }
 
-/* Ensure the paragraph has no extra margin that breaks alignment */
+/* Ensure the paragraph has no extra margin */
 .subtitle-with-gem .subtitle {
   margin: 0;
   font-weight: 600;
 }
 
-/* Unified Auth Section (merged join + check) */
+/* Unified Auth Section */
 .unified-auth-section {
   padding: 1.5rem 1rem;
   background: linear-gradient(to bottom, #f9f9f9, #f0f8ff);
   border-top: 1px solid #eee;
   border-bottom: 1px solid #eee;
   border-radius: 20px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .auth-title {
@@ -596,14 +634,15 @@ a {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
-/* Reuse your existing .email-input and .submit-btn styles – they fit perfectly */
 #auth-btn {
   margin-top: 0.5rem;
 }
 
-/* Make sure messages look good */
 #auth-message {
   text-align: center;
   padding: 0.8rem;
@@ -616,6 +655,9 @@ a {
 .user-rank-info {
   text-align: center;
   margin-bottom: 1.5rem;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .people-ahead {
@@ -641,6 +683,9 @@ a {
   font-size: 0.95rem;
   margin-bottom: 1.5rem;
   border: 2px solid #eee;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .user-stats-row div {
@@ -659,6 +704,9 @@ a {
   display: flex;
   flex-direction: column;
   gap: 0.9rem;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .milestone {
@@ -678,61 +726,16 @@ a {
   height: auto;
 }
 
-/* Progress header – left-aligned title + gems */
-.progress-header {
-  margin-bottom: 1.5rem;
-  text-align: left;
-}
-
-.progress-title {
-  font-size: 1.5rem;          /* Matches your reference heading size */
-  font-weight: 700;
-  margin: 0 0 0.5rem 0;
-  color: #000;
-}
-
-.gems-earned {
-  font-size: 1.5rem;          /* Same size as title */
-  font-weight: 700;
-  color: white;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.diamond-icon {
-  font-size: 1.4rem;
-  color: #1e90ff;             /* Blue diamond – adjust color if needed */
-  line-height: 1;
-}
-
-/* People ahead & motivation (already good, just ensure left align) */
-.user-rank-info {
-  text-align: left;
-  margin-bottom: 1.5rem;
-}
-
-.people-ahead {
-  font-size: 1.35rem;
-  font-weight: 700;
-  margin: 0.5rem 0;
-  color: #000;
-}
-
-.motivation {
-  font-size: 0.95rem;
-  color: #555;
-  margin: 0 0 1.2rem;
-  font-weight: 400;
-}
-
-/* Progress header – left-aligned */
+/* Progress header */
 .progress-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
   text-align: left;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .progress-title {
@@ -755,16 +758,19 @@ a {
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
-/* People ahead & motivation – center aligned */
-.user-rank-info {
-  text-align: center;
-  margin-bottom: 1.5rem;
+.diamond-icon {
+  font-size: 1.4rem;
+  color: #1e90ff;
+  line-height: 1;
 }
 
-/* Share section – centered title + link box */
+/* Share section */
 .share-section {
   text-align: center;
   margin: 1.5rem 0 2rem;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .share-title {
@@ -782,6 +788,9 @@ a {
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
   justify-content: space-between;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .ref-link {
@@ -812,21 +821,22 @@ a {
 .landing-hero {
   position: relative;
   width: 100%;
-  max-width: 420px;
-  aspect-ratio: 5 / 7; /* Makes it taller (portrait-like) – adjust if needed */
-  overflow: hidden;     /* Ensures cropped edges are clean */
-  border-radius: 0 0 20px 20px; /* top-left & top-right = 0px (sharp), bottom-left & bottom-right = 20px (rounded) */
-  margin: 0 auto;       /* Centers it if needed */
+  max-width: 360px;
+  aspect-ratio: 5 / 7;
+  overflow: hidden;
+  border-radius: 0 0 20px 20px;
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 
 .landing-hero-image {
   width: 100%;
   height: 100%;
-  object-fit: cover;    /* Fills the container, crops edges without distortion */
+  object-fit: cover;
   display: block;
 }
 
-/* Dedicated overlay – centered, white text, no conflict */
+/* Dedicated overlay */
 .landing-overlay {
   position: absolute;
   top: 50%;
@@ -854,10 +864,10 @@ a {
   color: white;
 }
 
-/* Landing Sign Up button – independent, identical style to Participate Now */
+/* Landing Sign Up button */
 .landing-signup-btn {
   position: relative;
-  background: white;           /* solid black */
+  background: white;
   color: black;
   border: none;
   border-radius: 8px;
@@ -868,19 +878,18 @@ a {
   box-shadow: 0 8px 32px rgba(0,0,0,0.3);
   overflow: hidden;
   transition: all 0.3s ease;
-  animation: float 3.8s ease-in-out infinite; /* same gentle float */
+  animation: float 3.8s ease-in-out infinite;
   white-space: nowrap;
   border: 2px solid #000;
 }
 
-/* Hover – identical lift + shadow */
 .landing-signup-btn:hover {
   transform: translateY(-8px) scale(1.06);
   box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-  background: dimgrey; /* subtle hover shade */
+  background: dimgrey;
 }
 
-/* Shine effect – identical to Participate Now */
+/* Shine effect */
 .landing-signup-btn::before {
   content: '';
   position: absolute;
@@ -905,32 +914,14 @@ a {
   z-index: 2;
 }
 
-/* Reuse the same float and shine animations (no change needed) */
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-@keyframes shine {
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(100%);
-  }
-}
-
-/* Section below the hero – centered info + stats box */
+/* Section below the hero */
 .hero-info-section {
-  max-width: 420px;
+  max-width: 360px;
   width: 100%;
   margin: 2rem auto 3rem;
   padding: 0 1rem;
   text-align: center;
+  box-sizing: border-box;
 }
 
 .hero-info-text {
@@ -946,7 +937,7 @@ a {
   color: white;
   font-weight: bold;
   font-size: 1.5rem;
-  border-radius: 20px;           /* nicely rounded */
+  border-radius: 20px;
   padding: 1.4rem 2rem;
   display: flex;
   flex-direction: column;
@@ -954,6 +945,8 @@ a {
   box-shadow: 0 8px 30px rgba(0,0,0,0.15);
   max-width: 360px;
   margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .hero-stats-box div {
@@ -966,8 +959,6 @@ a {
   font-weight: inherit;
 }
 
-/* Optional: make the counting number stand out slightly */
 .count-up span {
   font-weight: 800;
 }
-
