@@ -15,57 +15,76 @@ const MILESTONES = [
 function renderMilestones() {
   const container = document.getElementById('milestones');
   const feedback = document.getElementById('claim-feedback');
-
   if (!container) return;
 
   feedback.textContent = '';
 
   if (!currentUser) {
-    container.innerHTML = '<p style="text-align:center;color:#888;">Enter your email above to view progress</p>';
     document.getElementById('gems-total').textContent = 'Gems Earned: 0';
     return;
   }
 
   document.getElementById('gems-total').textContent = `Gems Earned: ${currentUser.gemsEarned || 0}`;
 
-  container.innerHTML = MILESTONES.map(m => {
-    const isReached = m.id === "confirmed" ? currentUser.confirmed : (currentUser.referrals || 0) >= m.requiredRefs;
-    const isClaimed = currentUser.claimedMilestones?.includes(m.id) || false;
+  // Build user rank info (example values - replace with real data from API/user object when available)
+  const userRank = currentUser.rank || 1294;                      // ← get from backend/user object
+  const userEmail = currentUser.email || 'user@example.com';
+  const userRefs  = currentUser.referrals || 0;
+  const peopleAhead = userRank > 1 ? userRank - 1 : 0;
 
-    let buttonClass = 'locked';
-    let buttonText = 'Locked';
-    let onclick = '';
-    let cursor = 'default';
-
-    if (isReached && !isClaimed) {
-      buttonClass = 'claimable';
-      buttonText = 'Claim';
-      onclick = `onclick="TasksModule.claimGems('${m.id}')"`
-      cursor = 'pointer';
-    } else if (isClaimed) {
-      buttonClass = 'claimed';
-      buttonText = 'Claimed!';
-      cursor = 'default';
-    }
-
-    const check = isClaimed ? '✓' : '';
-
-    return `
-      <div class="milestone">
-        <div class="milestone-left">
-          <span class="milestone-check">${check}</span>
-          <span class="milestone-text">${m.text}</span>
-        </div>
-        <div class="milestone-gems">
-          <span class="gem-amount">${m.gems}</span>
-          <img src="gem.png" alt="Gem" class="small-gem">
-        </div>
-        <div class="milestone-button ${buttonClass}" style="cursor:${cursor};" ${onclick}>
-          ${buttonText}
-        </div>
+  container.innerHTML = `
+    <div class="user-rank-info">
+      <p class="people-ahead"><strong>${peopleAhead.toLocaleString()} People ahead of you</strong></p>
+      <p class="motivation">Climb the ranks by referring more people.</p>
+      
+      <div class="user-stats-row">
+        <div><strong>Rank:</strong> ${userRank}</div>
+        <div><strong>Email:</strong> ${userEmail}</div>
+        <div><strong>Referrals:</strong> ${userRefs}</div>
       </div>
-    `;
-  }).join('');
+    </div>
+
+    <div class="milestone-list">
+      ${MILESTONES.map(m => {
+        const isReached = m.id === "confirmed" ? currentUser.confirmed : (currentUser.referrals || 0) >= m.requiredRefs;
+        const isClaimed = currentUser.claimedMilestones?.includes(m.id) || false;
+
+        let buttonClass = 'locked';
+        let buttonText = 'Locked';
+        let onclick = '';
+        let cursor = 'default';
+
+        if (isReached && !isClaimed) {
+          buttonClass = 'claimable';
+          buttonText = 'Claim';
+          onclick = `onclick="TasksModule.claimGems('${m.id}')"`
+          cursor = 'pointer';
+        } else if (isClaimed) {
+          buttonClass = 'claimed';
+          buttonText = 'Claimed!';
+          cursor = 'default';
+        }
+
+        const check = isClaimed ? '✓' : '';
+
+        return `
+          <div class="milestone">
+            <div class="milestone-left">
+              <span class="milestone-check">${check}</span>
+              <span class="milestone-text">${m.text}</span>
+            </div>
+            <div class="milestone-gems">
+              <span class="gem-amount">${m.gems}</span>
+              <img src="gem.png" alt="Gem" class="small-gem">
+            </div>
+            <div class="milestone-button ${buttonClass}" style="cursor:${cursor};" ${onclick}>
+              ${buttonText}
+            </div>
+          </div>
+        `;
+      }).join('')}
+    </div>
+  `;
 }
 
 async function claimGems(milestone) {
@@ -110,4 +129,3 @@ window.TasksModule = {
     renderMilestones();
   }
 };
-
