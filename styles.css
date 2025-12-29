@@ -454,7 +454,7 @@ a {
 /* Overlay wrapper for the Participate Now button */
 .hero-text-overlay {
   position: absolute;
-  bottom: 15%;          /* Pushes the button toward the bottom of the image */
+  bottom: 8%;          /* Pushes the button toward the bottom of the image */
   left: 50%;
   transform: translateX(-50%);
   text-align: center;
