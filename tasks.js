@@ -31,15 +31,16 @@ function renderMilestones() {
     gemsEl.textContent = `Gems Earned: ${currentUser.gemsEarned || 0}`;
   }
 
-  // Updated: Render left-aligned heading + gems inline
+  // Updated: "Your Progress" as separate heading above Gems Earned
   const gemsEarned = currentUser.gemsEarned || 0;
   const peopleAhead = (currentUser.rank ? currentUser.rank - 1 : 1293).toLocaleString();
   const refLink = `https://highstakes-ai.github.io/Odysseus/leaderboard.html?ref=${currentUser.code || 'YOURCODE'}`;
 
   container.innerHTML = `
-    <div class="progress-header">
-      <h2 class="progress-title">Your Progress</h2>
-      <div class="gems-earned">Gems Earned ♦ ${gemsEarned.toLocaleString()}</div>
+    <h2 class="progress-title">Your Progress</h2>
+    
+    <div class="gems-earned">
+      Gems Earned <img src="gem.png" alt="Gem" class="small-gem"> ${gemsEarned.toLocaleString()}
     </div>
 
     <div class="user-rank-info">
