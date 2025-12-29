@@ -11,9 +11,9 @@
   <!-- Load header module -->
   <script src="header.js"></script>
 
-  <!-- New Landing Hero Container (full-width, separate from hero-section) -->
-  <div class="landing-hero">
-    <img src="Fitted_Hero.png" alt="Fitted Hero" class="landing-hero-image">
+  <!-- Landing Hero Container (full-width) -->
+  <div class="landing-hero hero-section">
+    <img src="Fitted_Hero.png" alt="Fitted Hero" class="hero-image landing-hero-image">
     
     <div class="landing-overlay">
       <h1 class="landing-title">See an outfit you love?</h1>
@@ -23,6 +23,19 @@
       </button>
     </div>
   </div>
+
+  <!-- New section below the hero -->
+  <div class="hero-info-section">
+    <p class="hero-info-text">
+      The next-generation AI that curates shoppable clothing from millions of items across hundreds of stores. 
+      Upload any outfit image, get perfect vibes-matched pieces, and purchase in one click.
+    </p>
+
+    <div class="hero-stats-box" id="stats-box">
+      <div class="count-up" data-target="1000000" data-start="900000">1,000,000+ Products</div>
+      <div class="count-up" data-target="300" data-start="150">300+ Sites</div>
+      <div>1 Click Purchase</div>
+    </div>
 
   <div class="container">
     <header>
@@ -277,6 +290,7 @@
       authBtn.disabled = false;
       authBtn.textContent = 'Continue';
     });
+
     // Smooth scroll to join/check section when Participate Now button is clicked
     document.querySelector('.hero-participate-btn')?.addEventListener('click', () => {
       const target = document.querySelector('.unified-auth-section');
@@ -287,6 +301,54 @@
         });
       }
     });
+
+    // Count-up animation that starts only when element is visible
+    function startCountUpWhenVisible() {
+      const statsBox = document.getElementById('stats-box');
+      if (!statsBox) return;
+
+      const counters = statsBox.querySelectorAll('.count-up');
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            // Element is visible → start counting
+            counters.forEach(counter => {
+              const target = parseInt(counter.getAttribute('data-target'));
+              const start = parseInt(counter.getAttribute('data-start')) || 0;
+              const duration = 5000; // 1.8 seconds
+              const increment = target / (duration / 16); // ~60fps
+
+              let current = start;
+              const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                  current = target;
+                  clearInterval(timer);
+                }
+
+                const formatted = Math.floor(current).toLocaleString();
+                const text = counter.textContent;
+                const suffix = text.includes('+') ? '+' : '';
+                const label = text.replace(/[\d,]+\/?\+?/, '').trim();
+
+                counter.innerHTML = `<span>${formatted}${suffix}</span> ${label}`;
+              }, 16);
+            });
+
+            // Stop observing once animation starts (runs only once)
+            observer.unobserve(statsBox);
+          }
+        });
+      }, {
+        threshold: 0.1 // Trigger when 10% of the box is visible
+      });
+
+      observer.observe(statsBox);
+    }
+
+    // Run when page loads
+    window.addEventListener('load', startCountUpWhenVisible);
   </script>
 </body>
 </html>
