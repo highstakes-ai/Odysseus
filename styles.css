@@ -677,3 +677,50 @@ a {
   height: auto;
 }
 
+/* Progress header – left-aligned title + gems */
+.progress-header {
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.progress-title {
+  font-size: 1.5rem;          /* Matches your reference heading size */
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  color: #000;
+}
+
+.gems-earned {
+  font-size: 1.5rem;          /* Same size as title */
+  font-weight: 700;
+  color: #000;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.diamond-icon {
+  font-size: 1.4rem;
+  color: #1e90ff;             /* Blue diamond – adjust color if needed */
+  line-height: 1;
+}
+
+/* People ahead & motivation (already good, just ensure left align) */
+.user-rank-info {
+  text-align: left;
+  margin-bottom: 1.5rem;
+}
+
+.people-ahead {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin: 0.5rem 0;
+  color: #000;
+}
+
+.motivation {
+  font-size: 0.95rem;
+  color: #555;
+  margin: 0 0 1.2rem;
+  font-weight: 400;
+}
