@@ -10,39 +10,36 @@
 <body>
   <!-- Load header module -->
   <script src="header.js"></script>
-
+  <!-- Landing Hero Container (full-width) -->
+  <div class="landing-hero">
+    <img src="Fitted_Hero.png" alt="Fitted Hero" class="landing-hero-image">
+   
+    <div class="landing-overlay">
+      <h1 class="landing-title">
+        See an <span class="angon-text">outfit</span><br>you love?
+      </h1>
+      <p class="landing-subtitle">Fitted captures the vibe and finds shoppable matches you can buy instantly.</p>
+      <button class="landing-signup-btn scroll-to-auth">
+        Join Waitlist
+      </button>
+    </div>
+  </div>
     <!-- New section below the hero -->
     <div class="hero-info-section">
-
-      <!-- Landing Hero Container (full-width) -->
-      <div class="landing-hero">
-        <img src="Fitted_Hero.png" alt="Fitted Hero" class="landing-hero-image">
-        
-        <div class="landing-overlay">
-          <h1 class="landing-title">See an outfit<br>you love?</h1>
-          <p class="landing-subtitle">Fitted captures the vibe and finds shoppable matches you can buy instantly.</p>
-          <button class="landing-signup-btn">
-            Sign Up
-          </button>
-        </div>
-      </div>
-
       <p class="hero-info-text">
-        The next-generation AI that curates shoppable clothing from millions of items across hundreds of stores. 
+        The next-generation AI that curates shoppable clothing from millions of items across hundreds of stores.
         Upload any outfit image, get perfect vibes-matched pieces, and purchase in one click.
       </p>
-
       <div class="hero-stats-box" id="stats-box">
         <div class="count-up" data-target="1000000" data-start="700000">1,000,000+ Products</div>
         <div class="count-up" data-target="300" data-start="150">300+ Sites</div>
         <div>1 Click Purchase</div>
       </div>
-
       <!-- Begin with a style reference section -->
       <div class="style-reference-section">
         <div class="style-reference-card">
-          <h2 class="style-ref-title">Begin with<br>style reference</h2>
-          
+          <h2 class="style-ref-title">Begin with<br><span class="angon-text">style</span> reference</h2>
+        
           <div class="style-ref-content">
             <div class="style-ref-text-block">
               <p class="style-ref-description">
@@ -51,156 +48,144 @@
                 cohesive style
               </p>
             </div>
-            
-            <div class="style-ref-image-container">
-              <img 
-                src="Style_Reference_1.png" 
-                alt="Person in layered streetwear outfit with patterned jacket, cargo pants and bold sneakers" 
-                class="style-ref-main-image"
+          
+            <div class="style-ref-images">
+              <img
+                src="Images/style_reference_1.png"
+                alt="Main style reference outfit"
+                class="style-ref-image style-ref-image-large"
+              >
+              <img
+                src="Images/style_reference_2.png"
+                alt="Secondary style reference outfit"
+                class="style-ref-image style-ref-image-small"
               >
             </div>
           </div>
-
+        
           <!-- New Join Waitlist button -->
-          <button class="join-waitlist-btn">
+          <button class="hero-participate-btn scroll-to-auth">
             Join Waitlist
           </button>
         </div>
-        </div>
-
+      </div>
       <!-- Perfect matches section -->
-      <div class="style-reference-section">
-        <div class="style-reference-card">
-          <h2 class="style-ref-title">Get perfect<br>matches</h2>
-          
-          <div class="style-ref-content">
-            <div class="style-ref-text-block">
-              <p class="style-ref-description">
+      <div class="perfect-matches-section">
+        <div class="perfect-matches-card">
+          <h2 class="perfect-matches-title">Get <span class="angon-text">perfect</span><br>matches</h2>
+        
+          <div class="perfect-matches-content">
+            <div class="perfect-matches-text-block">
+              <p class="perfect-matches-description">
                 Only see what you’d actually wear<br>And stick within your budget.
               </p>
             </div>
-            
-            <div class="style-ref-image-container">
-              <img 
-                src="S.png" 
-                alt="Person in layered streetwear outfit with patterned jacket, cargo pants and bold sneakers" 
-                class="style-ref-main-image"
+          
+            <div class="perfect-matches-image-container">
+              <img
+                src="Images/perfect_match_result.png"
+                alt="Curated perfect match outfit"
+                class="perfect-matches-image"
               >
             </div>
           </div>
-
-          <!-- New Join Waitlist button -->
-          <button class="join-waitlist-btn">
+        
+          <!-- Join Waitlist button -->
+          <button class="hero-participate-btn scroll-to-auth">
             Join Waitlist
           </button>
         </div>
-        </div>
-
+      </div>
       <!-- Virtual Try-On section -->
       <div class="virtual-tryon-section">
         <div class="virtual-tryon-card">
-          <h2 class="virtual-tryon-title">Virtual Try-On</h2>
+          <h2 class="virtual-tryon-title">Virtual <span class="angon-text">Try-On</span></h2>
           <p class="virtual-tryon-subtitle">
-            Try on your entire cart and See See the full outfit<br>
+            Try on your entire cart<br>See the full outfit<br>
             on your actual body in seconds.
           </p>
-
           <div class="tryon-preview-grid">
             <!-- Main central image (person wearing outfit) -->
             <div class="tryon-main-preview">
-              <img 
-                src="https://via.placeholder.com/320x480/eee/333?text=Person+with+Full+Outfit" 
-                alt="Virtual try-on result - full outfit on body" 
+              <img
+                src="Images/virtual_try_on_full_body.png"
+                alt="Virtual try-on result - full outfit on body"
                 class="tryon-main-image"
               >
             </div>
-
             <!-- Small floating product thumbnails -->
-            <img 
-              src="https://via.placeholder.com/90x90/eee/333?text=Jacket" 
-              alt="Light denim jacket" 
+            <img
+              src="Images/virtual_try_on_jacket.png"
+              alt="Light denim jacket"
               class="tryon-thumbnail top-left"
             >
-            <img 
-              src="https://via.placeholder.com/90x90/eee/333?text=Graphic+Tee" 
-              alt="Graphic t-shirt" 
+            <img
+              src="Images/virtual_try_on_shirt.png"
+              alt="Graphic t-shirt"
               class="tryon-thumbnail top-right"
             >
-            <img 
-              src="https://via.placeholder.com/90x90/eee/333?text=Skirt" 
-              alt="Mini skirt" 
+            <img
+              src="Images/virtual_try_on_bottoms.png"
+              alt="Mini skirt"
               class="tryon-thumbnail bottom-left"
             >
-            <img 
-              src="https://via.placeholder.com/90x90/eee/333?text=Boots" 
-              alt="Red boots" 
+            <img
+              src="Images/virtual_try_on_shoes.png"
+              alt="Red boots"
               class="tryon-thumbnail bottom-right"
             >
           </div>
           <!-- New Join Waitlist button -->
-            <button class="join-waitlist-btn">
+            <button class="hero-participate-btn scroll-to-auth">
               Join Waitlist
             </button>
           </div>
         </div>
-
       <!-- One-Click Multi-Store Cart section -->
       <div class="multi-store-cart-section">
         <div class="multi-store-card">
-          <h2 class="multi-store-title">One-Click<br>Multi-Store Cart</h2>
-          
+          <h2 class="multi-store-title"><span class="angon-text">One-Click</span><br>Multi-Store Cart</h2>
+        
           <p class="multi-store-subtitle">
-            Add every piece from every store in one<br>click. We handle the rest.
+            Add every piece from every store<br>in one click. We handle the rest.
           </p>
-
-          <div class="stores-flow">
-            <div class="store-logo store-logo-vortex">
-              <span class="logo-symbol">V</span>
-            </div>
-            
-            <div class="arrow">→</div>
-            
-            <div class="cart-icon">🛒</div>
-            
-            <div class="arrow">→</div>
-            
-            <div class="store-logo store-logo-skiims">SKIMS</div>
+        
+          <!-- Orbiting logos layout -->
+          <div class="multi-store-orbit-container">
+            <!-- Store Logo 1 (top-left) -->
+            <img src="Images/gym_shark_logo.png" alt="Gym Shark" class="store-logo logo-top-left">
+          
+            <!-- Store Logo 2 (bottom-left) -->
+            <img src="Images/allbirds_logo.png" alt="Allbirds" class="store-logo logo-bottom-left">
+          
+            <!-- Store Logo 3 (bottom-right) -->
+            <img src="Images/skims_logo.png" alt="Skims" class="store-logo logo-bottom-right">
+          
+            <!-- Central Cart Icon — use a dedicated class -->
+            <img src="Images/multi_store_cart.svg" alt="One-Click Cart" class="central-cart-icon">
           </div>
-
-          <div class="extra-logos">
-            <div class="store-logo store-logo-allbirds">allbirds</div>
-          </div>
-          <!-- New Join Waitlist button -->
-            <button class="join-waitlist-btn">
-              Join Waitlist
-            </button>
-          </div>
+        
+          <!-- Button now INSIDE the card -->
+          <button class="hero-participate-btn scroll-to-auth">
+            Join Waitlist
+          </button>
         </div>
-
-      <header>
-        <h1>Launch Referral Contest</h1>
-       
-        <div class="subtitle-with-gem">
-          <img src="gem.png" alt="Gem" class="small-gem">
-          <p class="subtitle">Win Massive Gems</p>
-        </div>
-      </header>
-
+      </div>
       <!-- Hero Image Section with Text Overlay -->
       <div class="hero-section">
         <img src="Gems_Scatter_Final.png" alt="Fitted Gems Hero" class="hero-image">
         <!-- Big 100,000 number - outside the glass box -->
         <div class="hero-grand-prize">
-          <h1 class="grand-prize-number">100,000 Gems Grand Prize Pot</h1>
+          <h1 class="grand-prize-number"><span class="angon-text">100k Gems</span><br>Contest</h1>
         </div>
         <!-- Glass box with "Participate Now" – now a button -->
         <div class="hero-text-overlay">
-          <button class="hero-participate-btn">
+          <button class="hero-participate-btn scroll-to-auth">
             Participate Now
           </button>
         </div>
       </div>
-         
+        
       <div class="prize-list">
         <p class="subtitle">Prize Breakdown</p>
         <div class="prize-item">
@@ -224,13 +209,13 @@
           <span class="amount">5,000</span>
         </div>
       </div>
-      <div class="leaderboard-section">
-        <div class="leaderboard-header">
-          <div class="lb-title">Contest Leaderboard</div>
-          <div class="live-badge">
-            Live
-          </div>
+      <div class="leaderboard-header">
+        <div class="lb-title">Contest Leaderboard</div>
+        <div class="live-badge">
+          Live
         </div>
+      </div>
+      <div class="leaderboard-section">
         <div class="leaderboard-table" style="border-radius:0 12px 12px 0;">
           <div class="lb-header">
             <div class="lb-rank">Rank</div>
@@ -272,17 +257,15 @@
         <div class="claim-feedback" id="claim-feedback"></div>
       </div>
     </div>
-  </div> 
-
+  </div>
   <!-- Load modular tasks system -->
   <script src="tasks.js"></script>
+  <!-- Fixed: All scripts consolidated + scroll handler wrapped in DOMContentLoaded -->
   <script>
-    // Leaderboard load – with dummy data for testing
+    // Leaderboard load with dummy fallback
     async function loadLeaderboard() {
       const container = document.getElementById('leaderboard-body');
       container.innerHTML = '<div class="loading">Loading leaderboard...</div>';
-      // ────────────────────────────────────────────────
-      // DUMMY DATA – use this for testing / styling
       const dummyData = [
         { email: "zz@gmail.com", referrals: 6 },
         { email: "xx@gmail.com", referrals: 1 },
@@ -290,9 +273,6 @@
         { email: "sss@gmail.com", referrals: 0 },
         { email: "ssas@gmail.com", referrals: 0 }
       ];
-      // ────────────────────────────────────────────────
-      // === FOR TESTING: uncomment next line to ALWAYS use dummy data
-      // return renderLeaderboard(dummyData);
       try {
         const res = await fetch(`${WORKER_URL}/leaderboard`);
         if (!res.ok) throw new Error("Leaderboard fetch failed");
@@ -305,13 +285,8 @@
       } catch (err) {
         console.warn("Using dummy data because:", err.message);
         renderLeaderboard(dummyData);
-        // Optional: show a small note
-        // container.innerHTML += '<br><small>(using test data)</small>';
       }
-      // ────────────────────────────────────────────────
-      // Helper: render the rows (shared for real + dummy data)
       function renderLeaderboard(users) {
-        // Sort descending by referrals (highest first)
         const sorted = [...users].sort((a, b) => b.referrals - a.referrals);
         container.innerHTML = sorted.map((user, index) => {
           const rank = index + 1;
@@ -321,16 +296,13 @@
           const rankLabel = getRankLabel(rank);
           return `
             <div class="lb-row">
-              <div class="lb-rank-num">
-                ${rankLabel}
-              </div>
+              <div class="lb-rank-num">${rankLabel}</div>
               <div class="lb-user-name">${displayName}</div>
               <div class="lb-refs-num">${user.referrals}</div>
             </div>
           `;
         }).join('');
       }
-      // Rank label helper (1st, 2nd, 3rd, 4th, 5th, ...)
       function getRankLabel(rank) {
         if (rank === 1) return "1st";
         if (rank === 2) return "2nd";
@@ -339,13 +311,15 @@
       }
     }
     loadLeaderboard();
-    // Pre-fill referral code from URL
+
+    // Pre-fill referral code
     const urlParams = new URLSearchParams(window.location.search);
     const urlRef = urlParams.get('ref');
     if (urlRef && document.getElementById('auth-ref-code')) {
       document.getElementById('auth-ref-code').value = urlRef.toUpperCase();
     }
-    // Unified Continue button logic (join OR check progress)
+
+    // Unified auth form logic (join or check)
     const authForm = document.getElementById('auth-form');
     const authEmailInput = document.getElementById('auth-email');
     const authRefInput = document.getElementById('auth-ref-code');
@@ -355,6 +329,7 @@
     const milestonesDiv = document.getElementById('milestones');
     const authHeading = document.getElementById('auth-heading');
     const authSubtitle = document.getElementById('auth-subtitle');
+
     authForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       authMessage.innerHTML = '';
@@ -371,10 +346,8 @@
         return;
       }
       try {
-        // Step 1: Check if user already exists
         const statusRes = await fetch(`${WORKER_URL}/status?email=${encodeURIComponent(email)}`);
         if (statusRes.ok) {
-          // Existing user → load their stats
           const user = await statusRes.json();
           TasksModule.setUser({
             email: user.email,
@@ -383,83 +356,61 @@
             confirmed: user.confirmed,
             claimedMilestones: user.claimedMilestones || []
           });
-          // Show stats
           gemsTotal.style.display = 'block';
           gemsTotal.textContent = `Gems Earned: ${user.gemsEarned || 0}`;
           milestonesDiv.style.display = 'block';
-          TasksModule.render(); // This loads the milestones automatically
-          // Update UI to "Your Progress" mode
-          authHeading.textContent = 'Your Progress';
-          authSubtitle.style.display = 'none'; // Hide subtitle
-          authForm.style.display = 'none'; // Hide form after success
-          authMessage.innerHTML = '<div class="message success">Stats loaded!</div>';
-          authBtn.textContent = 'Continue';
-          authBtn.disabled = false;
-          loadLeaderboard();
-          return;
-        }
-        // Step 2: New user → sign them up
-        const formData = new FormData();
-        formData.append('email', email);
-        const endpoint = ref ? `${WORKER_URL}/signup?ref=${encodeURIComponent(ref)}` : `${WORKER_URL}/signup`;
-        const signupRes = await fetch(endpoint, { method: 'POST', body: formData });
-        let result;
-        try { result = await signupRes.json(); } catch { result = { error: 'Invalid response' }; }
-        if (signupRes.ok && result.success) {
-          let successMsg = result.message || 'Welcome! You’re now on the waitlist.';
-          if (result.code) {
-            successMsg += `<br><br>Your referral code: <strong>${result.code}</strong><br>Share this link:<br><strong>https://highstakes-ai.github.io/Odysseus/leaderboard.html?ref=${result.code}</strong>`;
-          }
-          authMessage.innerHTML = `<div class="message success">${successMsg}</div>`;
-          // Optional: also update to progress mode if you want to show empty stats for new users
+          TasksModule.render();
           authHeading.textContent = 'Your Progress';
           authSubtitle.style.display = 'none';
           authForm.style.display = 'none';
-          gemsTotal.style.display = 'block';
-          gemsTotal.textContent = 'Gems Earned: 0';
-          milestonesDiv.style.display = 'block';
-          TasksModule.render(); // Loads empty/locked milestones
-          authForm.reset();
-          authRefInput.value = '';
+          authMessage.innerHTML = '<div class="message success">Stats loaded!</div>';
           loadLeaderboard();
         } else {
-          authMessage.innerHTML = `<div class="message error">${result.error || 'Something went wrong – try again'}</div>`;
+          const formData = new FormData();
+          formData.append('email', email);
+          const endpoint = ref ? `${WORKER_URL}/signup?ref=${encodeURIComponent(ref)}` : `${WORKER_URL}/signup`;
+          const signupRes = await fetch(endpoint, { method: 'POST', body: formData });
+          const result = await signupRes.json();
+          if (signupRes.ok && result.success) {
+            let successMsg = result.message || 'Welcome! You’re now on the waitlist.';
+            if (result.code) {
+              successMsg += `<br><br>Your referral code: <strong>${result.code}</strong><br>Share: <strong>https://highstakes-ai.github.io/Odysseus/leaderboard.html?ref=${result.code}</strong>`;
+            }
+            authMessage.innerHTML = `<div class="message success">${successMsg}</div>`;
+            authHeading.textContent = 'Your Progress';
+            authSubtitle.style.display = 'none';
+            authForm.style.display = 'none';
+            gemsTotal.style.display = 'block';
+            gemsTotal.textContent = 'Gems Earned: 0';
+            milestonesDiv.style.display = 'block';
+            TasksModule.render();
+            authForm.reset();
+            authRefInput.value = '';
+            loadLeaderboard();
+          } else {
+            authMessage.innerHTML = `<div class="message error">${result.error || 'Something went wrong'}</div>`;
+          }
         }
       } catch (err) {
-        authMessage.innerHTML = '<div class="message error">Network error – check your connection and try again</div>';
+        authMessage.innerHTML = '<div class="message error">Network error – try again</div>';
       }
       authBtn.disabled = false;
       authBtn.textContent = 'Continue';
     });
 
-    // Smooth scroll to join/check section when Participate Now button is clicked
-    document.querySelector('.hero-participate-btn')?.addEventListener('click', () => {
-      const target = document.querySelector('.unified-auth-section');
-      if (target) {
-        target.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start'
-        });
-      }
-    });
-
-    // Count-up animation that starts only when element is visible
+    // Count-up animation
     function startCountUpWhenVisible() {
       const statsBox = document.getElementById('stats-box');
       if (!statsBox) return;
-
       const counters = statsBox.querySelectorAll('.count-up');
-
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-            // Element is visible → start counting
             counters.forEach(counter => {
               const target = parseInt(counter.getAttribute('data-target'));
               const start = parseInt(counter.getAttribute('data-start')) || 0;
-              const duration = 5000; // 1.8 seconds
-              const increment = target / (duration / 16); // ~60fps
-
+              const duration = 5000;
+              const increment = target / (duration / 16);
               let current = start;
               const timer = setInterval(() => {
                 current += increment;
@@ -467,29 +418,32 @@
                   current = target;
                   clearInterval(timer);
                 }
-
                 const formatted = Math.floor(current).toLocaleString();
                 const text = counter.textContent;
                 const suffix = text.includes('+') ? '+' : '';
                 const label = text.replace(/[\d,]+\/?\+?/, '').trim();
-
                 counter.innerHTML = `<span>${formatted}${suffix}</span> ${label}`;
               }, 16);
             });
-
-            // Stop observing once animation starts (runs only once)
             observer.unobserve(statsBox);
           }
         });
-      }, {
-        threshold: 0.1 // Trigger when 10% of the box is visible
-      });
-
+      }, { threshold: 0.1 });
       observer.observe(statsBox);
     }
-
-    // Run when page loads
     window.addEventListener('load', startCountUpWhenVisible);
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.scroll-to-auth').forEach(button => {
+        button.addEventListener('click', (e) => {
+          e.preventDefault();
+          window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: 'smooth'
+          });
+        });
+      });
+    });
   </script>
 </body>
 </html>

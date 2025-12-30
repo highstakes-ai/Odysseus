@@ -16,6 +16,19 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: 'Angon';
+  src: url('Angon.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+.angon-text {
+  font-family: 'Angon', 'Satoshi', sans-serif;
+  font-weight: normal;
+}
+
 /* Universal box-sizing fix for mobile */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -58,7 +71,6 @@ strong, b,
   max-width: 100%;
   height: 60px;
   background: white;
-  border-bottom: 1px solid #eee;
   position: sticky;
   top: 0;
   left: 0;
@@ -165,7 +177,6 @@ h1 {
 /* Soft shadow on the entire leaderboard container */
 .leaderboard-section {
   margin-bottom: 2.5rem;
-  padding: 1.5rem 1rem;
   background: white;
   border-radius: 16px;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
@@ -242,7 +253,7 @@ h1 {
   align-items: center;
   padding: 0.9rem 1.2rem;
   border-bottom: 1px solid #eee;
-  font-size: 1.1rem;
+  font-size: 1rem;
   transition: background 0.15s ease;
 }
 
@@ -500,6 +511,7 @@ a {
 
 /* The Participate Now button */
 .hero-participate-btn {
+  margin-top: 2.5rem; /* Adds generous space above the button */
   position: relative;
   background: #000000;
   border: none;
@@ -509,11 +521,10 @@ a {
   font-weight: 700;
   color: white;
   cursor: pointer;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
   overflow: hidden;
   transition: all 0.3s ease;
   animation: float 3.8s ease-in-out infinite;
-  text-shadow: 0 2px 10px rgba(0,0,0,0.6);
   white-space: nowrap;
 }
 
@@ -571,7 +582,7 @@ a {
 
 /* Big prize number styling */
 .grand-prize-number {
-  font-size: 2rem;
+  font-size: 3rem;
   font-weight: bold;
   color: white;
   margin: 0;
@@ -821,12 +832,15 @@ a {
 .landing-hero {
   position: relative;
   width: 100%;
-  max-width: 360px;
+  max-width: 500px;
   aspect-ratio: 5 / 7;
   overflow: hidden;
   border-radius: 0 0 20px 20px;
   margin: 0 auto;
   box-sizing: border-box;
+  height: auto;
+  object-fit: contain;
+  display: block;
 }
 
 .landing-hero-image {
@@ -978,7 +992,6 @@ a {
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
   text-align: center;
   position: relative;
-  overflow: hidden;
 }
 
 .virtual-tryon-title {
@@ -1007,7 +1020,7 @@ a {
 .tryon-main-preview {
   width: 100%;
   height: 100%;
-  border-radius: 16px;
+  border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 10px 40px rgba(0,0,0,0.12);
 }
@@ -1025,14 +1038,14 @@ a {
   width: 90px;
   height: 90px;
   object-fit: cover;
-  border-radius: 12px;
-  border: 3px solid white;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.18);
-  background: #f8f8f8;
+  border-radius: 8px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
+  /* Remove or comment this line */
+  /* background: #f8f8f8; */
 }
 
 /* Positioning - roughly matches the layout in the screenshot */
-.top-left    { top: 8%;   left: -10%; }
+.top-left    { top: 8%;   left: -15%; }
 .top-right   { top: 12%;  right: -10%; }
 .bottom-left { bottom: 18%; left: -8%; }
 .bottom-right{ bottom: 22%; right: -8%; }
@@ -1048,9 +1061,10 @@ a {
 .style-reference-card {
   background: white;
   border-radius: 20px;
-  padding: 1.8rem 1.5rem;
+  padding: 1.8rem 1.5rem 1.8rem 1.5rem; /* Reduced bottom padding — less whitespace */
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
   text-align: center;
+  overflow: visible;
 }
 
 .style-ref-title {
@@ -1065,44 +1079,65 @@ a {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.8rem;
+  gap: 1rem;
 }
 
 .style-ref-text-block {
-  max-width: 90%;
+  text-align: center;
 }
 
 .style-ref-description {
-  font-size: 1.08rem;
+  font-size: 1.1rem;
   line-height: 1.5;
-  color: #333;
-  margin: 0;
-  font-weight: 500;
+  color: #444;
+  margin: 0 0 1rem 0; /* Reduced bottom margin */
 }
 
-.style-ref-image-container {
+/* REMOVE fixed height — let content flow naturally */
+.style-ref-images {
+  position: relative;
   width: 100%;
-  max-width: 280px;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 10px 38px rgba(0,0,0,0.14);
+  max-width: 340px;
+  margin: 0 auto 1rem auto; /* Small bottom margin instead of fixed height */
 }
 
-.style-ref-main-image {
-  width: 100%;
-  height: auto;
-  display: block;
+/* Base image styles */
+.style-ref-image {
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
   object-fit: cover;
 }
 
-/* Mobile-first — stack layout is already correct */
-/* On very small screens the text stays readable */
+/* Main image */
+.style-ref-image-large {
+  width: 82%;
+  height: auto;
+  position: relative;
+  left: 32%;
+  transform: translateX(-50%);
+  z-index: 1;
+}
+
+/* Secondary image — tighter overlap */
+.style-ref-image-small {
+  position: absolute;
+  bottom: -24px;
+  right: -6px;
+  width: 80%;
+  z-index: 2;
+  transform: rotate(4deg);
+}
+
+/* Mobile adjustments */
 @media (max-width: 360px) {
   .style-ref-title {
     font-size: 1.65rem;
   }
   .style-ref-description {
     font-size: 1rem;
+  }
+  .style-ref-image-small {
+    bottom: -30px; /* Slightly less overlap on small screens */
   }
 }
 
@@ -1117,7 +1152,7 @@ a {
 .multi-store-card {
   background: white;
   border-radius: 20px;
-  padding: 1.8rem 1.5rem;
+  padding: 1.8rem 1.5rem 2.2rem 1.5rem; /* Balanced, with room for large image */
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
   text-align: center;
 }
@@ -1134,102 +1169,64 @@ a {
   font-size: 1.08rem;
   line-height: 1.48;
   color: #444;
-  margin: 0 0 2rem 0;
+  margin: 0 0 1.8rem 0;
   font-weight: 500;
 }
 
-/* Horizontal flow: logo → arrow → cart → arrow → logo */
-.stores-flow {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-  margin-bottom: 1.4rem;
+.multi-store-image {
+  width: 100%;
+  height: auto;
+  max-height: 420px;           /* Prevents overly tall SVGs */
+  border-radius: 20px;
+  margin: 2rem auto 1rem auto;
+  display: block;
+  object-fit: contain;         /* Perfect for SVGs — preserves proportions & centering */
+  background: transparent;     /* No background needed for clean SVG */
 }
 
+/* Orbiting logos container */
+.multi-store-orbit-container {
+  position: relative;
+  width: 100%;
+  max-width: 320px;
+  height: 200px; /* Adjust based on your logo sizes */
+  margin: 2rem auto 1.5rem auto;
+}
+
+/* Store logos — base styles */
 .store-logo {
+  position: absolute;
   width: 80px;
-  height: 80px;
-  border-radius: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  color: white;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  object-fit: contain;
+  background: white;
+  z-index: 1;
 }
 
-.store-logo-vortex {
-  background: #000;
-  font-size: 2.8rem;
+/* Top-left logo */
+.logo-top-left {
+    top: -4%;
+    left: -13%;
+    transform: scale(1.1) rotate(8deg);
 }
 
-.logo-symbol {
-  font-size: 3.2rem;
-  line-height: 1;
+.logo-bottom-left {
+    bottom: -2%;
+    left: 13%;
+    transform: scale(0.95) rotate(6deg);
 }
 
-.store-logo-skiims {
-  background: #6b4e3d;          /* warm brown / taupe tone like Skims branding */
-  font-size: 1.5rem;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
+/* Bottom-right logo */
+.logo-bottom-right {
+    bottom: 20%;
+    right: -9%;
+    transform: scale(1.4) rotate(-6deg);
 }
 
-.cart-icon {
-  width: 80px;
-  height: 80px;
-  background: #f5f5f5;
-  border-radius: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2.8rem;
-  color: #333;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-.arrow {
-  font-size: 2.2rem;
-  color: #888;
-  font-weight: bold;
-}
-
-/* Extra brand below (Allbirds style placement) */
-.extra-logos {
-  display: flex;
-  justify-content: center;
-}
-
-.store-logo-allbirds {
-  width: 120px;
-  height: 60px;
-  background: #000;
-  color: white;
-  font-size: 1.1rem;
-  font-weight: 700;
-  text-transform: lowercase;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-/* Small screen adjustments */
-@media (max-width: 360px) {
-  .stores-flow {
-    gap: 0.8rem;
-  }
-  .store-logo, .cart-icon {
-    width: 70px;
-    height: 70px;
-  }
-  .arrow {
-    font-size: 1.8rem;
-  }
-}
+/* Optional: Add curved arrows (using SVG or pseudo-elements) */
+/* For now, you can add arrow SVGs as background or separate imgs if needed */
 
 /* Join Waitlist button – exact style as Participate Now, but black + no hover */
 .join-waitlist-btn {
@@ -1257,4 +1254,72 @@ a {
   background: #000000;           /* stays black */
   transform: none;
   box-shadow: 0 8px 32px rgba(0,0,0,0.3); /* no change */
+}
+
+/* Perfect Matches Section */
+.perfect-matches-section {
+  width: 100%;
+  max-width: 360px;
+  margin: 2.5rem auto;
+  box-sizing: border-box;
+}
+
+.perfect-matches-card {
+  background: white;
+  border-radius: 20px;
+  padding: 1.8rem 1.5rem 2.2rem 1.5rem; /* Balanced padding, slight extra bottom */
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+.perfect-matches-title {
+  font-size: 1.85rem;
+  font-weight: 800;
+  line-height: 1.15;
+  margin: 0 0 1.6rem 0;
+  color: #000;
+}
+
+.perfect-matches-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.perfect-matches-text-block {
+  text-align: center;
+}
+
+.perfect-matches-description {
+  font-size: 1.1rem;
+  line-height: 1.5;
+  color: #444;
+  margin: 0;
+}
+
+/* Simple single image */
+.perfect-matches-image-container {
+  width: 100%;
+  max-width: 340px;
+  margin: 0 auto;
+}
+
+.perfect-matches-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+  object-fit: cover;
+  display: block;
+}
+
+/* Mobile adjustments */
+@media (max-width: 360px) {
+  .perfect-matches-title {
+    font-size: 1.65rem;
+  }
+  .perfect-matches-description {
+    font-size: 1rem;
+  }
 }
