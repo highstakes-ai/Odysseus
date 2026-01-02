@@ -188,7 +188,6 @@ h1 {
 .leaderboard-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
   margin-bottom: 1rem;
 }
 
@@ -212,7 +211,7 @@ h1 {
 
 .live-badge::before {
   content: "●";
-  color: red;
+  color: #47AFF9;
   margin-right: 0.5rem;
   animation: pulse 1.5s infinite;
 }
@@ -242,9 +241,9 @@ h1 {
   border-radius: 12px 12px 0 0;
 }
 
-.lb-rank   { width: 20%; }
-.lb-user   { width: 50%; }
-.lb-refs   { width: 30%; text-align: right; }
+.lb-rank   { width: 15%; }
+.lb-user   { width: 60%; }
+.lb-refs   { width: 15%; text-align: right; }
 
 /* Rows styled similarly to prize-item */
 .lb-row {
@@ -387,9 +386,10 @@ h1 {
 }
 
 .milestone-left {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+    display: flex;
+    align-items: center;
+    /* gap: 1rem; */
+    font-size: 0.8em;
 }
 
 .milestone-check {
@@ -401,33 +401,26 @@ h1 {
 }
 
 .milestone-gems {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-weight: bold;
-  min-width: 90px;
-  justify-content: flex-end;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: bold;
+    min-width: 90px;
+    /* justify-content: flex-end; */
 }
 
 .gem-amount {
-  font-size: 0.9em;
+  font-size: 0.8em;
   min-width: 60px;
   text-align: right;
 }
 
-.small-gem {
-  width: 24px;
-  height: auto;
-  object-fit: contain;
-  vertical-align: middle;
-}
-
 .milestone-button {
-  padding: 0.6rem 1.2rem;
-  border-radius: 30px;
-  font-weight: bold;
-  font-size: 0.9rem;
-  cursor: pointer;
+    padding: 0.6rem 1.2rem;
+    border-radius: 30px;
+    font-weight: bold;
+    font-size: 0.8rem;
+    cursor: pointer;
 }
 
 .claimed {
@@ -603,12 +596,6 @@ a {
   font-size: 1.2rem;
 }
 
-.small-gem {
-  width: 32px;
-  height: auto;
-  object-fit: contain;
-}
-
 /* Ensure the paragraph has no extra margin */
 .subtitle-with-gem .subtitle {
   margin: 0;
@@ -712,19 +699,19 @@ a {
 
 /* Milestone list layout improvements */
 .milestone-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.9rem;
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .milestone {
   background: #fff;
   border: 1px solid #eee;
   border-radius: 12px;
-  padding: 1rem 1.2rem;
+  padding: 1rem 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -733,8 +720,8 @@ a {
 
 /* Adjust gem icon size if needed */
 .small-gem {
-  width: 28px;
-  height: auto;
+    width: 20px;
+    height: auto;
 }
 
 /* Progress header */
@@ -1322,4 +1309,34 @@ a {
   .perfect-matches-description {
     font-size: 1rem;
   }
+}
+
+.vision-section {
+    width: 100%;
+    max-width: 420px;
+    /*margin: 3rem auto;*/
+    padding: 0 0rem;
+    box-sizing: border-box;
+}
+
+.vision-card {
+    background: white;
+    border-radius: 20px;
+    padding: 1rem 1rem;
+    /* box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08); */
+    text-align: center;
+}
+
+.vision-title {
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin-bottom: 1.8rem;
+  color: #000;
+}
+
+.vision-copy {
+  font-size: 1rem;
+  line-height: 1.65;
+  color: #333;
+  font-weight: 500;
 }

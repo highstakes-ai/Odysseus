@@ -37,8 +37,7 @@ function renderMilestones() {
   const refLink = `https://highstakes-ai.github.io/Odysseus/leaderboard.html?ref=${currentUser.code || 'YOURCODE'}`;
 
   container.innerHTML = `
-    <h2 class="progress-title">Your Progress</h2>
-    
+  
     <div class="gems-earned-box">
       Gems Earned <img src="gem.png" alt="Gem" class="small-gem"> ${gemsEarned.toLocaleString()}
     </div>
@@ -49,8 +48,8 @@ function renderMilestones() {
       
       <div class="user-stats-row">
         <div><strong>Rank:</strong> ${currentUser.rank || '—'}</div>
-        <div><strong>Email:</strong> ${currentUser.email || '—'}</div>
-        <div><strong>Referrals:</strong> ${currentUser.referrals || 0}</div>
+        <div><strong>Email:</strong> ${currentUser.email ? currentUser.email.split('@')[0] : '—'}</div>
+        <div><strong>Refs:</strong> ${currentUser.referrals || 0}</div>
       </div>
     </div>
 

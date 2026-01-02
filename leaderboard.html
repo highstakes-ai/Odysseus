@@ -35,6 +35,31 @@
         <div class="count-up" data-target="300" data-start="150">300+ Sites</div>
         <div>1 Click Purchase</div>
       </div>
+
+      <!-- Vision / Future of Shopping Section -->
+      <div class="vision-section">
+        <div class="vision-card">
+          <h2 class="vision-title">The <span class="angon-text">Future</span> of Fashion Shopping</h2>
+          <p class="vision-copy">
+            <b>Online shopping is overwhelming.</b><br>
+            Endless scrolling. Nothing feels quite <b>you.</b><br><br>
+
+            <b>Fitted is different.</b><br>
+
+            <br><b>Our AI</b> doesn’t flood you with options.<br>
+            It <b>curates items you’d actually wear.</b> 
+            <br>Perfectly matched to your style, budget, and body.<br><br>
+
+            <b>No decision fatigue.</b><br>
+            Just looks you love, ready to buy in <br>one click.
+          </p>
+          <!-- New Join Waitlist button -->
+          <button class="hero-participate-btn scroll-to-auth">
+            Join Waitlist
+          </button>
+        </div>
+      </div>
+
       <!-- Begin with a style reference section -->
       <div class="style-reference-section">
         <div class="style-reference-card">
@@ -43,7 +68,7 @@
           <div class="style-ref-content">
             <div class="style-ref-text-block">
               <p class="style-ref-description">
-                Upload 1—5 pics<br>
+                Upload 1-5 pics<br>
                 AI fuses the vibes into a fresh,<br>
                 cohesive style
               </p>
@@ -230,6 +255,7 @@
       <!-- Unified Join / Check Section -->
       <div class="unified-auth-section">
         <div class="auth-title" id="auth-heading">Join or Check Progress</div>
+        <div class="auth-title" id="your-progress-heading" style="display:none;">Your Progress</div>
         <p class="auth-subtitle" id="auth-subtitle">Enter your email to join the waitlist or view your referral stats</p>
         <form id="auth-form" class="auth-form">
           <input
@@ -252,7 +278,7 @@
           <div id="auth-message"></div>
         </form>
         <!-- Gems total & milestones will appear here after successful check/login -->
-        <div class="gems-total" id="gems-total" style="display:none; margin-top:1.5rem;"></div>
+        <div class="gems-total" id="gems-total" style="display:none;"></div>
         <div class="milestones" id="milestones" style="display:none;"></div>
         <div class="claim-feedback" id="claim-feedback"></div>
       </div>
@@ -291,7 +317,7 @@
         container.innerHTML = sorted.map((user, index) => {
           const rank = index + 1;
           const displayName = user.email.includes('@')
-            ? user.email.split('@')[0] + '***'
+            ? user.email.split('@')[0].substring(0, 5) + '...'
             : user.email;
           const rankLabel = getRankLabel(rank);
           return `
@@ -356,7 +382,7 @@
             confirmed: user.confirmed,
             claimedMilestones: user.claimedMilestones || []
           });
-          gemsTotal.style.display = 'block';
+          gemsTotal.style.display = 'hidden';
           gemsTotal.textContent = `Gems Earned: ${user.gemsEarned || 0}`;
           milestonesDiv.style.display = 'block';
           TasksModule.render();
