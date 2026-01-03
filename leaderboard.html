@@ -212,6 +212,10 @@
       </div>
         
       <div class="prize-list">
+        <p class="vision-copy">
+          Gems are used to perform actions on Fitted, such as searching products, sites and virtual try ons.<br>
+        </p>
+
         <p class="subtitle">Prize Breakdown</p>
         <div class="prize-item">
           <span class="rank-label">1st</span>
@@ -364,8 +368,14 @@
     async function fetchUserStats(email) {
       try {
         const statusRes = await fetch(`${WORKER_URL}/status?email=${encodeURIComponent(email)}`);
-        if (statusRes.ok) {
-          const user = await statusRes.json();
+        if (!statusRes.ok) {
+          // 404 or error – do nothing (no auto-progress)
+          console.log("No confirmed user for saved email");
+          return;
+        }
+        const user = await statusRes.json();
+        if (user.confirmed) {
+          // Only load progress if confirmed
           TasksModule.setUser({
             email: user.email,
             referrals: user.referrals,
@@ -373,7 +383,7 @@
             confirmed: user.confirmed,
             claimedMilestones: user.claimedMilestones || []
           });
-          document.getElementById('gems-total').style.display = 'hidden';
+          document.getElementById('gems-total').style.display = 'block';
           document.getElementById('gems-total').textContent = `Gems Earned: ${user.gemsEarned || 0}`;
           document.getElementById('milestones').style.display = 'block';
           TasksModule.render();
@@ -382,9 +392,14 @@
           document.getElementById('auth-form').style.display = 'none';
           document.getElementById('auth-message').innerHTML = '<div class="message success">Welcome back! Stats loaded.</div>';
           loadLeaderboard();
+        } else {
+          // Saved email but not confirmed – do NOT load progress, show message
+          document.getElementById('auth-message').innerHTML = '<div class="message success">You\'ve signed up! Check your inbox to confirm your email address and start earning Gems. Check spam as well, and if you haven\'t received an email within 1 minute, please contact us at support@fitted.ai.</div>';
+          document.getElementById('auth-subtitle').style.display = 'none';
+          document.getElementById('auth-form').style.display = 'none';
         }
       } catch (err) {
-        console.log("No existing user for saved email");
+        console.log("No existing user for saved email or fetch error:", err);
       }
     }
 
@@ -393,6 +408,8 @@
     const authRefInput = document.getElementById('auth-ref-code');
     const authBtn = document.getElementById('auth-btn');
     const authMessage = document.getElementById('auth-message');
+    const authHeading = document.getElementById('auth-heading');
+    const authSubtitle = document.getElementById('auth-subtitle');
 
     authForm.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -421,7 +438,6 @@
         } else {
           throw new Error('Status check failed');
         }
-
         if (user && user.confirmed) {
           // Confirmed user – load progress
           TasksModule.setUser({
@@ -436,7 +452,7 @@
           milestonesDiv.style.display = 'block';
           TasksModule.render();
           authHeading.textContent = 'Your Progress';
-          authMessage.style.display = 'none';
+          authSubtitle.style.display = 'none';
           authForm.style.display = 'none';
           authMessage.innerHTML = '<div class="message success">Stats loaded!</div>';
         } else {
@@ -452,13 +468,15 @@
             result = { error: 'Invalid response' };
           }
           if (signupRes.ok && result.success) {
-            let successMsg = "You've signed up! Check your inbox to confirm your email address and start earning Gems. Check spam as well, and if you haven't received an email within 1 minute, please contact us at support@fitted.ai.";
+            let successMsg = "You've signed up!<br>Check your inbox to confirm your email address and start earning Gems.<br>Check spam as well, and if you haven't received an email within 1 minute, please contact us at support@fitted.ai.";
             if (result.code) {
               successMsg += `<br><br>Your referral code: <strong>${result.code}</strong><br>Share this link:<br><strong>https://highstakes-ai.github.io/Odysseus/leaderboard.html?ref=${result.code}</strong>`;
             }
-            authMessage.innerHTML = `<div class="message success">${successMsg}</div>`;
-            authMessage.style.display = 'block';
+            // Update heading to "You're Almost There..." and subtitle to success message
+            authHeading.textContent = "You're Almost There...";
+            authSubtitle.innerHTML = successMsg;
             authForm.style.display = 'none';
+            authMessage.innerHTML = ''; // clear any old message
           } else {
             authMessage.innerHTML = `<div class="message error">${result.error || 'Something went wrong – try again'}</div>`;
           }
