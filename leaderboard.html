@@ -393,6 +393,7 @@
     const authRefInput = document.getElementById('auth-ref-code');
     const authBtn = document.getElementById('auth-btn');
     const authMessage = document.getElementById('auth-message');
+
     authForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       authMessage.innerHTML = '';
@@ -420,6 +421,7 @@
         } else {
           throw new Error('Status check failed');
         }
+
         if (user && user.confirmed) {
           // Confirmed user – load progress
           TasksModule.setUser({
@@ -434,20 +436,37 @@
           milestonesDiv.style.display = 'block';
           TasksModule.render();
           authHeading.textContent = 'Your Progress';
-          authSubtitle.style.display = 'none';
+          authMessage.style.display = 'none';
           authForm.style.display = 'none';
           authMessage.innerHTML = '<div class="message success">Stats loaded!</div>';
         } else {
-          // Not confirmed or new user – show custom message
-          authMessage.innerHTML = '<div class="message success">You\'ve signed up! Check your inbox to confirm your email address and start earning Gems. Check spam as well, and if you haven\'t received an email within 1 minute, please contact us at support@fitted.ai.</div>';
-          authSubtitle.style.display = 'none';
-          authForm.style.display = 'none';
+          // Not confirmed or new user – proceed to signup
+          const formData = new FormData();
+          formData.append('email', email);
+          const endpoint = ref ? `${WORKER_URL}/signup?ref=${encodeURIComponent(ref)}` : `${WORKER_URL}/signup`;
+          const signupRes = await fetch(endpoint, { method: 'POST', body: formData });
+          let result;
+          try {
+            result = await signupRes.json();
+          } catch {
+            result = { error: 'Invalid response' };
+          }
+          if (signupRes.ok && result.success) {
+            let successMsg = "You've signed up! Check your inbox to confirm your email address and start earning Gems. Check spam as well, and if you haven't received an email within 1 minute, please contact us at support@fitted.ai.";
+            if (result.code) {
+              successMsg += `<br><br>Your referral code: <strong>${result.code}</strong><br>Share this link:<br><strong>https://highstakes-ai.github.io/Odysseus/leaderboard.html?ref=${result.code}</strong>`;
+            }
+            authMessage.innerHTML = `<div class="message success">${successMsg}</div>`;
+            authMessage.style.display = 'block';
+            authForm.style.display = 'none';
+          } else {
+            authMessage.innerHTML = `<div class="message error">${result.error || 'Something went wrong – try again'}</div>`;
+          }
         }
         loadLeaderboard();
       } catch (err) {
         console.error('Fetch error:', err);
         authMessage.innerHTML = '<div class="message error">Network error – check your connection and try again</div>';
-        // No authSubtitle reference here — fixes ReferenceError
       }
       authBtn.disabled = false;
       authBtn.textContent = 'Continue';
