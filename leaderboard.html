@@ -347,14 +347,29 @@
       document.getElementById('auth-ref-code').value = urlRef.toUpperCase();
     }
 
-    // === NEW: Auto-load from localStorage on page load ===
-    const savedEmail = localStorage.getItem('fitted_user_email');
-    if (savedEmail) {
-      fetchUserStats(savedEmail);
-    }
+    // Elements
+    const authForm = document.getElementById('auth-form');
+    const authEmailInput = document.getElementById('auth-email');
+    const authRefInput = document.getElementById('auth-ref-code');
+    const authBtn = document.getElementById('auth-btn');
+    const authMessage = document.getElementById('auth-message');
+    const authHeading = document.getElementById('auth-heading');
+    const authSubtitle = document.getElementById('auth-subtitle');
+    const gemsTotal = document.getElementById('gems-total');
+    const milestonesDiv = document.getElementById('milestones');
+
+    // On page load: Check localStorage for signed-up state
+    window.addEventListener('load', () => {
+      const savedEmail = localStorage.getItem('fitted_user_email');
+      const signedUp = localStorage.getItem('fitted_signed_up') === 'true';
+
+      if (signedUp && savedEmail) {
+        // Restore UI for signed-up user
+        fetchUserStats(savedEmail);
+      }
+    });
 
     // Save email as user types
-    const authEmailInput = document.getElementById('auth-email');
     if (authEmailInput) {
       authEmailInput.addEventListener('input', () => {
         const email = authEmailInput.value.trim().toLowerCase();
@@ -364,18 +379,19 @@
       });
     }
 
-    // Helper: load user stats (used for auto-load and manual submit)
+    // Helper: load user stats (auto-load + manual submit)
     async function fetchUserStats(email) {
       try {
         const statusRes = await fetch(`${WORKER_URL}/status?email=${encodeURIComponent(email)}`);
         if (!statusRes.ok) {
-          // 404 or error – do nothing (no auto-progress)
+          // 404 or error – clear signed-up state if invalid
+          localStorage.removeItem('fitted_signed_up');
           console.log("No confirmed user for saved email");
           return;
         }
         const user = await statusRes.json();
         if (user.confirmed) {
-          // Only load progress if confirmed
+          // Confirmed → load progress
           TasksModule.setUser({
             email: user.email,
             referrals: user.referrals,
@@ -383,34 +399,31 @@
             confirmed: user.confirmed,
             claimedMilestones: user.claimedMilestones || []
           });
-          document.getElementById('gems-total').style.display = 'block';
-          document.getElementById('gems-total').textContent = `Gems Earned: ${user.gemsEarned || 0}`;
-          document.getElementById('milestones').style.display = 'block';
+          gemsTotal.style.display = 'block';
+          gemsTotal.textContent = `Gems Earned: ${user.gemsEarned || 0}`;
+          milestonesDiv.style.display = 'block';
           TasksModule.render();
-          document.getElementById('auth-heading').textContent = 'Your Progress';
-          document.getElementById('auth-subtitle').style.display = 'none';
-          document.getElementById('auth-form').style.display = 'none';
-          document.getElementById('auth-message').innerHTML = '<div class="message success">Welcome back! Stats loaded.</div>';
+          authHeading.textContent = 'Your Progress';
+          authSubtitle.style.display = 'none';
+          authForm.style.display = 'none';
+          authMessage.innerHTML = '<div class="message success">Welcome back! Stats loaded.</div>';
           loadLeaderboard();
         } else {
-          // Saved email but not confirmed – do NOT load progress, show message
-          document.getElementById('auth-message').innerHTML = '<div class="message success">You\'ve signed up! Check your inbox to confirm your email address and start earning Gems. Check spam as well, and if you haven\'t received an email within 1 minute, please contact us at support@fitted.ai.</div>';
-          document.getElementById('auth-subtitle').style.display = 'none';
-          document.getElementById('auth-form').style.display = 'none';
+          // Unconfirmed → restore signed-up UI
+          authHeading.textContent = "You're Almost There...";
+          authSubtitle.innerHTML = "You've signed up! Check your inbox to confirm your email address and start earning Gems. Check spam as well, and if you haven't received an email within 1 minute, please contact us at support@fitted.ai.";
+          authForm.style.display = 'none';
+          authMessage.innerHTML = '';
         }
       } catch (err) {
-        console.log("No existing user for saved email or fetch error:", err);
+        console.log("Fetch error in auto-load:", err);
+        // Clear state on error
+        localStorage.removeItem('fitted_signed_up');
+        localStorage.removeItem('fitted_user_email');
       }
     }
 
     // Form submit
-    const authForm = document.getElementById('auth-form');
-    const authRefInput = document.getElementById('auth-ref-code');
-    const authBtn = document.getElementById('auth-btn');
-    const authMessage = document.getElementById('auth-message');
-    const authHeading = document.getElementById('auth-heading');
-    const authSubtitle = document.getElementById('auth-subtitle');
-
     authForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       authMessage.innerHTML = '';
@@ -468,15 +481,18 @@
             result = { error: 'Invalid response' };
           }
           if (signupRes.ok && result.success) {
-            let successMsg = "You've signed up!<br>Check your inbox to confirm your email address and start earning Gems.<br>Check spam as well, and if you haven't received an email within 1 minute, please contact us at support@fitted.ai.";
+            let successMsg = "You've signed up! Check your inbox to confirm your email address and start earning Gems. Check spam as well, and if you haven't received an email within 1 minute, please contact us at support@fitted.ai.";
             if (result.code) {
               successMsg += `<br><br>Your referral code: <strong>${result.code}</strong><br>Share this link:<br><strong>https://highstakes-ai.github.io/Odysseus/leaderboard.html?ref=${result.code}</strong>`;
             }
-            // Update heading to "You're Almost There..." and subtitle to success message
+            // Update heading and subtitle on success
             authHeading.textContent = "You're Almost There...";
             authSubtitle.innerHTML = successMsg;
             authForm.style.display = 'none';
-            authMessage.innerHTML = ''; // clear any old message
+            authMessage.innerHTML = '';
+            // Save signed-up state for persistence
+            localStorage.setItem('fitted_user_email', email);
+            localStorage.setItem('fitted_signed_up', 'true');
           } else {
             authMessage.innerHTML = `<div class="message error">${result.error || 'Something went wrong – try again'}</div>`;
           }
