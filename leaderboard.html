@@ -316,9 +316,7 @@
         const sorted = [...users].sort((a, b) => b.referrals - a.referrals);
         container.innerHTML = sorted.map((user, index) => {
           const rank = index + 1;
-          const displayName = user.email.includes('@')
-            ? user.email.split('@')[0].substring(0, 5) + '...'
-            : user.email;
+          const displayName = user.email;
           const rankLabel = getRankLabel(rank);
           return `
             <div class="lb-row">
@@ -345,32 +343,25 @@
       document.getElementById('auth-ref-code').value = urlRef.toUpperCase();
     }
 
-    // Unified auth form logic (join or check)
-    const authForm = document.getElementById('auth-form');
-    const authEmailInput = document.getElementById('auth-email');
-    const authRefInput = document.getElementById('auth-ref-code');
-    const authBtn = document.getElementById('auth-btn');
-    const authMessage = document.getElementById('auth-message');
-    const gemsTotal = document.getElementById('gems-total');
-    const milestonesDiv = document.getElementById('milestones');
-    const authHeading = document.getElementById('auth-heading');
-    const authSubtitle = document.getElementById('auth-subtitle');
+    // === NEW: Auto-load from localStorage on page load ===
+    const savedEmail = localStorage.getItem('fitted_user_email');
+    if (savedEmail) {
+      fetchUserStats(savedEmail);
+    }
 
-    authForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      authMessage.innerHTML = '';
-      authBtn.disabled = true;
-      authBtn.textContent = 'Processing...';
-      const email = authEmailInput.value.trim().toLowerCase();
-      const manualRefCode = authRefInput.value.trim().toUpperCase();
-      let ref = urlParams.get('ref') || '';
-      if (manualRefCode) ref = manualRefCode;
-      if (!email || !email.includes('@')) {
-        authMessage.innerHTML = '<div class="message error">Please enter a valid email</div>';
-        authBtn.disabled = false;
-        authBtn.textContent = 'Continue';
-        return;
-      }
+    // Save email as user types
+    const authEmailInput = document.getElementById('auth-email');
+    if (authEmailInput) {
+      authEmailInput.addEventListener('input', () => {
+        const email = authEmailInput.value.trim().toLowerCase();
+        if (email.includes('@')) {
+          localStorage.setItem('fitted_user_email', email);
+        }
+      });
+    }
+
+    // Helper: load user stats (used for auto-load and manual submit)
+    async function fetchUserStats(email) {
       try {
         const statusRes = await fetch(`${WORKER_URL}/status?email=${encodeURIComponent(email)}`);
         if (statusRes.ok) {
@@ -382,15 +373,52 @@
             confirmed: user.confirmed,
             claimedMilestones: user.claimedMilestones || []
           });
-          gemsTotal.style.display = 'hidden';
-          gemsTotal.textContent = `Gems Earned: ${user.gemsEarned || 0}`;
-          milestonesDiv.style.display = 'block';
+          document.getElementById('gems-total').style.display = 'hidden';
+          document.getElementById('gems-total').textContent = `Gems Earned: ${user.gemsEarned || 0}`;
+          document.getElementById('milestones').style.display = 'block';
           TasksModule.render();
-          authHeading.textContent = 'Your Progress';
-          authSubtitle.style.display = 'none';
-          authForm.style.display = 'none';
-          authMessage.innerHTML = '<div class="message success">Stats loaded!</div>';
+          document.getElementById('auth-heading').textContent = 'Your Progress';
+          document.getElementById('auth-subtitle').style.display = 'none';
+          document.getElementById('auth-form').style.display = 'none';
+          document.getElementById('auth-message').innerHTML = '<div class="message success">Welcome back! Stats loaded.</div>';
           loadLeaderboard();
+        }
+      } catch (err) {
+        console.log("No existing user for saved email");
+      }
+    }
+
+    // Form submit
+    const authForm = document.getElementById('auth-form');
+    const authRefInput = document.getElementById('auth-ref-code');
+    const authBtn = document.getElementById('auth-btn');
+    const authMessage = document.getElementById('auth-message');
+
+    authForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      authMessage.innerHTML = '';
+      authBtn.disabled = true;
+      authBtn.textContent = 'Processing...';
+
+      let email = authEmailInput.value.trim().toLowerCase();
+      const manualRefCode = authRefInput.value.trim().toUpperCase();
+      let ref = urlParams.get('ref') || '';
+      if (manualRefCode) ref = manualRefCode;
+
+      if (!email || !email.includes('@')) {
+        authMessage.innerHTML = '<div class="message error">Please enter a valid email</div>';
+        authBtn.disabled = false;
+        authBtn.textContent = 'Continue';
+        return;
+      }
+
+      // Save to localStorage
+      localStorage.setItem('fitted_user_email', email);
+
+      try {
+        const statusRes = await fetch(`${WORKER_URL}/status?email=${encodeURIComponent(email)}`);
+        if (statusRes.ok) {
+          await fetchUserStats(email);
         } else {
           const formData = new FormData();
           formData.append('email', email);
@@ -403,15 +431,13 @@
               successMsg += `<br><br>Your referral code: <strong>${result.code}</strong><br>Share: <strong>https://highstakes-ai.github.io/Odysseus/leaderboard.html?ref=${result.code}</strong>`;
             }
             authMessage.innerHTML = `<div class="message success">${successMsg}</div>`;
-            authHeading.textContent = 'Your Progress';
-            authSubtitle.style.display = 'none';
-            authForm.style.display = 'none';
-            gemsTotal.style.display = 'block';
-            gemsTotal.textContent = 'Gems Earned: 0';
-            milestonesDiv.style.display = 'block';
+            document.getElementById('auth-heading').textContent = 'Your Progress';
+            document.getElementById('auth-subtitle').style.display = 'none';
+            document.getElementById('auth-form').style.display = 'none';
+            document.getElementById('gems-total').style.display = 'block';
+            document.getElementById('gems-total').textContent = 'Gems Earned: 0';
+            document.getElementById('milestones').style.display = 'block';
             TasksModule.render();
-            authForm.reset();
-            authRefInput.value = '';
             loadLeaderboard();
           } else {
             authMessage.innerHTML = `<div class="message error">${result.error || 'Something went wrong'}</div>`;
@@ -459,6 +485,7 @@
     }
     window.addEventListener('load', startCountUpWhenVisible);
 
+    // Scroll to bottom
     document.addEventListener('DOMContentLoaded', () => {
       document.querySelectorAll('.scroll-to-auth').forEach(button => {
         button.addEventListener('click', (e) => {

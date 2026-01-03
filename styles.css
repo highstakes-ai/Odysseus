@@ -711,11 +711,11 @@ a {
   background: #fff;
   border: 1px solid #eee;
   border-radius: 12px;
-  padding: 1rem 1rem;
+  padding: 0.5rem 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 /* Adjust gem icon size if needed */

@@ -5,7 +5,8 @@ const WORKER_URL = 'https://fitted.aihighstakes.workers.dev';
 let currentUser = null;
 
 const MILESTONES = [
-  { id: "confirmed", text: "Email Confirmed", gems: 500, requiredRefs: 0 },
+  { id: "confirmed", text: "Email Confirmed", gems: 150, requiredRefs: 0 },
+  { id: "friend", text: "Use a Ref", gems: 150, requiredRefs: 0 },
   { id: "3", text: "3 Referrals", gems: 500, requiredRefs: 3 },
   { id: "10", text: "10 Referrals", gems: "2,000", requiredRefs: 10 },
   { id: "25", text: "25 Referrals", gems: "10,000", requiredRefs: 25 },
