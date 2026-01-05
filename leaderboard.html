@@ -256,6 +256,7 @@
           </div>
         </div>
       </div>
+
       <!-- Unified Join / Check Section -->
       <div class="unified-auth-section">
         <div class="auth-title" id="auth-heading">Join or Check Progress</div>
@@ -286,12 +287,91 @@
         <div class="milestones" id="milestones" style="display:none;"></div>
         <div class="claim-feedback" id="claim-feedback"></div>
       </div>
+
+      <!-- Popup Overlay (hidden by default) -->
+      <div id="confirm-popup-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; justify-content: center; align-items: center;">
+        <div id="confirm-popup-card" style="background: white; border-radius: 20px; padding: 2rem; max-width: 90%; width: 420px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.2); position: relative;">
+          <button id="close-popup" style="position: absolute; top: 10px; right: 15px; background: none; border: none; font-size: 1.5rem; cursor: pointer;">×</button>
+          
+          <h2 style="font-size: 2rem; margin: 0 0 1rem;">Email confirmed! 🎉</h2>
+
+          <!-- Reused counter from tasks.js styles -->
+          <div class="user-rank-info" style="margin-top: 1rem;">
+            <p class="people-ahead"><strong>1,293 People ahead of you</strong></p>
+          
+          <p style="font-size: 1.2rem; line-height: 1.5; margin: 0 0 2rem;">
+            <b>Congratulations!</b><br>
+            You’re officially on the Fitted waitlist.<br>
+            Now invite friends to earn gems<br>and climb the leaderboard!
+          </p>
+
+          <button class="hero-participate-btn scroll-to-auth">
+            Claim Gems
+          </button>
+
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
   <!-- Load modular tasks system -->
   <script src="tasks.js"></script>
   <!-- Fixed: All scripts consolidated + scroll handler wrapped in DOMContentLoaded -->
   <script>
+
+    /// Scroll to auth + popup close handling
+    document.addEventListener('DOMContentLoaded', () => {
+      const scrollToAuth = (e) => {
+        e.preventDefault();
+
+        // Close popup if it exists and is open
+        const overlay = document.getElementById('confirm-popup-overlay');
+        if (overlay && overlay.style.display !== 'none') {
+          overlay.style.display = 'none';
+        }
+
+        // Scroll to auth section
+        const target = document.querySelector('.unified-auth-section');
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        } else {
+          // Fallback: scroll to bottom
+          window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: 'smooth'
+          });
+        }
+      };
+
+      // Attach to all scroll-to-auth buttons (including Claim Gems)
+      document.querySelectorAll('.scroll-to-auth').forEach(button => {
+        button.addEventListener('click', scrollToAuth);
+      });
+
+      // Attach to popup close button (×)
+      const closeBtn = document.getElementById('close-popup');
+      if (closeBtn) {
+        closeBtn.addEventListener('click', (e) => {
+          e.preventDefault(); // prevent any default
+          scrollToAuth(e); // close + scroll
+        });
+      }
+
+      // Optional: close popup when clicking outside card
+      const overlay = document.getElementById('confirm-popup-overlay');
+      if (overlay) {
+        overlay.addEventListener('click', (e) => {
+          if (e.target === overlay) {
+            scrollToAuth(e); // close + scroll
+          }
+        });
+      }
+    });
+
     // Leaderboard load with dummy fallback
     async function loadLeaderboard() {
       const container = document.getElementById('leaderboard-body');
@@ -390,6 +470,13 @@
           return;
         }
         const user = await statusRes.json();
+
+        //show email confirmation once upon confirmation
+        if (user.confirmed && !localStorage.getItem('showedConfirmPopup')) {
+          document.getElementById('confirm-popup-overlay').style.display = 'flex';
+          localStorage.setItem('showedConfirmPopup', 'true');
+        }
+
         if (user.confirmed) {
           // Confirmed → load progress
           TasksModule.setUser({
@@ -542,15 +629,36 @@
     }
     window.addEventListener('load', startCountUpWhenVisible);
 
-    // Scroll to bottom
+    // Scroll to bottom (updated to handle popup close)
     document.addEventListener('DOMContentLoaded', () => {
       document.querySelectorAll('.scroll-to-auth').forEach(button => {
         button.addEventListener('click', (e) => {
           e.preventDefault();
-          window.scrollTo({
-            top: document.body.scrollHeight,
-            behavior: 'smooth'
-          });
+
+          // Try to close popup if it exists and is visible
+          try {
+            const overlay = document.getElementById('confirm-popup-overlay');
+            if (overlay && overlay.style.display !== 'none') {
+              overlay.style.display = 'none';
+            }
+          } catch (err) {
+            // Ignore errors (popup doesn't exist or other issues) — continue to scroll
+          }
+
+          // Scroll to the auth section
+          const target = document.querySelector('.unified-auth-section');
+          if (target) {
+            target.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+          } else {
+            // Fallback: scroll to bottom if no auth section
+            window.scrollTo({
+              top: document.body.scrollHeight,
+              behavior: 'smooth'
+            });
+          }
         });
       });
     });
