@@ -8,4 +8,7 @@ TO DO:
 -possibly change reference style images
 -change option card, possibly show cards in the bg
 -leaderboard cap @10 ✅ 
--reroute worker to send to leaderboard page.
+-reroute worker to send to leaderboard page.✅ 
+
+
+https://fitted.aihighstakes.workers.dev/confirm?token=wbzhjdye04g
