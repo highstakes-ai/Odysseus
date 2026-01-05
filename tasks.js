@@ -38,15 +38,14 @@ function renderMilestones() {
   const refLink = `https://highstakes-ai.github.io/Odysseus/leaderboard.html?ref=${currentUser.code || 'YOURCODE'}`;
 
   container.innerHTML = `
-  
     <div class="gems-earned-box">
       Gems Earned <img src="gem.png" alt="Gem" class="small-gem"> ${gemsEarned.toLocaleString()}
     </div>
-  
+
     <div class="user-rank-info">
       <p class="people-ahead"><strong>${peopleAhead} People ahead of you</strong></p>
       <p class="motivation">Climb the ranks by referring more people.</p>
-      
+     
       <div class="user-stats-row">
         <div><strong>Rank:</strong> ${currentUser.rank || '—'}</div>
         <div><strong>Email:</strong> ${currentUser.email ? currentUser.email.split('@')[0] : '—'}</div>
@@ -72,15 +71,42 @@ function renderMilestones() {
         let onclick = '';
         let cursor = 'default';
 
-        if (isReached && !isClaimed) {
-          buttonClass = 'claimable';
-          buttonText = 'Claim';
-          onclick = `onclick="TasksModule.claimGems('${m.id}')"`
-          cursor = 'pointer';
-        } else if (isClaimed) {
-          buttonClass = 'claimed';
-          buttonText = 'Claimed!';
-          cursor = 'default';
+        // SPECIAL HANDLING FOR "friend" MILESTONE
+        if (m.id === "friend") {
+          if (currentUser.usedReferral === true) {
+            // Eligible - normal claim logic
+            if (isClaimed) {
+              buttonClass = 'claimed';
+              buttonText = 'Claimed!';
+              cursor = 'default';
+            } else {
+              buttonClass = 'claimable';
+              buttonText = 'Claim';
+              onclick = `onclick="TasksModule.claimGems('${m.id}')"`
+              cursor = 'pointer';
+            }
+          } else {
+            // Not eligible
+            buttonClass = 'locked';
+            buttonText = 'Not eligible';
+            cursor = 'not-allowed';
+          }
+        } else {
+          // Normal milestones (your original logic)
+          if (isClaimed) {
+            buttonClass = 'claimed';
+            buttonText = 'Claimed!';
+            cursor = 'default';
+          } else if (isReached) {
+            buttonClass = 'claimable';
+            buttonText = 'Claim';
+            onclick = `onclick="TasksModule.claimGems('${m.id}')"`
+            cursor = 'pointer';
+          } else {
+            buttonClass = 'locked';
+            buttonText = 'Locked';
+            cursor = 'default';
+          }
         }
 
         const check = isClaimed ? '✓' : '';
@@ -154,8 +180,9 @@ window.TasksModule = {
   render: renderMilestones,
   claimGems,
   setUser: (user) => {
-    currentUser = user;
-    renderMilestones();
+  currentUser = Object.assign({}, user); // safe copy
+  console.log('Set currentUser:', currentUser); // debug
+  renderMilestones();
   },
   copyRefLink
 };
