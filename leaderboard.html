@@ -396,9 +396,11 @@
         console.warn("Using dummy data because:", err.message);
         renderLeaderboard(dummyData);
       }
+
       function renderLeaderboard(users) {
         const sorted = [...users].sort((a, b) => b.referrals - a.referrals);
-        container.innerHTML = sorted.map((user, index) => {
+        const top10 = sorted.slice(0, 10); // ← This line limits to 10
+        container.innerHTML = top10.map((user, index) => {
           const rank = index + 1;
           const displayName = user.email;
           const rankLabel = getRankLabel(rank);
@@ -411,6 +413,7 @@
           `;
         }).join('');
       }
+
       function getRankLabel(rank) {
         if (rank === 1) return "1st";
         if (rank === 2) return "2nd";
@@ -419,6 +422,43 @@
       }
     }
     loadLeaderboard();
+
+    // Auto-handle confirmation redirect (?email=...&code=...)
+    document.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const emailFromUrl = urlParams.get('email');
+      const codeFromUrl = urlParams.get('code');
+
+      if (emailFromUrl) {
+        // Clean URL (remove params after reading)
+        window.history.replaceState({}, document.title, window.location.pathname);
+
+        // Auto-fill email input
+        const emailInput = document.getElementById('auth-email');
+        if (emailInput) {
+          emailInput.value = decodeURIComponent(emailFromUrl);
+        }
+
+        // Optional: auto-submit form (simulates user clicking Continue)
+        const authForm = document.getElementById('auth-form');
+        if (authForm) {
+          setTimeout(() => {
+            authForm.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+          }, 500); // small delay to let page settle
+        }
+
+        // Show confirmation popup immediately (or after form submit)
+        const overlay = document.getElementById('confirm-popup-overlay');
+        if (overlay) {
+          overlay.style.display = 'flex';
+        }
+
+        // Save to localStorage for future refreshes
+        localStorage.setItem('fitted_user_email', decodeURIComponent(emailFromUrl));
+        localStorage.setItem('fitted_signed_up', 'true');
+        localStorage.setItem('fitted_confirmed', 'true');
+      }
+    });
 
     // Pre-fill referral code
     const urlParams = new URLSearchParams(window.location.search);
@@ -487,7 +527,7 @@
             usedReferral: user.usedReferral || false,
             claimedMilestones: user.claimedMilestones || []
           });
-          gemsTotal.style.display = 'block';
+          gemsTotal.style.display = 'hidden';
           gemsTotal.textContent = `Gems Earned: ${user.gemsEarned || 0}`;
           milestonesDiv.style.display = 'block';
           TasksModule.render();

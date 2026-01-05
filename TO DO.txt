@@ -1,0 +1,11 @@
+TO DO:
+-Purchase and link domain
+	-change repo to private
+	-update worker to correct redirect links etc
+-People infront of you counter, make dynamic
+-Maybe email when someone uses their sign up...
+-get new virtual try on image and products
+-possibly change reference style images
+-change option card, possibly show cards in the bg
+-leaderboard cap @10 ✅ 
+-reroute worker to send to leaderboard page.
